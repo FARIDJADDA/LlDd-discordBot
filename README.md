@@ -138,6 +138,12 @@ Ce bot Discord propose plusieurs fonctionnalités clés :
 ➡️ Ajoute un nouveau streamer à la liste.
 * ```!remove_streamer``` <nom_du_streamer>
 ➡️ Supprime un streamer de la liste.
+### Commandes welcome
+* ```!set_rules_channel``` <#channel>: 
+➡️ Configure le canal des règles.
+* ```!set_welcome_channel``` <channel_name>: 
+➡️ Configure le canal de bienvenue..
+
 
 ### Exemple de commandes avancées
 
