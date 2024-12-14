@@ -1,0 +1,13 @@
+# Fichiers sensibles
+config
+
+# Bases de données JSON
+*.json
+
+# Fichiers de logs
+*.log
+
+# Environnement virtuel
+.env/
+__pycache__/
+*.pyc
