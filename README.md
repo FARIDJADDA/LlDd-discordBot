@@ -129,6 +129,16 @@ Ce bot Discord propose plusieurs fonctionnalités clés :
 * ```!codstats``` [pseudo] [plateforme]
 ➡️ Récupère et affiche les statistiques Call of Duty pour un joueur.
 
+### Commandes pour Twitch
+* ```!set_twitch_channel``` <#salon>
+➡️ Définit le salon dans lequel les notifications Twitch seront envoyées.
+* ```!list_streamers```
+➡️ Affiche tous les streamers actuellement suivis.
+* ```!add_streamer``` <nom_du_streamer>
+➡️ Ajoute un nouveau streamer à la liste.
+* ```!remove_streamer``` <nom_du_streamer>
+➡️ Supprime un streamer de la liste.
+
 ### Exemple de commandes avancées
 
 #### Modération :
