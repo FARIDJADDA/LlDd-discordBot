@@ -48,7 +48,7 @@ Ce bot Discord propose plusieurs fonctionnalités clés :
    ```
    
 3. Configurez vos clés API :
-    * Modifiez le fichier config :
+    * Créez un fichier config à la racine du projet :
     ```
     DISCORD_TOKEN=ton_token_discord
     TWITCH_CLIENT_ID=ton_client_id_twitch
