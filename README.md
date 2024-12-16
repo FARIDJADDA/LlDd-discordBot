@@ -1,4 +1,4 @@
-# Discord Bot
+# LlDd DiscordBot
 Un bot Discord complet et personnalisable conçu pour gérer et animer des serveurs communautaires.
 Ce bot inclut des fonctionnalités de modération, mini-jeux, logs avancés, statistiques, et bien plus encore.
 
