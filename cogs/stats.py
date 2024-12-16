@@ -1,44 +1,65 @@
 import discord
 from discord.ext import commands
+from utils.logger import logger
 from datetime import datetime
 
 
 class Stats(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-        self.message_count = 0  # Compteur global des messages
 
-    @commands.Cog.listener()
-    async def on_message(self, message):
-        """Compter les messages pour les statistiques"""
-        if not message.author.bot:
-            self.message_count += 1
-
-    @commands.command()
-    async def stats(self, ctx):
-        """Afficher les statistiques du serveur"""
+    @commands.hybrid_command(name="server_stats", description="Affiche les statistiques du serveur.")
+    async def server_stats(self, ctx: commands.Context):
+        """Affiche les statistiques du serveur via une commande hybride."""
         guild = ctx.guild
 
-        # Calculer le nombre de membres en ligne
+        if not guild:
+            await ctx.send("❌ Impossible de récupérer les statistiques. Erreur serveur.")
+            logger.error(f"Échec de récupération des statistiques pour {ctx.author}.")
+            return
+
+        # Calcul des statistiques
+        total_members = guild.member_count
         online_members = sum(1 for member in guild.members if member.status != discord.Status.offline)
+        text_channels = len(guild.text_channels)
+        voice_channels = len(guild.voice_channels)
+        total_channels = len(guild.channels)
+        total_roles = len(guild.roles)
+        total_emojis = len(guild.emojis)
+        created_at = guild.created_at.strftime("%d/%m/%Y à %H:%M:%S")
 
         # Création de l'embed
         embed = discord.Embed(
-            title=f"Statistiques pour {guild.name}",
-            color=discord.Color.blurple(),
+            title=f"📊 Statistiques du serveur : {guild.name}",
+            color=discord.Color.blue(),
             timestamp=datetime.utcnow()
         )
-        embed.set_thumbnail(url=guild.icon.url if guild.icon else "")
-        embed.add_field(name="👥 Nombre total de membres", value=f"{guild.member_count}", inline=True)
-        embed.add_field(name="🟢 Membres en ligne", value=f"{online_members}", inline=True)
-        embed.add_field(name="📜 Nombre de rôles", value=f"{len(guild.roles)}", inline=True)
-        embed.add_field(name="💬 Canaux textuels", value=f"{len(guild.text_channels)}", inline=True)
-        embed.add_field(name="🔊 Canaux vocaux", value=f"{len(guild.voice_channels)}", inline=True)
-        embed.add_field(name="✉️ Messages envoyés (depuis démarrage)", value=f"{self.message_count}", inline=True)
-        embed.set_footer(text=f"Demandé par {ctx.author}", icon_url=ctx.author.avatar.url)
+        embed.set_thumbnail(url=guild.icon.url if guild.icon else None)
+        embed.add_field(name="📅 Créé le", value=f"{created_at}", inline=True)
+        embed.add_field(name="👥 Membres", value=f"Total : {total_members}\nEn ligne : {online_members}", inline=True)
+        embed.add_field(name="💬 Salons", value=f"Textuels : {text_channels}\nVocaux : {voice_channels}\nTotal : {total_channels}", inline=True)
+        embed.add_field(name="🏷️ Rôles", value=f"{total_roles}", inline=True)
+        embed.add_field(name="😎 Émojis", value=f"{total_emojis}", inline=True)
+        embed.add_field(name="⚡️ Nombre de boosts", value=f"{guild.premium_subscription_count or 0}", inline=True)
+        embed.add_field(name="🚀 Niveau de boost", value=f"{guild.premium_tier}", inline=True)
+        embed.set_footer(text=f"Demandé par {ctx.author}", icon_url=ctx.author.avatar.url if ctx.author.avatar else None)
 
-        await ctx.send(embed=embed)
+        # Envoie de l'embed
+        if isinstance(ctx, commands.Context):  # Appelé via un préfixe
+            await ctx.send(embed=embed)
+        else:  # Appelé via une commande Slash
+            await ctx.interaction.response.send_message(embed=embed)
+
+        logger.info(f"Statistiques du serveur affichées pour {ctx.author}.")
+
+    @server_stats.error
+    async def handle_command_errors(self, ctx: commands.Context, error):
+        """Gestion des erreurs pour la commande hybride."""
+        if isinstance(error, commands.CommandError):
+            await ctx.send("❌ Une erreur est survenue lors de l'exécution de la commande.")
+            logger.error(f"Erreur dans la commande 'server_stats' : {error}")
 
 
-async def setup(bot):
+async def setup(bot: commands.Bot):
+    """Ajoute la cog au bot."""
     await bot.add_cog(Stats(bot))

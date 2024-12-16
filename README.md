@@ -86,110 +86,148 @@ Ce bot Discord propose plusieurs fonctionnalités clés :
     ├── requirements.txt       # Dépendances nécessaires
 ```
 
-## 📜 Commandes disponibles
-### Commandes utilitaires
-* ```!status```
-➡️ Affiche le statut actuel du bot (uptime, cogs chargés, etc.).
-* ```!restart``` (Admin uniquement)
-➡️ Redémarre le bot.
+## 📜 Commandes Disponibles
 
-### Commandes de modération
-* ```!ban``` @Utilisateur [raison] (Permission : ban_members)
-➡️ Bannit un utilisateur avec une raison facultative.
-* ```!kick @Utilisateur``` [raison] (Permission : kick_members)
-➡️ Expulse un utilisateur avec une raison facultative.
-* ```!banned_list```
-➡️ Liste les utilisateurs bannis du serveur.
+### Commandes Utilitaires
+* **`/status`**  
+  ➡️ Affiche le statut actuel du bot (uptime, cogs chargés, etc.).  
+* **`/restart`** *(Admin uniquement)*  
+  ➡️ Redémarre le bot.
 
-### Commandes pour les avertissements
-* ```!warn @Utilisateur``` [raison] (Permission : manage_messages)
-➡️ Avertit un utilisateur pour une raison donnée.
-* ```!warnings``` @Utilisateur
-➡️ Affiche tous les avertissements attribués à un utilisateur.
-* ```!clear_warnings``` @Utilisateur
-➡️ Supprime tous les avertissements d’un utilisateur.
-* ```!set_max_warnings``` <nombre>
-➡️ Définit le nombre maximum d'avertissements avant une sanction.
+### Commandes de Modération
+* **`/ban`** @Utilisateur [raison] *(Permission : ban_members)*  
+  ➡️ Bannit un utilisateur avec une raison facultative.  
+* **`/kick`** @Utilisateur [raison] *(Permission : kick_members)*  
+  ➡️ Expulse un utilisateur avec une raison facultative.  
+* **`/banned_list`**  
+  ➡️ Liste les utilisateurs bannis du serveur.
 
-### Commandes pour les rôles
-* ```!set_default_roles``` rôle1, rôle2 (Admin uniquement)
-➡️ Définit les rôles attribués automatiquement aux nouveaux membres.
-* ```!show_default_roles``` (Admin uniquement)
-➡️ Affiche les rôles par défaut actuels.
+### Commandes pour les Avertissements
+* **`/warn`** @Utilisateur [raison] *(Permission : manage_messages)*  
+  ➡️ Avertit un utilisateur pour une raison donnée.  
+* **`/warnings`** @Utilisateur  
+  ➡️ Affiche tous les avertissements attribués à un utilisateur.  
+* **`/clear_warnings`** @Utilisateur  
+  ➡️ Supprime tous les avertissements d’un utilisateur.  
+* **`/set_max_warnings`** <nombre>  
+  ➡️ Définit le nombre maximum d'avertissements avant une sanction.
 
-### Commandes pour les mini-jeux
-* ```!quiz```
-➡️ Pose une question sur le gaming, l'utilisateur a 3 chances pour répondre.
-* ```!roll``` [faces=6]
-➡️ Simule un lancer de dés avec le nombre de faces spécifié (par défaut : 6).
+### Commandes pour les Rôles
+* **`/set_default_roles`** rôle1, rôle2 *(Admin uniquement)*  
+  ➡️ Définit les rôles attribués automatiquement aux nouveaux membres.  
+* **`/show_default_roles`** *(Admin uniquement)*  
+  ➡️ Affiche les rôles par défaut actuels.
 
-### Commandes de statistiques
-* ```!stats```
-➡️ Affiche les statistiques générales du serveur : membres, rôles, canaux, messages, etc.
-* ```!codstats``` [pseudo] [plateforme]
-➡️ Récupère et affiche les statistiques Call of Duty pour un joueur.
+### Commandes pour les Mini-Jeux
+* **`/quiz`**  
+  ➡️ Pose une question sur le gaming, l'utilisateur a 3 chances pour répondre.  
+* **`/roll`** [faces=6]  
+  ➡️ Simule un lancer de dés avec le nombre de faces spécifié (par défaut : 6).
 
-### Commandes pour Twitch
-* ```!set_twitch_channel``` <#salon>
-➡️ Définit le salon dans lequel les notifications Twitch seront envoyées.
-* ```!list_streamers```
-➡️ Affiche tous les streamers actuellement suivis.
-* ```!add_streamer``` <nom_du_streamer>
-➡️ Ajoute un nouveau streamer à la liste.
-* ```!remove_streamer``` <nom_du_streamer>
-➡️ Supprime un streamer de la liste.
-### Commandes welcome
-* ```!set_rules_channel``` <#channel>: 
-➡️ Configure le canal des règles.
-* ```!set_welcome_channel``` <channel_name>: 
-➡️ Configure le canal de bienvenue..
+### Commandes de Statistiques
+* **`/stats`**  
+  ➡️ Affiche les statistiques générales du serveur : membres, rôles, canaux, etc.  
+* **`/codstats`** [pseudo] [plateforme]  
+  ➡️ Récupère et affiche les statistiques Call of Duty pour un joueur.
 
+### Commandes Twitch
+* **`/set_twitch_channel`** <#salon>  
+  ➡️ Définit le salon dans lequel les notifications Twitch seront envoyées.  
+* **`/list_streamers`**  
+  ➡️ Affiche tous les streamers actuellement suivis.  
+* **`/add_streamer`** <nom_du_streamer>  
+  ➡️ Ajoute un nouveau streamer à la liste.  
+* **`/remove_streamer`** <nom_du_streamer>  
+  ➡️ Supprime un streamer de la liste.
 
-### Exemple de commandes avancées
+### Commandes Welcome
+* **`/set_rules_channel`** <#channel>  
+  ➡️ Configure le canal des règles.  
+* **`/set_welcome_channel`** <channel_name>  
+  ➡️ Configure le canal de bienvenue.
 
-#### Modération :
-```
-    !ban @Player1 Comportement inapproprié
-    !kick @Player2 Inactivité prolongée
-```
+---
 
-#### Mini-jeux :
-```
-    !quiz
-    !roll 20
+## 🛠️ Exemple de Commandes Avancées
 
-```
+### Modération :
+ ```
+/ban @Player1 Comportement inapproprié /kick @Player2 Inactivité prolongée
+ ```
 
-#### Statistiques :
-```
-    !stats
-    !codstats JohnDoe battle
-```
+### Mini-Jeux :
+ ```
+ /quiz /roll 20
+ ```
 
 ## 🔧 Ajouter vos propres fonctionnalités
 
 ### Créer une nouvelle commande :
-1. Créez un fichier dans cogs/ (par ex. my_feature.py).
-2. Ajoutez une classe héritant de commands.Cog.
-3. Ajoutez une commande avec le décorateur @commands.command() :
-```python
-@commands.command()
-async def ma_commande(self, ctx):
-    await ctx.send("Ceci est une nouvelle commande !")
-```
+1. **Créez un fichier dans le dossier `cogs/`**  
+   Par exemple : `my_feature.py`.
 
-4. Ajoutez une fonction setup pour charger le cog :
-```python
-async def setup(bot):
-    await bot.add_cog(MyFeature(bot))
-```
+2. **Ajoutez une classe avec des commandes hybrides ou Slash :**  
+   Exemple de commande hybride :
+   ```python
+   from discord.ext import commands
 
-5. Redémarrez le bot.
+   class MyFeature(commands.Cog):
+       def __init__(self, bot):
+           self.bot = bot
+
+       @commands.hybrid_command(name="ma_commande", description="Ma nouvelle commande")
+       async def ma_commande(self, ctx):
+           if isinstance(ctx, discord.Interaction):
+               await ctx.response.send_message("Ceci est une nouvelle commande Slash !")
+           else:
+               await ctx.send("Ceci est une nouvelle commande classique !")
+   ```
+   
+3. **Ajoutez une fonction `setup` pour l'intégration du Cog :**
+   Cela permet d'ajouter automatiquement la nouvelle classe au bot.
+   ```python
+   async def setup(bot):
+       await bot.add_cog(MyFeature(bot))
+   ```
+   
+4. **Rechargez ou redémarrez le bot :**
+   Si votre bot est en cours d'exécution, utilisez la commande de redémarrage ou rechargez uniquement le cog concerné :
+   ```
+   !reload_cog cogs.my_feature
+   ```
+
+### Exemple pour tester :
+1. **Créer un fichier** `cogs/example.py`
+   ```python
+   import discord
+   from discord.ext import commands
+   
+   class ExampleCog(commands.Cog):
+       def __init__(self, bot):
+           self.bot = bot
+   
+       @commands.hybrid_command(name="hello", description="Dit bonjour.")
+       async def hello(self, ctx):
+           if isinstance(ctx, discord.Interaction):
+               await ctx.response.send_message("Bonjour ! 👋")
+           else:
+               await ctx.send("Bonjour ! 👋")
+   async def setup(bot):
+        await bot.add_cog(ExampleCog(bot))
+   ```
+   
+2. **Rechargez ou redémarrez le bot et utilisez** `/hello` ou `!hello`. 🎉
+
+
+*Cette section vous guidera pour ajouter facilement vos propres fonctionnalités tout en maintenant la structure modulaire de votre bot! 😊*
+
+
+
 
 # 🤝 Contributions
 Les contributions sont les bienvenues! Si vous avez des idées de fonctionnalités ou des améliorations, ouvrez une issue ou soumettez une pull request.
 
 # ⚖️ Licence
-
+Projet sous licence libre.
 
 

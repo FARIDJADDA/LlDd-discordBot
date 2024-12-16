@@ -1,45 +1,73 @@
 import discord
 from discord.ext import commands
 import os
-from dotenv import load_dotenv
 import asyncio
+from dotenv import load_dotenv
 
-# Charger les variables d'environnement
+
 load_dotenv(dotenv_path="config")
-TOKEN = os.getenv('DISCORD_TOKEN')
-PREFIX = '!'
+TOKEN = os.getenv("DISCORD_TOKEN")
 
-# Initialisation du bot
+# Initialisation du bot avec un préfixe pour les commandes classiques
 intents = discord.Intents.default()
 intents.messages = True
 intents.guilds = True
 intents.members = True
 intents.message_content = True
 
-bot = commands.Bot(command_prefix=PREFIX, intents=intents)
+bot = commands.Bot(command_prefix="!", intents=intents)
 
-
-async def load_cogs():
-    print("Dossier des cogs détecté.")
-    for filename in os.listdir('./cogs'):
-        print(f"Fichier détecté : {filename}")  # Log chaque fichier détecté
-        if filename.endswith('.py') and not filename.startswith('__'):
-            try:
-                await bot.load_extension(f'cogs.{filename[:-3]}')  # Utiliser await
-                print(f"Cog chargé : {filename}")
-            except Exception as e:
-                print(f"⚠️ Erreur lors du chargement du cog {filename} : {e}")
 
 @bot.event
 async def on_ready():
+    """Synchronise les commandes hybrides au démarrage et affiche le statut du bot."""
+    await bot.tree.sync()  # Synchronisation des commandes Slash avec Discord
+    print(f"✅ Commandes Slash synchronisées.")
     print(f"✅ Bot connecté en tant que {bot.user.name} ({bot.user.id})")
-    print(f"✅ Cogs chargés : {[cog for cog in bot.cogs.keys()]}")
+
+
+async def load_cogs():
+    """Décharge tout avant de charger les cogs."""
+    await unload_all_cogs()
+    # Charger les cogs ensuite
+    for filename in os.listdir("./cogs"):
+        if filename.endswith(".py") and not filename.startswith("__"):
+            try:
+                module_name = f"cogs.{filename[:-3]}"
+                await bot.load_extension(module_name)
+                print(f"✅ Cog chargé : {filename}")
+            except Exception as e:
+                print(f"⚠️ Erreur lors du chargement du cog {filename} : {e}")
+
+
+async def reload_cog(cog_name):
+    """Recharge dynamiquement un Cog."""
+    try:
+        if cog_name in bot.extensions:  # Vérifie si le module est chargé avant de le décharger
+            print(f"🔄 Déchargement du cog : {cog_name}")
+            await bot.unload_extension(cog_name)
+        print(f"🔄 Chargement du cog : {cog_name}")
+        await bot.load_extension(cog_name)
+        print(f"✅ Cog rechargé : {cog_name}")
+    except Exception as e:
+        print(f"⚠️ Erreur lors du rechargement du Cog {cog_name} : {e}")
+
+
+
+async def unload_all_cogs():
+    """Décharge tous les Cogs avant de recharger."""
+    for extension in list(bot.extensions.keys()):
+        try:
+            print(f"🔄 Déchargement du cog : {extension}")
+            await bot.unload_extension(extension)
+        except Exception as e:
+            print(f"⚠️ Erreur lors du déchargement de {extension} : {e}")
 
 
 async def main():
     async with bot:
-        await load_cogs()  # Charger tous les cogs
-        await bot.start(TOKEN)  # Démarrer le bot
+        await load_cogs()
+        await bot.start(TOKEN)
 
 
 if __name__ == "__main__":

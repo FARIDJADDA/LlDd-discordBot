@@ -2,15 +2,16 @@ import aiohttp
 import asyncio
 import json
 import os
-import discord  # Import nécessaire pour les types et fonctionnalités Discord
-from discord.ext import commands, tasks
+import discord
+from discord.ext import commands
 from utils.logger import logger
 from dotenv import load_dotenv
 
-
+# Chargement des variables d'environnement
 load_dotenv(dotenv_path="config")
 TWITCH_CLIENT_ID = os.getenv("TWITCH_CLIENT_ID")
 TWITCH_CLIENT_SECRET = os.getenv("TWITCH_CLIENT_SECRET")
+
 
 class Twitch(commands.Cog):
     def __init__(self, bot):
@@ -20,10 +21,10 @@ class Twitch(commands.Cog):
         self.streamers_status = {streamer: False for streamer in self.config["streamers"]}
         self.headers = {}
         self.twitch_api_url = "https://api.twitch.tv/helix/"
-        self.check_streams.start()
+        self.task = self.bot.loop.create_task(self.check_streams_task())  # Démarre la tâche de vérification
 
     def load_config(self):
-        """Charge la configuration depuis un fichier JSON"""
+        """Charge la configuration depuis un fichier JSON."""
         if os.path.exists(self.config_file):
             with open(self.config_file, "r") as file:
                 try:
@@ -37,12 +38,12 @@ class Twitch(commands.Cog):
             return default_config
 
     def save_config(self, data):
-        """Sauvegarde la configuration dans un fichier JSON"""
+        """Sauvegarde la configuration dans un fichier JSON."""
         with open(self.config_file, "w") as file:
             json.dump(data, file, indent=4)
 
     async def fetch_twitch_token(self):
-        """Obtenir un token d'accès pour l'API Twitch"""
+        """Obtenir un token d'accès pour l'API Twitch."""
         url = "https://id.twitch.tv/oauth2/token"
         params = {
             "client_id": TWITCH_CLIENT_ID,
@@ -65,7 +66,7 @@ class Twitch(commands.Cog):
                 logger.error(f"Erreur lors de l'obtention du token Twitch : {e}")
 
     async def check_stream_status(self, streamer):
-        """Vérifie si un streamer est en live"""
+        """Vérifie si un streamer est en live."""
         url = f"{self.twitch_api_url}streams?user_login={streamer}"
         async with aiohttp.ClientSession(headers=self.headers) as session:
             try:
@@ -83,50 +84,14 @@ class Twitch(commands.Cog):
                 logger.error(f"Erreur lors de la vérification du stream pour {streamer} : {e}")
                 return False
 
-    @tasks.loop(minutes=1)
-    async def check_streams(self):
-        """Boucle pour vérifier l'état des streams"""
-        channel_id = self.config.get("notification_channel_id")
-        if channel_id is None:
-            logger.warning("Aucun canal de notification configuré.")
-            return
+    @commands.hybrid_group(name="twitch", invoke_without_command=True, description="Gère les notifications Twitch.")
+    async def twitch(self, ctx: commands.Context):
+        """Commandes principales pour gérer Twitch."""
+        await ctx.send("Utilisez une sous-commande pour gérer les notifications Twitch.")
 
-        channel = self.bot.get_channel(channel_id)
-        if channel is None:
-            logger.warning(f"Le canal avec l'ID {channel_id} est introuvable ou inaccessible.")
-            return
-
-        for streamer in self.config["streamers"]:
-            is_live = await self.check_stream_status(streamer)
-
-            if is_live and not self.streamers_status[streamer]:
-                self.streamers_status[streamer] = True
-                try:
-                    await channel.send(f"🚨 **{streamer} est maintenant en live !**\nLien : https://twitch.tv/{streamer}")
-                    logger.info(f"Notification envoyée pour {streamer}.")
-                except Exception as e:
-                    logger.error(f"Erreur lors de l'envoi de la notification pour {streamer} : {e}")
-
-            elif not is_live and self.streamers_status[streamer]:
-                self.streamers_status[streamer] = False
-                logger.info(f"{streamer} n'est plus en live.")
-
-    @check_streams.before_loop
-    async def before_check_streams(self):
-        await self.bot.wait_until_ready()
-        await self.fetch_twitch_token()
-
-    @commands.command()
-    @commands.has_permissions(administrator=True)
-    async def set_twitch_channel(self, ctx, channel: discord.TextChannel):
-        """Définit le canal de notification pour les streams"""
-        self.config["notification_channel_id"] = channel.id
-        self.save_config(self.config)
-        await ctx.send(f"✅ Les notifications Twitch seront envoyées dans {channel.mention}.")
-
-    @commands.command()
-    async def list_streamers(self, ctx):
-        """Affiche la liste des streamers suivis"""
+    @twitch.command(name="list", help="Affiche la liste des streamers suivis.")
+    async def list_streamers(self, ctx: commands.Context):
+        """Affiche la liste des streamers suivis."""
         streamers = self.config["streamers"]
         if streamers:
             streamers_list = ", ".join(streamers)
@@ -134,10 +99,9 @@ class Twitch(commands.Cog):
         else:
             await ctx.send("❌ Aucun streamer n'est actuellement suivi.")
 
-    @commands.command()
-    @commands.has_permissions(administrator=True)
-    async def add_streamer(self, ctx, streamer: str):
-        """Ajoute un streamer à la liste"""
+    @twitch.command(name="add", help="Ajoute un streamer à la liste.")
+    async def add_streamer(self, ctx: commands.Context, streamer: str):
+        """Ajoute un streamer à la liste."""
         if streamer not in self.config["streamers"]:
             self.config["streamers"].append(streamer)
             self.save_config(self.config)
@@ -145,24 +109,51 @@ class Twitch(commands.Cog):
         else:
             await ctx.send(f"❌ Le streamer `{streamer}` est déjà dans la liste.")
 
-    @commands.command()
-    @commands.has_permissions(administrator=True)
-    async def remove_streamer(self, ctx, streamer: str):
-        """Supprime un streamer de la liste, insensible à la casse"""
-        # Convertir en minuscule pour comparaison
-        normalized_streamer = streamer.lower()
-        streamers_normalized = [s.lower() for s in self.config["streamers"]]
-
-        if normalized_streamer in streamers_normalized:
-            # Supprimer le streamer en conservant la casse originale
-            index = streamers_normalized.index(normalized_streamer)
-            removed_streamer = self.config["streamers"].pop(index)
-
-            # Sauvegarder la configuration
+    @twitch.command(name="remove", help="Supprime un streamer de la liste.")
+    async def remove_streamer(self, ctx: commands.Context, streamer: str):
+        """Supprime un streamer de la liste."""
+        if streamer in self.config["streamers"]:
+            self.config["streamers"].remove(streamer)
             self.save_config(self.config)
-            await ctx.send(f"✅ Le streamer `{removed_streamer}` a été supprimé de la liste.")
+            await ctx.send(f"✅ Le streamer `{streamer}` a été supprimé de la liste.")
         else:
             await ctx.send(f"❌ Le streamer `{streamer}` n'est pas dans la liste.")
 
-async def setup(bot):
+    @twitch.command(name="set_channel", help="Définit le canal de notification Twitch.")
+    async def set_twitch_channel(self, ctx: commands.Context, channel: discord.TextChannel):
+        """Définit le canal de notification pour les streams."""
+        self.config["notification_channel_id"] = channel.id
+        self.save_config(self.config)
+        await ctx.send(f"✅ Les notifications Twitch seront envoyées dans {channel.mention}.")
+
+    async def check_streams_task(self):
+        """Tâche pour vérifier périodiquement les streams."""
+        await self.bot.wait_until_ready()
+        while not self.bot.is_closed():
+            channel_id = self.config.get("notification_channel_id")
+            if not channel_id:
+                logger.warning("Aucun canal de notification configuré.")
+                await asyncio.sleep(60)
+                continue
+
+            channel = self.bot.get_channel(channel_id)
+            if not channel:
+                logger.warning(f"Le canal avec l'ID {channel_id} est introuvable ou inaccessible.")
+                await asyncio.sleep(60)
+                continue
+
+            for streamer in self.config["streamers"]:
+                is_live = await self.check_stream_status(streamer)
+                if is_live and not self.streamers_status[streamer]:
+                    self.streamers_status[streamer] = True
+                    await channel.send(f"🚨 **{streamer} est maintenant en live !**\nLien : https://twitch.tv/{streamer}")
+                elif not is_live and self.streamers_status[streamer]:
+                    self.streamers_status[streamer] = False
+                    logger.info(f"{streamer} n'est plus en live.")
+
+            await asyncio.sleep(60)  # Vérifie toutes les minutes
+
+
+async def setup(bot: commands.Bot):
+    """Ajoute la cog au bot."""
     await bot.add_cog(Twitch(bot))
