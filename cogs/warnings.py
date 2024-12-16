@@ -10,7 +10,7 @@ class Warnings(commands.Cog):
         self.bot = bot
         self.config_file = "warnings.json"
         self.warnings = self.load_warnings()
-        self.max_warnings = 3  # Nombre maximum d'avertissements avant sanction
+        self.max_warnings = 3
 
     def load_warnings(self):
         """Charge les avertissements depuis un fichier JSON."""

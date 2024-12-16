@@ -21,7 +21,7 @@ class Twitch(commands.Cog):
         self.streamers_status = {streamer: False for streamer in self.config["streamers"]}
         self.headers = {}
         self.twitch_api_url = "https://api.twitch.tv/helix/"
-        self.task = self.bot.loop.create_task(self.check_streams_task())  # Démarre la tâche de vérification
+        self.task = self.bot.loop.create_task(self.check_streams_task())
 
     def load_config(self):
         """Charge la configuration depuis un fichier JSON."""
@@ -151,7 +151,7 @@ class Twitch(commands.Cog):
                     self.streamers_status[streamer] = False
                     logger.info(f"{streamer} n'est plus en live.")
 
-            await asyncio.sleep(60)  # Vérifie toutes les minutes
+            await asyncio.sleep(120)
 
 
 async def setup(bot: commands.Bot):

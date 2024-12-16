@@ -43,7 +43,7 @@ async def load_cogs():
 async def reload_cog(cog_name):
     """Recharge dynamiquement un Cog."""
     try:
-        if cog_name in bot.extensions:  # Vérifie si le module est chargé avant de le décharger
+        if cog_name in bot.extensions:
             print(f"🔄 Déchargement du cog : {cog_name}")
             await bot.unload_extension(cog_name)
         print(f"🔄 Chargement du cog : {cog_name}")

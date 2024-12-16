@@ -24,8 +24,8 @@ class Welcome(commands.Cog):
                     }
         else:
             default_config = {
-                "rules_channel_id": None,  # ID du salon des règles par défaut
-                "welcome_channel_name": "welcome",  # Nom par défaut du salon d'accueil
+                "rules_channel_id": None,
+                "welcome_channel_name": "welcome",
             }
             self.save_config(default_config)
             return default_config

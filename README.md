@@ -69,7 +69,7 @@ Ce bot Discord propose plusieurs fonctionnalités clés :
     ├── cogs/
     │   ├── filters.py         # Gestion des mots interdits et du spam
     │   ├── games.py           # Commandes pour les mini-jeux (quiz, lancer de dés)
-    │   ├── log_cog.py         # Logs des messages modifiés/supprimés et des rôles
+    │   ├── message_log.py         # Logs des messages modifiés/supprimés et des rôles
     │   ├── moderation.py      # Commandes de modération
     │   ├── roles.py           # Attribution automatique de rôles
     │   ├── stats.py           # Commande pour les statistiques du serveur
