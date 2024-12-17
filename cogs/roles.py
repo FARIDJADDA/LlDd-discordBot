@@ -36,56 +36,81 @@ class Roles(commands.Cog):
     async def on_member_join(self, member: discord.Member):
         """Attribue automatiquement les rôles par défaut aux nouveaux membres."""
         guild = member.guild
-        roles_to_add = [discord.utils.get(guild.roles, name=role_name) for role_name in self.default_roles]
-        roles_to_add = [role for role in roles_to_add if role is not None]
 
-        if not roles_to_add:
-            logger.warning(f"Aucun rôle valide trouvé pour {member.name} dans {guild.name}.")
+        # Vérifie que des rôles par défaut sont configurés
+        if not self.default_roles:
+            logger.warning("Aucun rôle par défaut configuré.")
             return
 
+        # Recherche des rôles existants sur le serveur
+        roles_to_add = []
+        for role_name in self.default_roles:
+            role = discord.utils.get(guild.roles, name=role_name)
+            if role:
+                roles_to_add.append(role)
+            else:
+                logger.warning(f"Le rôle '{role_name}' est introuvable sur le serveur '{guild.name}'.")
+
+        # Vérifie que des rôles valides existent
+        if not roles_to_add:
+            logger.warning(f"Aucun rôle valide trouvé pour attribuer à {member.name} dans {guild.name}.")
+            return
+
+        # Attribution des rôles
         try:
             await member.add_roles(*roles_to_add, reason="Attribution automatique à l'arrivée")
-            logger.info(f"Rôles ajoutés à {member.name} dans {guild.name} : {', '.join([role.name for role in roles_to_add])}")
-            await member.send(
-                f"🎉 Bienvenue sur **{guild.name}** ! Tu as reçu les rôles : {', '.join([role.name for role in roles_to_add])}."
+            logger.info(
+                f"Rôles ajoutés à {member.name} dans {guild.name} : {', '.join([role.name for role in roles_to_add])}")
+
+            # Confirmation en DM au membre
+            embed = discord.Embed(
+                title="🎉 Bienvenue sur le serveur !",
+                description=f"Salut {member.mention} !\nTu as reçu les rôles suivants :\n**{', '.join([role.name for role in roles_to_add])}**",
+                color=discord.Color.green()
             )
+            embed.set_thumbnail(url="attachment://roles_icon.png")
+            await member.send(embed=embed, file=discord.File("assets/roles_icon.png", filename="roles_icon.png"))
+
+        except discord.Forbidden:
+            logger.error(f"Permissions insuffisantes pour attribuer des rôles à {member.name}.")
         except Exception as e:
-            logger.error(f"Erreur lors de l'attribution des rôles pour {member.name} : {e}")
+            logger.error(f"Erreur inattendue lors de l'attribution des rôles à {member.name} : {e}")
 
     @commands.hybrid_command(name="set_default_roles", description="Définit les rôles par défaut pour les nouveaux membres.")
+    @commands.has_permissions(administrator=True)
     async def set_default_roles(self, ctx: commands.Context, *, roles: str):
         """Définit les rôles par défaut via une commande hybride."""
         role_names = [role.strip() for role in roles.split(",")]
         self.default_roles = role_names
         self.save_roles()
-        await ctx.send(f"✅ Rôles par défaut mis à jour : {', '.join(role_names)}.")
+
+        embed = discord.Embed(
+            title="✅ Rôles par défaut mis à jour",
+            description=f"Les rôles suivants seront attribués automatiquement :\n**{', '.join(role_names)}**",
+            color=discord.Color.green()
+        )
+        await ctx.send(embed=embed)
         logger.info(f"Rôles par défaut mis à jour par {ctx.author}: {', '.join(role_names)}.")
 
     @commands.hybrid_command(name="show_default_roles", description="Affiche les rôles par défaut actuels.")
     async def show_default_roles(self, ctx: commands.Context):
         """Affiche les rôles par défaut via une commande hybride."""
         if self.default_roles:
-            await ctx.send(f"📜 Rôles par défaut actuels : {', '.join(self.default_roles)}.")
+            embed = discord.Embed(
+                title="📋 Rôles par défaut",
+                description=f"Les rôles suivants seront attribués automatiquement :\n**{', '.join(self.default_roles)}**",
+                color=discord.Color.dark_green()
+            )
         else:
-            await ctx.send("❌ Aucun rôle par défaut défini.")
+            embed = discord.Embed(
+                title="❌ Aucun rôle par défaut défini",
+                description="Aucun rôle n'est configuré pour être attribué automatiquement.",
+                color=discord.Color.red()
+            )
+        await ctx.send(embed=embed)
         logger.info(f"Rôles par défaut affichés pour {ctx.author}.")
-
-    @set_default_roles.error
-    @show_default_roles.error
-    async def handle_command_errors(self, ctx: commands.Context, error):
-        """Gestion des erreurs pour les commandes hybrides."""
-        if isinstance(error, commands.MissingRequiredArgument):
-            await ctx.send("❌ Veuillez fournir tous les arguments requis.")
-        elif isinstance(error, commands.BadArgument):
-            await ctx.send("❌ Argument invalide. Veuillez vérifier votre saisie.")
-        else:
-            await ctx.send("❌ Une erreur inattendue s'est produite.")
-            logger.error(f"Erreur dans une commande hybride : {error}")
 
 
 async def setup(bot: commands.Bot):
     """Ajoute la cog au bot."""
-    print("🔧 Tentative d'ajout du cog 'Roles'")
     await bot.add_cog(Roles(bot))
-    print("✅ Cog 'Roles' ajouté avec succès")
-

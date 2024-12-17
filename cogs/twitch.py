@@ -21,6 +21,11 @@ class Twitch(commands.Cog):
         self.streamers_status = {streamer: False for streamer in self.config["streamers"]}
         self.headers = {}
         self.twitch_api_url = "https://api.twitch.tv/helix/"
+        self.bot.loop.create_task(self.initialize())  # Appel au démarrage
+
+    async def initialize(self):
+        """Initialise le token et la tâche de vérification."""
+        await self.fetch_twitch_token()
         self.task = self.bot.loop.create_task(self.check_streams_task())
 
     def load_config(self):
@@ -30,12 +35,8 @@ class Twitch(commands.Cog):
                 try:
                     return json.load(file)
                 except json.JSONDecodeError as e:
-                    logger.error(f"Erreur de chargement du fichier {self.config_file} : {e}")
-                    return {"streamers": [], "notification_channel_id": None}
-        else:
-            default_config = {"streamers": [], "notification_channel_id": None}
-            self.save_config(default_config)
-            return default_config
+                    logger.error(f"Erreur de chargement de la configuration Twitch : {e}")
+        return {"streamers": [], "notification_channel_id": None}
 
     def save_config(self, data):
         """Sauvegarde la configuration dans un fichier JSON."""
@@ -61,97 +62,89 @@ class Twitch(commands.Cog):
                         }
                         logger.info("Token Twitch récupéré avec succès.")
                     else:
-                        logger.error(f"Erreur API Twitch (Token): {resp.status} - {await resp.text()}")
+                        logger.error(f"Erreur API Twitch (Token): {resp.status}")
             except Exception as e:
                 logger.error(f"Erreur lors de l'obtention du token Twitch : {e}")
 
-    async def check_stream_status(self, streamer):
-        """Vérifie si un streamer est en live."""
-        url = f"{self.twitch_api_url}streams?user_login={streamer}"
+    async def fetch_stream_data(self, streamer):
+        """Récupère les informations sur le stream en cours et l'utilisateur."""
         async with aiohttp.ClientSession(headers=self.headers) as session:
             try:
-                async with session.get(url) as resp:
-                    if resp.status == 200:
-                        data = await resp.json()
-                        return bool(data.get("data"))
-                    elif resp.status == 401:
-                        logger.warning("Token Twitch expiré, régénération nécessaire.")
-                        await self.fetch_twitch_token()
-                        return False
-                    else:
-                        logger.error(f"Erreur API Twitch pour {streamer}: {resp.status} - {await resp.text()}")
+                stream_url = f"{self.twitch_api_url}streams?user_login={streamer}"
+                async with session.get(stream_url) as stream_resp:
+                    stream_data = await stream_resp.json()
+                    if not stream_data.get("data"):
+                        return None  # Stream offline
+
+                user_url = f"{self.twitch_api_url}users?login={streamer}"
+                async with session.get(user_url) as user_resp:
+                    user_data = await user_resp.json()
+                    return {**stream_data["data"][0], **user_data["data"][0]}
             except Exception as e:
-                logger.error(f"Erreur lors de la vérification du stream pour {streamer} : {e}")
-                return False
-
-    @commands.hybrid_group(name="twitch", invoke_without_command=True, description="Gère les notifications Twitch.")
-    async def twitch(self, ctx: commands.Context):
-        """Commandes principales pour gérer Twitch."""
-        await ctx.send("Utilisez une sous-commande pour gérer les notifications Twitch.")
-
-    @twitch.command(name="list", help="Affiche la liste des streamers suivis.")
-    async def list_streamers(self, ctx: commands.Context):
-        """Affiche la liste des streamers suivis."""
-        streamers = self.config["streamers"]
-        if streamers:
-            streamers_list = ", ".join(streamers)
-            await ctx.send(f"📜 **Liste des streamers suivis :** {streamers_list}")
-        else:
-            await ctx.send("❌ Aucun streamer n'est actuellement suivi.")
-
-    @twitch.command(name="add", help="Ajoute un streamer à la liste.")
-    async def add_streamer(self, ctx: commands.Context, streamer: str):
-        """Ajoute un streamer à la liste."""
-        if streamer not in self.config["streamers"]:
-            self.config["streamers"].append(streamer)
-            self.save_config(self.config)
-            await ctx.send(f"✅ Le streamer `{streamer}` a été ajouté à la liste.")
-        else:
-            await ctx.send(f"❌ Le streamer `{streamer}` est déjà dans la liste.")
-
-    @twitch.command(name="remove", help="Supprime un streamer de la liste.")
-    async def remove_streamer(self, ctx: commands.Context, streamer: str):
-        """Supprime un streamer de la liste."""
-        if streamer in self.config["streamers"]:
-            self.config["streamers"].remove(streamer)
-            self.save_config(self.config)
-            await ctx.send(f"✅ Le streamer `{streamer}` a été supprimé de la liste.")
-        else:
-            await ctx.send(f"❌ Le streamer `{streamer}` n'est pas dans la liste.")
-
-    @twitch.command(name="set_channel", help="Définit le canal de notification Twitch.")
-    async def set_twitch_channel(self, ctx: commands.Context, channel: discord.TextChannel):
-        """Définit le canal de notification pour les streams."""
-        self.config["notification_channel_id"] = channel.id
-        self.save_config(self.config)
-        await ctx.send(f"✅ Les notifications Twitch seront envoyées dans {channel.mention}.")
+                logger.error(f"Erreur lors de la récupération des données Twitch pour {streamer}: {e}")
+                return None
 
     async def check_streams_task(self):
-        """Tâche pour vérifier périodiquement les streams."""
+        """Tâche pour vérifier régulièrement si les streamers sont en live."""
         await self.bot.wait_until_ready()
         while not self.bot.is_closed():
             channel_id = self.config.get("notification_channel_id")
             if not channel_id:
-                logger.warning("Aucun canal de notification configuré.")
+                logger.warning("Aucun canal de notification configuré pour Twitch.")
                 await asyncio.sleep(60)
                 continue
 
             channel = self.bot.get_channel(channel_id)
             if not channel:
-                logger.warning(f"Le canal avec l'ID {channel_id} est introuvable ou inaccessible.")
+                logger.warning(f"Le canal avec l'ID {channel_id} est introuvable.")
                 await asyncio.sleep(60)
                 continue
 
             for streamer in self.config["streamers"]:
-                is_live = await self.check_stream_status(streamer)
-                if is_live and not self.streamers_status[streamer]:
+                stream_data = await self.fetch_stream_data(streamer)
+                if stream_data and not self.streamers_status.get(streamer, False):
                     self.streamers_status[streamer] = True
-                    await channel.send(f"🚨 **{streamer} est maintenant en live !**\nLien : https://twitch.tv/{streamer}")
-                elif not is_live and self.streamers_status[streamer]:
+                    embed = discord.Embed(
+                        title=f"🔴 {streamer} est en live !",
+                        description=f"**{stream_data['title']}**\n🎮 **Jeu** : {stream_data['game_name']}",
+                        url=f"https://www.twitch.tv/{streamer}",
+                        color=discord.Color.dark_purple(),
+                    )
+                    embed.set_thumbnail(url=stream_data.get("profile_image_url"))
+                    embed.set_image(url=stream_data.get("thumbnail_url").replace("{width}x{height}", "1280x720"))
+                    embed.set_footer(text="Rejoins le stream maintenant ! 🚀")
+                    await channel.send(embed=embed)
+                elif not stream_data and self.streamers_status.get(streamer, False):
                     self.streamers_status[streamer] = False
-                    logger.info(f"{streamer} n'est plus en live.")
-
             await asyncio.sleep(120)
+
+    @commands.hybrid_command(name="set_twitch_channel", help="Définit le salon pour les notifications Twitch.")
+    async def set_twitch_channel(self, ctx: commands.Context, channel: discord.TextChannel):
+        """Définit le salon pour les notifications."""
+        self.config["notification_channel_id"] = channel.id
+        self.save_config(self.config)
+        await ctx.send(f"✅ Les notifications Twitch seront envoyées dans {channel.mention}.")
+
+    @commands.hybrid_command(name="add_twitch_streamer", help="Ajoute un streamer à la liste.")
+    async def add_streamer(self, ctx: commands.Context, streamer: str):
+        """Ajoute un streamer à la liste."""
+        if streamer not in self.config["streamers"]:
+            self.config["streamers"].append(streamer)
+            self.save_config(self.config)
+            await ctx.send(f"✅ **{streamer}** a été ajouté à la liste des streamers.")
+        else:
+            await ctx.send(f"⚠️ **{streamer}** est déjà dans la liste.")
+
+    @commands.hybrid_command(name="list_twitch_streamers", help="Affiche la liste des streamers suivis.")
+    async def list_streamers(self, ctx: commands.Context):
+        """Affiche les streamers suivis."""
+        streamers = self.config["streamers"]
+        description = "\n".join(streamers) if streamers else "Aucun streamer suivi."
+        await ctx.send(embed=discord.Embed(
+            title="📜 Liste des streamers suivis",
+            description=description,
+            color=discord.Color.dark_purple()
+        ))
 
 
 async def setup(bot: commands.Bot):

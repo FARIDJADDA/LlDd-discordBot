@@ -10,24 +10,6 @@ class Games(commands.Cog):
         self.questions = [
             {"question": "Dans quel Call of Duty le mode 'Zombie' a-t-il été introduit ?", "answer": "World at War"},
             {"question": "Quel Call of Duty propose une campagne où l'on combat avec le capitaine Price ?", "answer": "Modern Warfare"},
-            {"question": "Quel est le nom du mode de bataille royale introduit dans Call of Duty : Modern Warfare (2019) ?", "answer": "Warzone"},
-            {"question": "Dans Call of Duty : Black Ops, qui est le protagoniste principal ?", "answer": "Alex Mason"},
-            {"question": "Quel est le nom du véhicule utilisé pour se déplacer rapidement dans Warzone ?", "answer": "Bertha"},
-            {"question": "Dans quel GTA le personnage Trevor apparaît-il ?", "answer": "GTA V"},
-            {"question": "Quel est le nom de la ville principale dans GTA : Vice City ?", "answer": "Vice City"},
-            {"question": "Dans GTA : San Andreas, quel est le nom du protagoniste ?", "answer": "CJ"},
-            {"question": "Quel jeu de la série GTA a introduit pour la première fois des motos ?", "answer": "GTA Vice City"},
-            {"question": "Dans GTA V, combien de protagonistes jouables y a-t-il ?", "answer": "Trois"},
-            {"question": "Quel joueur était sur la couverture de FIFA 21 ?", "answer": "Kylian Mbappé"},
-            {"question": "Quel studio développe les jeux FIFA ?", "answer": "EA Sports"},
-            {"question": "Dans FIFA, quel mode permet de gérer une équipe sur plusieurs saisons ?", "answer": "Carrière"},
-            {"question": "Quelle année a vu la sortie du premier jeu FIFA ?", "answer": "1993"},
-            {"question": "Dans FIFA Ultimate Team, que signifie l'abréviation 'TOTW' ?", "answer": "Team of the Week"},
-            {"question": "Dans Pac-Man, quel est le nom du fantôme rouge ?", "answer": "Blinky"},
-            {"question": "Quel jeu célèbre commence par la phrase 'It's dangerous to go alone! Take this.' ?", "answer": "The Legend of Zelda"},
-            {"question": "Dans Super Mario Bros, quel personnage capture la princesse Peach ?", "answer": "Bowser"},
-            {"question": "Dans Tetris, quel est l’objectif principal du jeu ?", "answer": "Empiler les blocs pour créer des lignes complètes"},
-            {"question": "Dans quel jeu le personnage principal est un hérisson bleu ?", "answer": "Sonic the Hedgehog"},
         ]
 
     @commands.hybrid_command(name="quiz", description="Lance un quiz simple sur le gaming.")
@@ -36,36 +18,107 @@ class Games(commands.Cog):
         question = random.choice(self.questions)
         attempts = 3
 
-        # Envoie de la question initiale
-        await ctx.send(
-            f"🎮 **Quiz Gaming** 🎮\n{question['question']}\n\nTu as **{attempts} chances** de répondre correctement !"
+        embed = discord.Embed(
+            title="🎮 **Quiz Gaming**",
+            description=f"❓ {question['question']}\n\nTu as **{attempts} chances** de répondre correctement !",
+            color=discord.Color.red()  # Couleur rouge intense pour les défis
         )
+        embed.set_thumbnail(url="https://cdn.pixabay.com/photo/2024/05/24/16/40/ai-generated-8785422_640.jpg")  # Placeholder
+        embed.set_footer(text=f"Bonne chance, {ctx.author.name} !", icon_url=ctx.author.avatar.url)
+
+        await ctx.send(embed=embed)
 
         def check(message):
-            """Vérifie que la réponse vient de l'utilisateur et du bon canal."""
             return message.channel == ctx.channel and message.author == ctx.author
 
         while attempts > 0:
             try:
                 msg = await self.bot.wait_for("message", check=check, timeout=30.0)
-
                 if msg.content.lower() == question["answer"].lower():
-                    await ctx.send(f"✅ Bonne réponse, {msg.author.mention} ! 🎉")
+                    await ctx.send(embed=discord.Embed(
+                        title="✅ Bonne réponse !",
+                        description=f"🎉 Félicitations {ctx.author.mention} ! La réponse était **{question['answer']}**.",
+                        color=discord.Color.green()
+                    ))
                     return
                 else:
                     attempts -= 1
-                    if attempts > 0:
-                        await ctx.send(
-                            f"❌ Mauvaise réponse, {msg.author.mention}. Il te reste **{attempts} tentatives**."
-                        )
+                    await ctx.send(embed=discord.Embed(
+                        title="❌ Mauvaise réponse",
+                        description=f"Il te reste **{attempts} chances**.",
+                        color=discord.Color.dark_purple()
+                    ))
             except asyncio.TimeoutError:
-                await ctx.send(f"⏳ Temps écoulé ! La bonne réponse était : **{question['answer']}**.")
+                await ctx.send(embed=discord.Embed(
+                    title="⏳ Temps écoulé !",
+                    description=f"🕒 La bonne réponse était : **{question['answer']}**.",
+                    color=discord.Color.dark_gray()
+                ))
                 return
 
-        # Si toutes les tentatives échouent
-        await ctx.send(
-            f"❌ Toutes tes chances sont écoulées, {ctx.author.mention}. La bonne réponse était : **{question['answer']}**."
+        await ctx.send(embed=discord.Embed(
+            title="❌ Plus de tentatives !",
+            description=f"La bonne réponse était : **{question['answer']}**.",
+            color=discord.Color.red()
+        ))
+
+    @commands.hybrid_command(name="dice_roll", description="Lance un ou plusieurs dés avec un nombre de faces personnalisé.")
+    async def dice_roll(self, ctx: commands.Context, number_of_dice: int = 1, faces: int = 6):
+        """Lance plusieurs dés avec un nombre de faces spécifié."""
+        if number_of_dice <= 0 or faces <= 0:
+            await ctx.send(embed=discord.Embed(
+                title="⚠️ Erreur",
+                description="Le nombre de dés et le nombre de faces doivent être supérieurs à 0.",
+                color=discord.Color.red()
+            ))
+            return
+
+        rolls = [random.randint(1, faces) for _ in range(number_of_dice)]
+        rolls_str = ", ".join(map(str, rolls))
+        total = sum(rolls)
+
+        embed = discord.Embed(
+            title="🎲 **Lancer de dés**",
+            description=f"**Résultat :** {rolls_str}\n**Total :** {total}",
+            color=discord.Color.dark_purple()  # Couleur Demon Slayer
         )
+        embed.set_thumbnail(url="https://cdn.pixabay.com/photo/2024/05/24/16/40/ai-generated-8785422_640.jpg")  # Placeholder
+        embed.set_footer(text=f"Lancé par {ctx.author.name}", icon_url=ctx.author.avatar.url)
+        await ctx.send(embed=embed)
+
+    @commands.hybrid_command(name="random_pick", description="Choisis un utilisateur au hasard parmi une liste.")
+    async def random_pick(self, ctx: commands.Context, *, members: str):
+        """Choisis un membre au hasard parmi une liste donnée."""
+        try:
+            mentions = members.split(",")
+            valid_members = [discord.utils.get(ctx.guild.members, name=mention.strip()) for mention in mentions]
+            valid_members = [member for member in valid_members if member]
+
+            if not valid_members:
+                await ctx.send(embed=discord.Embed(
+                    title="⚠️ Erreur",
+                    description="Aucun membre valide trouvé. Vérifiez vos mentions.",
+                    color=discord.Color.red()
+                ))
+                return
+
+            chosen_one = random.choice(valid_members)
+            embed = discord.Embed(
+                title="🎯 **Choix aléatoire**",
+                description=f"🎉 Le membre choisi est : **{chosen_one.mention}** !",
+                color=discord.Color.red()
+            )
+            embed.set_thumbnail(url="https://cdn.pixabay.com/photo/2024/05/24/16/40/ai-generated-8785422_640.jpg")  # Placeholder
+            embed.set_footer(text=f"Demandé par {ctx.author.name}", icon_url=ctx.author.avatar.url)
+            await ctx.send(embed=embed)
+
+        except Exception as e:
+            await ctx.send(embed=discord.Embed(
+                title="❌ Erreur inattendue",
+                description="Une erreur est survenue lors de l'exécution de la commande.",
+                color=discord.Color.dark_gray()
+            ))
+            print(f"Erreur random_pick : {e}")
 
 
 async def setup(bot: commands.Bot):

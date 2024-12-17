@@ -42,15 +42,19 @@ class MessageLogs(commands.Cog):
         if log_channel:
             embed = discord.Embed(
                 title="✏️ Message modifié",
-                color=discord.Color.gold(),
+                color=discord.Color.dark_purple(),
                 timestamp=discord.utils.utcnow()
             )
             embed.add_field(name="Auteur", value=before.author.mention, inline=False)
             embed.add_field(name="Canal", value=before.channel.mention, inline=False)
             embed.add_field(name="Avant", value=before.content or "*(vide)*", inline=False)
             embed.add_field(name="Après", value=after.content or "*(vide)*", inline=False)
+            embed.set_thumbnail(url="attachment://message_edit_icon.png")
             embed.set_footer(text=f"Message ID : {before.id}")
-            await log_channel.send(embed=embed)
+
+            # Envoi de l'embed avec une icône jointe
+            file = discord.File("assets/message_edit_icon.png", filename="message_edit_icon.png")
+            await log_channel.send(file=file, embed=embed)
 
     @commands.Cog.listener()
     async def on_message_delete(self, message: discord.Message):
@@ -66,21 +70,29 @@ class MessageLogs(commands.Cog):
         if log_channel:
             embed = discord.Embed(
                 title="🗑️ Message supprimé",
-                color=discord.Color.red(),
+                color=discord.Color.dark_red(),
                 timestamp=discord.utils.utcnow()
             )
             embed.add_field(name="Auteur", value=message.author.mention, inline=False)
             embed.add_field(name="Canal", value=message.channel.mention, inline=False)
             embed.add_field(name="Contenu", value=message.content or "*(vide)*", inline=False)
+            embed.set_thumbnail(url="attachment://message_delete_icon.png")
             embed.set_footer(text=f"Message ID : {message.id}")
-            await log_channel.send(embed=embed)
+
+            # Envoi de l'embed avec une icône jointe
+            file = discord.File("assets/message_delete_icon.png", filename="message_delete_icon.png")
+            await log_channel.send(file=file, embed=embed)
 
     @commands.hybrid_command(name="set_log_channel", description="Configure le canal de log des messages.")
     async def set_log_channel(self, ctx: commands.Context, channel: discord.TextChannel):
         """Définit dynamiquement le canal de log."""
         self.log_channel_id = channel.id
         self.save_config(channel.id)
-        await ctx.send(f"✅ Canal de log configuré : {channel.mention}")
+        await ctx.send(embed=discord.Embed(
+            title="✅ Canal de log configuré",
+            description=f"Les logs seront envoyés dans {channel.mention}.",
+            color=discord.Color.green()
+        ))
 
     @set_log_channel.error
     async def set_log_channel_error(self, ctx, error):

@@ -43,8 +43,18 @@ class Warnings(commands.Cog):
         self.save_warnings()
 
         total_warnings = len(self.warnings[str(member.id)])
-        await ctx.send(f"⚠️ {member.mention} a été averti. Total d'avertissements : {total_warnings}.")
-        logger.info(f"Avertissement donné à {member} par {ctx.author}. Raison : {reason}.")
+        embed = discord.Embed(
+            title="⚠️ Avertissement",
+            description=(
+                f"**{member.mention}** a reçu un avertissement.\n"
+                f"📝 **Raison** : {reason}\n"
+                f"⚠️ **Total d'avertissements** : {total_warnings}/{self.max_warnings}"
+            ),
+            color=discord.Color.dark_red(),
+        )
+        embed.set_thumbnail(url="attachment://demon_warning_icon.png")
+        embed.set_footer(text=f"Averti par {ctx.author.name}", icon_url=ctx.author.avatar.url)
+        await ctx.send(embed=embed)
 
         # Vérification du seuil maximum
         if total_warnings >= self.max_warnings:
@@ -53,14 +63,22 @@ class Warnings(commands.Cog):
     @commands.hybrid_command(name="warnings", help="Affiche les avertissements d'un utilisateur.")
     async def show_warnings(self, ctx: commands.Context, member: discord.Member):
         """Affiche les avertissements d'un utilisateur via une commande hybride."""
-        if str(member.id) in self.warnings and self.warnings[str(member.id)]:
-            warning_list = "\n".join(
-                [f"{i + 1}. {reason}" for i, reason in enumerate(self.warnings[str(member.id)])]
+        warnings_list = self.warnings.get(str(member.id), [])
+        if warnings_list:
+            warning_str = "\n".join([f"{i + 1}. {reason}" for i, reason in enumerate(warnings_list)])
+            embed = discord.Embed(
+                title=f"📋 Avertissements pour {member.name}",
+                description=warning_str,
+                color=discord.Color.dark_purple(),
             )
-            await ctx.send(f"⚠️ Avertissements pour {member.mention} :\n{warning_list}")
+            embed.set_footer(text=f"Demandé par {ctx.author.name}", icon_url=ctx.author.avatar.url)
+            await ctx.send(embed=embed)
         else:
-            await ctx.send(f"✅ {member.mention} n'a aucun avertissement.")
-        logger.info(f"Avertissements affichés pour {member} par {ctx.author}.")
+            await ctx.send(embed=discord.Embed(
+                title="✅ Aucun avertissement",
+                description=f"**{member.mention}** n'a actuellement aucun avertissement.",
+                color=discord.Color.green()
+            ))
 
     @commands.hybrid_command(name="clear_warnings", help="Efface les avertissements d'un utilisateur.")
     @commands.has_permissions(manage_messages=True)
@@ -69,10 +87,18 @@ class Warnings(commands.Cog):
         if str(member.id) in self.warnings:
             del self.warnings[str(member.id)]
             self.save_warnings()
-            await ctx.send(f"✅ Tous les avertissements pour {member.mention} ont été supprimés.")
-            logger.info(f"Avertissements pour {member} effacés par {ctx.author}.")
+            embed = discord.Embed(
+                title="🧹 Avertissements effacés",
+                description=f"✅ Tous les avertissements pour **{member.mention}** ont été supprimés.",
+                color=discord.Color.green(),
+            )
+            await ctx.send(embed=embed)
         else:
-            await ctx.send(f"✅ {member.mention} n'a aucun avertissement à supprimer.")
+            await ctx.send(embed=discord.Embed(
+                title="✅ Aucun avertissement",
+                description=f"**{member.mention}** n'a aucun avertissement à supprimer.",
+                color=discord.Color.green()
+            ))
 
     @commands.hybrid_command(name="set_max_warnings", help="Définit le nombre maximum d'avertissements avant sanction.")
     @commands.has_permissions(administrator=True)
@@ -80,33 +106,32 @@ class Warnings(commands.Cog):
         """Définit le nombre maximum d'avertissements avant sanction."""
         if number > 0:
             self.max_warnings = number
-            await ctx.send(f"✅ Nombre maximum d'avertissements fixé à {number}.")
-            logger.info(f"Nombre maximum d'avertissements modifié à {number} par {ctx.author}.")
+            await ctx.send(embed=discord.Embed(
+                title="✅ Configuration mise à jour",
+                description=f"⚠️ Le nombre maximum d'avertissements a été fixé à **{number}**.",
+                color=discord.Color.dark_purple()
+            ))
         else:
-            await ctx.send("❌ Le nombre maximum d'avertissements doit être supérieur à 0.")
-            logger.warning(f"Tentative de définir un nombre maximum invalide par {ctx.author}.")
+            await ctx.send(embed=discord.Embed(
+                title="❌ Erreur",
+                description="Le nombre maximum d'avertissements doit être supérieur à 0.",
+                color=discord.Color.red()
+            ))
 
     async def apply_sanction(self, ctx: commands.Context, member: discord.Member):
         """Applique une sanction si le seuil maximum d'avertissements est atteint."""
         muted_role = discord.utils.get(ctx.guild.roles, name="Muted")
         if not muted_role:
-            try:
-                muted_role = await ctx.guild.create_role(name="Muted")
-                for channel in ctx.guild.channels:
-                    await channel.set_permissions(muted_role, send_messages=False)
-                logger.info(f"Rôle 'Muted' créé dans le serveur {ctx.guild.name}.")
-            except Exception as e:
-                logger.error(f"Erreur lors de la création du rôle 'Muted' : {e}")
-                return
+            muted_role = await ctx.guild.create_role(name="Muted")
+            for channel in ctx.guild.channels:
+                await channel.set_permissions(muted_role, send_messages=False)
 
-        try:
-            await member.add_roles(muted_role, reason="Trop d'avertissements")
-            await ctx.send(
-                f"🔇 {member.mention} a été mute automatiquement après {self.max_warnings} avertissements."
-            )
-            logger.info(f"Sanction appliquée : {member} mute après {self.max_warnings} avertissements.")
-        except Exception as e:
-            logger.error(f"Erreur lors de l'ajout du rôle 'Muted' à {member} : {e}")
+        await member.add_roles(muted_role, reason="Trop d'avertissements")
+        await ctx.send(embed=discord.Embed(
+            title="🔇 Sanction appliquée",
+            description=f"**{member.mention}** a été mute automatiquement après {self.max_warnings} avertissements.",
+            color=discord.Color.red(),
+        ))
 
 
 async def setup(bot: commands.Bot):

@@ -20,10 +20,10 @@ class Filters(commands.Cog):
                     return json.load(file)
             else:
                 logger.warning("Fichier 'banned_words.json' introuvable. Utilisation d'une liste par défaut.")
-                return ["pute", "cul", "fuck", "porno"]
+                return ["spam", "insulte", "mot_interdit"]
         except Exception as e:
             logger.error(f"Erreur lors du chargement des mots interdits : {e}")
-            return ["pute", "cul", "fuck", "porno"]
+            return ["spam", "insulte", "mot_interdit"]
 
     def save_banned_words(self):
         """Sauvegarde la liste des mots interdits dans un fichier JSON."""
@@ -43,11 +43,26 @@ class Filters(commands.Cog):
         lowered_content = message.content.lower()
         if any(word in lowered_content for word in self.banned_words):
             await message.delete()
-            await message.channel.send(f"{message.author.mention}, ton message contient un mot interdit.")
-            log_channel = discord.utils.get(message.guild.channels, name="logs")
-            if log_channel:
-                await log_channel.send(f"🚫 {message.author.mention}, ton message a été supprimé pour contenu interdit.")
+
+            # Chargement de l'image locale pour l'embed
+            image_path = "assets/lldd_bot_dsgn.jpg"
+            if not os.path.exists(image_path):
+                logger.warning(f"⚠️ L'image '{image_path}' est introuvable.")
+                file = None
+            else:
+                file = discord.File(image_path, filename="lldd_bot_dsgn.jpg")
+
+            embed = discord.Embed(
+                title="🚫 Message supprimé",
+                description=f"**{message.author.mention}**, ton message contenait un mot interdit !",
+                color=discord.Color.dark_red(),
+            )
+            if file:
+                embed.set_thumbnail(url="attachment://lldd_bot_dsgn.jpg")
+
+            await message.channel.send(file=file, embed=embed, delete_after=5)
             logger.info(f"Message supprimé : '{message.content}' de {message.author}.")
+            return
 
         # Détection de spam
         now = asyncio.get_event_loop().time()
@@ -59,7 +74,12 @@ class Filters(commands.Cog):
         if len(self.user_messages[message.author.id]) > 5:
             await message.delete()
             if not getattr(message.author, "spam_warning_sent", False):
-                await message.channel.send(f"{message.author.mention}, arrête de spammer !")
+                embed = discord.Embed(
+                    title="⚠️ Avertissement de spam",
+                    description=f"**{message.author.mention}**, arrête de spammer !",
+                    color=discord.Color.dark_purple(),
+                )
+                await message.channel.send(embed=embed, delete_after=5)
                 setattr(message.author, "spam_warning_sent", True)
             logger.info(f"Spam détecté et message supprimé pour {message.author}.")
 
@@ -69,10 +89,18 @@ class Filters(commands.Cog):
         if word not in self.banned_words:
             self.banned_words.append(word)
             self.save_banned_words()
-            await ctx.send(f"✅ Le mot `{word}` a été ajouté à la liste des mots interdits.")
+            await ctx.send(embed=discord.Embed(
+                title="✅ Mot ajouté",
+                description=f"Le mot **{word}** a été ajouté à la liste des mots interdits.",
+                color=discord.Color.green(),
+            ))
             logger.info(f"Mot ajouté : {word}")
         else:
-            await ctx.send(f"❌ Le mot `{word}` est déjà dans la liste.")
+            await ctx.send(embed=discord.Embed(
+                title="⚠️ Mot existant",
+                description=f"Le mot **{word}** est déjà dans la liste des mots interdits.",
+                color=discord.Color.orange(),
+            ))
 
     @commands.hybrid_command(name="remove_banned_word", description="Retire un mot de la liste des mots interdits.")
     async def remove_banned_word(self, ctx: commands.Context, word: str):
@@ -80,16 +108,30 @@ class Filters(commands.Cog):
         if word in self.banned_words:
             self.banned_words.remove(word)
             self.save_banned_words()
-            await ctx.send(f"✅ Le mot `{word}` a été retiré de la liste des mots interdits.")
+            await ctx.send(embed=discord.Embed(
+                title="✅ Mot retiré",
+                description=f"Le mot **{word}** a été retiré de la liste des mots interdits.",
+                color=discord.Color.green(),
+            ))
             logger.info(f"Mot retiré : {word}")
         else:
-            await ctx.send(f"❌ Le mot `{word}` n'est pas dans la liste.")
+            await ctx.send(embed=discord.Embed(
+                title="❌ Mot introuvable",
+                description=f"Le mot **{word}** n'est pas dans la liste des mots interdits.",
+                color=discord.Color.red(),
+            ))
 
     @commands.hybrid_command(name="list_banned_words", description="Affiche la liste des mots interdits.")
     async def list_banned_words(self, ctx: commands.Context):
         """Affiche la liste des mots interdits."""
         banned_words_list = ", ".join(self.banned_words)
-        await ctx.send(f"📜 Liste des mots interdits : {banned_words_list}")
+        embed = discord.Embed(
+            title="📜 Liste des mots interdits",
+            description=banned_words_list if self.banned_words else "Aucun mot interdit configuré.",
+            color=discord.Color.dark_purple(),
+        )
+        embed.set_footer(text=f"Demandé par {ctx.author.name}", icon_url=ctx.author.avatar.url)
+        await ctx.send(embed=embed)
         logger.info("Liste des mots interdits envoyée.")
 
 

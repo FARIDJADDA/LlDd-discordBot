@@ -1,6 +1,8 @@
 import discord
-from discord.ext import commands
+import platform
 import datetime
+from discord.ext import commands
+import os
 
 
 class Status(commands.Cog):
@@ -10,35 +12,53 @@ class Status(commands.Cog):
 
     @commands.hybrid_command(name="status", description="Affiche le statut actuel du bot.")
     async def status(self, ctx: commands.Context):
-        """Affiche le statut actuel du bot avec un embed."""
+        """Affiche le statut actuel du bot avec un embed enrichi."""
+
         # Calcul du temps d'activité
         uptime = datetime.datetime.utcnow() - self.start_time
         uptime_str = str(uptime).split('.')[0]  # Supprime les microsecondes
 
-        # Création de l'embed
+        # Nombre total d'utilisateurs sur tous les serveurs
+        total_members = sum(guild.member_count for guild in self.bot.guilds)
+
+        # Création de l'embed avec le style Demon Slayer
         embed = discord.Embed(
-            title="Statut du bot",
-            color=discord.Color.blue(),
+            title="⚙️ Statut du bot",
+            color=discord.Color.dark_purple(),
             timestamp=datetime.datetime.utcnow()
         )
-        embed.set_thumbnail(url=self.bot.user.avatar.url if self.bot.user.avatar else None)
-        embed.add_field(name="Nom du bot", value=f"{self.bot.user.name}#{self.bot.user.discriminator}", inline=False)
-        embed.add_field(name="Uptime", value=f"{uptime_str}", inline=False)
-        embed.add_field(name="Nombre de cogs chargés", value=f"{len(self.bot.cogs)}", inline=True)
-        embed.add_field(name="Nombre de serveurs", value=f"{len(self.bot.guilds)}", inline=True)
-        embed.set_footer(text=f"Demandé par {ctx.author}", icon_url=ctx.author.avatar.url if ctx.author.avatar else None)
+        embed.set_thumbnail(url="attachment://status_icon.png")
+        embed.add_field(name="🔹 Nom du bot", value=f"{self.bot.user.name}#{self.bot.user.discriminator}", inline=True)
+        embed.add_field(name="🔹 Uptime", value=f"{uptime_str}", inline=True)
+        embed.add_field(name="🔹 Cogs chargés", value=f"{len(self.bot.cogs)}", inline=True)
+        embed.add_field(name="🔹 Serveurs", value=f"{len(self.bot.guilds)}", inline=True)
+        embed.add_field(name="🔹 Membres total", value=f"{total_members}", inline=True)
+        embed.add_field(name="🔹 Version Discord.py", value=f"{discord.__version__}", inline=True)
+        embed.set_footer(text=f"Demandé par {ctx.author}", icon_url=ctx.author.avatar.url)
 
-        # Répond au contexte (commande préfixe ou slash)
-        if isinstance(ctx, commands.Context):
-            await ctx.send(embed=embed)
+        # Ajout de l'image locale pour le thumbnail
+        image_path = "assets/status_icon.png"
+        if not os.path.exists(image_path):
+            file = None
+            print("⚠️ L'image 'status_icon.png' est introuvable.")
         else:
-            await ctx.interaction.response.send_message(embed=embed)
+            file = discord.File(image_path, filename="status_icon.png")
+
+        # Envoi de l'embed avec l'image jointe
+        if isinstance(ctx, commands.Context):
+            await ctx.send(file=file, embed=embed)
+        else:
+            await ctx.interaction.response.send_message(file=file, embed=embed)
 
     @status.error
     async def handle_command_errors(self, ctx: commands.Context, error):
         """Gestion des erreurs pour la commande hybride."""
         if isinstance(error, commands.CommandError):
-            await ctx.send("❌ Une erreur est survenue lors de l'exécution de la commande.")
+            await ctx.send(embed=discord.Embed(
+                title="❌ Erreur",
+                description="Une erreur est survenue lors de l'exécution de la commande.",
+                color=discord.Color.red(),
+            ))
             print(f"Erreur dans la commande 'status': {error}")
 
 
