@@ -49,6 +49,17 @@ class Admin(commands.Cog):
                 color=discord.Color.red(),
             ))
 
+    @commands.hybrid_command(name="reload", description="Recharge un cog spécifique.")
+    @commands.is_owner()
+    async def reload(self, ctx: commands.Context, cog: str):
+        """Recharge un cog spécifique."""
+        try:
+            await self.bot.unload_extension(f"cogs.{cog}")
+            await self.bot.load_extension(f"cogs.{cog}")
+            await ctx.send(f"✅ Cog **{cog}** rechargé avec succès.")
+        except Exception as e:
+            await ctx.send(f"❌ Erreur lors du rechargement du cog **{cog}** : {e}")
+
 
 async def setup(bot: commands.Bot):
     """Ajoute la cog au bot."""
