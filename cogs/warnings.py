@@ -4,34 +4,47 @@ import os
 from discord.ext import commands
 from utils.logger import logger
 
+# Chemin vers le fichier JSON dans le dossier 'data'
+CONFIG_DIR = "data"
+WARNINGS_FILE = os.path.join(CONFIG_DIR, "warnings.json")
+
 
 class Warnings(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-        self.config_file = "warnings.json"
         self.warnings = self.load_warnings()
         self.max_warnings = 3
 
     def load_warnings(self):
-        """Charge les avertissements depuis un fichier JSON."""
+        """Charge les avertissements depuis un fichier JSON dans 'data'. Crée le fichier s'il est manquant."""
+        # Crée le dossier 'data' s'il n'existe pas
+        if not os.path.exists(CONFIG_DIR):
+            os.makedirs(CONFIG_DIR)
+            logger.info(f"📁 Dossier '{CONFIG_DIR}' créé.")
+
+        # Crée le fichier JSON par défaut s'il n'existe pas
+        if not os.path.exists(WARNINGS_FILE):
+            logger.warning(f"⚠️ Fichier 'warnings.json' manquant. Création avec des valeurs par défaut.")
+            with open(WARNINGS_FILE, "w") as file:
+                json.dump({}, file, indent=4)
+            return {}
+
+        # Charge les avertissements existants
         try:
-            if os.path.exists(self.config_file):
-                with open(self.config_file, "r") as file:
-                    return json.load(file)
-            else:
-                logger.info("Fichier 'warnings.json' introuvable. Une structure vide sera utilisée.")
-                return {}
-        except Exception as e:
-            logger.error(f"Erreur lors du chargement des avertissements : {e}")
+            with open(WARNINGS_FILE, "r") as file:
+                return json.load(file)
+        except json.JSONDecodeError as e:
+            logger.error(f"❌ Erreur lors de la lecture de '{WARNINGS_FILE}' : {e}")
             return {}
 
     def save_warnings(self):
         """Sauvegarde les avertissements dans un fichier JSON."""
         try:
-            with open(self.config_file, "w") as file:
+            with open(WARNINGS_FILE, "w") as file:
                 json.dump(self.warnings, file, indent=4)
+            logger.info(f"✅ Avertissements sauvegardés dans '{WARNINGS_FILE}'.")
         except Exception as e:
-            logger.error(f"Erreur lors de la sauvegarde des avertissements : {e}")
+            logger.error(f"❌ Erreur lors de la sauvegarde dans '{WARNINGS_FILE}' : {e}")
 
     @commands.hybrid_command(name="warn", help="Avertit un utilisateur.")
     @commands.has_permissions(manage_messages=True)
@@ -52,8 +65,6 @@ class Warnings(commands.Cog):
             ),
             color=discord.Color.dark_red(),
         )
-        embed.set_thumbnail(url="attachment://demon_warning_icon.png")
-        embed.set_footer(text=f"Averti par {ctx.author.name}", icon_url=ctx.author.avatar.url)
         await ctx.send(embed=embed)
 
         # Vérification du seuil maximum
@@ -62,7 +73,7 @@ class Warnings(commands.Cog):
 
     @commands.hybrid_command(name="warnings", help="Affiche les avertissements d'un utilisateur.")
     async def show_warnings(self, ctx: commands.Context, member: discord.Member):
-        """Affiche les avertissements d'un utilisateur via une commande hybride."""
+        """Affiche les avertissements d'un utilisateur."""
         warnings_list = self.warnings.get(str(member.id), [])
         if warnings_list:
             warning_str = "\n".join([f"{i + 1}. {reason}" for i, reason in enumerate(warnings_list)])
@@ -71,7 +82,6 @@ class Warnings(commands.Cog):
                 description=warning_str,
                 color=discord.Color.dark_purple(),
             )
-            embed.set_footer(text=f"Demandé par {ctx.author.name}", icon_url=ctx.author.avatar.url)
             await ctx.send(embed=embed)
         else:
             await ctx.send(embed=discord.Embed(
@@ -83,16 +93,15 @@ class Warnings(commands.Cog):
     @commands.hybrid_command(name="clear_warnings", help="Efface les avertissements d'un utilisateur.")
     @commands.has_permissions(manage_messages=True)
     async def clear_warnings(self, ctx: commands.Context, member: discord.Member):
-        """Efface tous les avertissements d'un utilisateur via une commande hybride."""
+        """Efface tous les avertissements d'un utilisateur."""
         if str(member.id) in self.warnings:
             del self.warnings[str(member.id)]
             self.save_warnings()
-            embed = discord.Embed(
+            await ctx.send(embed=discord.Embed(
                 title="🧹 Avertissements effacés",
                 description=f"✅ Tous les avertissements pour **{member.mention}** ont été supprimés.",
                 color=discord.Color.green(),
-            )
-            await ctx.send(embed=embed)
+            ))
         else:
             await ctx.send(embed=discord.Embed(
                 title="✅ Aucun avertissement",
@@ -137,3 +146,4 @@ class Warnings(commands.Cog):
 async def setup(bot: commands.Bot):
     """Ajoute la cog au bot."""
     await bot.add_cog(Warnings(bot))
+    logger.info("✅ Cog Warnings ajouté avec succès.")

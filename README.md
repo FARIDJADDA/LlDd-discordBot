@@ -81,6 +81,7 @@ This Discord bot offers several key features:
 🧩
 ```
     project/
+    ├── assets/
     ├── cogs/
     │   ├── filters.py         # Gestion des mots interdits et du spam
     │   ├── games.py           # Commandes pour les mini-jeux (quiz, lancer de dés)
@@ -91,12 +92,11 @@ This Discord bot offers several key features:
     │   ├── twitch.py          # Notifications pour les streamers Twitch
     │   ├── warnings.py        # Gestion des avertissements
     │   ├── welcome.py         # Messages de bienvenue
+    ├── data/                  # data on json
+    ├── logs/                  # bot logs
     ├── utils/
     │   ├── logger.py          # Gestion des logs globaux
     ├── config                 # Clés API et secrets
-    ├── banned_words.json      # Liste des mots interdits
-    ├── default_roles.json     # Liste des rôles par défaut
-    ├── warnings.json          # Données des avertissements
     ├── main.py                # Point d'entrée principal
     ├── requirements.txt       # Dépendances nécessaires
 ```
@@ -112,9 +112,9 @@ This Discord bot offers several key features:
 ---
 
 ### **Moderation Commands**
-* **`/ban`** @User [reason] *(Requires ban_members permission)*  
+* **`/ban`** @User [reason] *(Requires `ban_members` permission)*  
   ➡️ Bans a user with an optional reason.  
-* **`/kick`** @User [reason] *(Requires kick_members permission)*  
+* **`/kick`** @User [reason] *(Requires `kick_members` permission)*  
   ➡️ Kicks a user with an optional reason.  
 * **`/banned_list`**  
   ➡️ Lists all banned users in the server.
@@ -122,50 +122,54 @@ This Discord bot offers several key features:
 ---
 
 ### **Warning Commands**
-* **`/warn`** @User [reason] *(Requires manage_messages permission)*  
+* **`/warn`** @User [reason] *(Requires `manage_messages` permission)*  
   ➡️ Warns a user for a given reason.  
 * **`/warnings`** @User  
   ➡️ Displays all warnings for a user.  
 * **`/clear_warnings`** @User  
   ➡️ Clears all warnings for a user.  
 * **`/set_max_warnings`** <number>  
-  ➡️ Sets the maximum number of warnings before a sanction.
+  ➡️ Sets the maximum number of warnings before applying a sanction.
 
 ---
 
 ### **Role Commands**
 * **`/set_default_roles`** role1, role2 *(Admin only)*  
   ➡️ Sets default roles to be assigned automatically to new members.  
-* **`/show_default_roles`** *(Admin only)*  
+* **`/show_default_roles`**  
   ➡️ Displays the current default roles configuration.
 
 ---
 
 ### **Mini-Game Commands**
 * **`/quiz`**  
-  ➡️ Starts a gaming quiz with 3 chances to answer.  
+  ➡️ Starts a gaming trivia quiz using the OpenTDB API.  
 * **`/roll`** [faces=6]  
-  ➡️ Rolls a die with the specified number of faces (default: 6).
+  ➡️ Rolls a die with the specified number of faces (default: 6).  
+* **`/rps`** `pierre|papier|ciseaux`  
+  ➡️ Play rock-paper-scissors against the bot.
 
 ---
 
 ### **Statistics Commands**
 * **`/stats`**  
-  ➡️ Displays general server statistics: members, roles, channels, etc.  
+  ➡️ Displays server statistics such as member count, roles, and channels.  
 * **`/codstats`** [username] [platform]  
-  ➡️ Fetches and displays Call of Duty player stats.
+  ➡️ Fetches Call of Duty player stats.  
+* **`/leaderboard`**  
+  ➡️ Shows the trivia leaderboard.
 
 ---
 
 ### **Poll Commands**
 * **`/poll`** "Question" "Option1, Option2, Option3" [duration in minutes]  
-  ➡️ Creates an interactive poll with reactions and an optional timer. Results are displayed at the end.
+  ➡️ Creates an interactive poll with reactions and optional timer. Results are displayed automatically.
 
 ---
 
 ### **Hugging Face Commands**
 * **`/ask_hf`** [question]  
-  ➡️ Ask a question to Hugging Face models. Models are tested dynamically until one is available.
+  ➡️ Ask a question to Hugging Face models like Bloom or Falcon.
 
 ---
 
@@ -184,18 +188,28 @@ This Discord bot offers several key features:
 ---
 
 ### **Twitch Commands**
-**Note: Disabled**  
-*(Twitch live stream notifications are currently unavailable due to API limitations.)*
+* **`/add_twitch_streamer`** [streamer_name]  
+  ➡️ Add a Twitch streamer to monitor.  
+* **`/list_twitch_streamers`**  
+  ➡️ Display the list of monitored streamers.  
+* **`/set_twitch_channel`** <#channel>  
+  ➡️ Set the channel for Twitch live notifications.
 
 ---
 
-### **Recent Updates**
+### **🚀 Recent Updates**
 - **Hugging Face integration** for NLP models like Bloom and Falcon.
 - **Improved polling system**: Dynamic timers and automatic results display.
 - **ChatGPT refactor**: Compatibility with OpenAI v1.0.0.
-- **Enhanced error management**: Custom Demon Slayer-themed embeds for a better user experience.
-- **Role assignment**: Automatic role assignment for new members.
-- **General optimizations**: Refactored cogs and improved bot scalability.
+- **Structured JSON Handling**: Moved all JSON files to the `/data/` directory with auto-creation and validation.
+- **Improved Logging**: Added advanced log checks and detailed errors.
+- **Trivia Game**: Integrated with **OpenTDB API** for gaming-related questions.
+- **Leaderboard**: New command `/leaderboard` to view trivia scores.
+- **RPS Mini-Game**: Added `/rps` (rock-paper-scissors) game.
+- **Automatic Role Assignment**: Default roles are now assigned to new members.
+- **Enhanced Moderation**: Improved `/warn` and warning clearing logic.
+- **Twitch Integration**: Added live notifications with `/set_twitch_channel` and `/add_twitch_streamer`.
+- **Performance Optimization**: Refactored cogs for modularity and scalability.
 
 ---
 

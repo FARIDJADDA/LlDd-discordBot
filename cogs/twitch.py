@@ -12,36 +12,56 @@ load_dotenv(dotenv_path="config")
 TWITCH_CLIENT_ID = os.getenv("TWITCH_CLIENT_ID")
 TWITCH_CLIENT_SECRET = os.getenv("TWITCH_CLIENT_SECRET")
 
+# Chemin vers le fichier JSON dans le dossier 'data'
+CONFIG_DIR = "data"
+CONFIG_FILE = os.path.join(CONFIG_DIR, "twitch_config.json")
+
 
 class Twitch(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-        self.config_file = "twitch_config.json"
         self.config = self.load_config()
         self.streamers_status = {streamer: False for streamer in self.config["streamers"]}
         self.headers = {}
         self.twitch_api_url = "https://api.twitch.tv/helix/"
         self.bot.loop.create_task(self.initialize())  # Appel au démarrage
 
+    def load_config(self):
+        """Charge la configuration depuis un fichier JSON dans 'data'. Crée le fichier s'il est manquant."""
+        # Crée le dossier 'data' s'il n'existe pas
+        if not os.path.exists(CONFIG_DIR):
+            os.makedirs(CONFIG_DIR)
+            logger.info(f"📁 Dossier '{CONFIG_DIR}' créé.")
+
+        # Crée le fichier JSON par défaut s'il n'existe pas
+        if not os.path.exists(CONFIG_FILE):
+            logger.warning(f"⚠️ Fichier de configuration Twitch manquant. Création de '{CONFIG_FILE}' avec des valeurs par défaut.")
+            default_config = {"streamers": [], "notification_channel_id": None}
+            with open(CONFIG_FILE, "w") as file:
+                json.dump(default_config, file, indent=4)
+            return default_config
+
+        # Charge la configuration existante
+        try:
+            with open(CONFIG_FILE, "r") as file:
+                return json.load(file)
+        except json.JSONDecodeError as e:
+            logger.error(f"❌ Erreur de lecture dans '{CONFIG_FILE}' : {e}")
+            return {"streamers": [], "notification_channel_id": None}
+
+    def save_config(self, data):
+        """Sauvegarde la configuration dans un fichier JSON."""
+        try:
+            with open(CONFIG_FILE, "w") as file:
+                json.dump(data, file, indent=4)
+            logger.info(f"✅ Configuration Twitch sauvegardée dans '{CONFIG_FILE}'.")
+        except Exception as e:
+            logger.error(f"❌ Erreur lors de la sauvegarde dans '{CONFIG_FILE}' : {e}")
+
     async def initialize(self):
         """Initialise le token et la tâche de vérification."""
         await self.fetch_twitch_token()
         self.task = self.bot.loop.create_task(self.check_streams_task())
-
-    def load_config(self):
-        """Charge la configuration depuis un fichier JSON."""
-        if os.path.exists(self.config_file):
-            with open(self.config_file, "r") as file:
-                try:
-                    return json.load(file)
-                except json.JSONDecodeError as e:
-                    logger.error(f"Erreur de chargement de la configuration Twitch : {e}")
-        return {"streamers": [], "notification_channel_id": None}
-
-    def save_config(self, data):
-        """Sauvegarde la configuration dans un fichier JSON."""
-        with open(self.config_file, "w") as file:
-            json.dump(data, file, indent=4)
 
     async def fetch_twitch_token(self):
         """Obtenir un token d'accès pour l'API Twitch."""
@@ -60,29 +80,11 @@ class Twitch(commands.Cog):
                             "Client-ID": TWITCH_CLIENT_ID,
                             "Authorization": f"Bearer {data['access_token']}",
                         }
-                        logger.info("Token Twitch récupéré avec succès.")
+                        logger.info("✅ Token Twitch récupéré avec succès.")
                     else:
-                        logger.error(f"Erreur API Twitch (Token): {resp.status}")
+                        logger.error(f"❌ Erreur API Twitch (Token): {resp.status}")
             except Exception as e:
-                logger.error(f"Erreur lors de l'obtention du token Twitch : {e}")
-
-    async def fetch_stream_data(self, streamer):
-        """Récupère les informations sur le stream en cours et l'utilisateur."""
-        async with aiohttp.ClientSession(headers=self.headers) as session:
-            try:
-                stream_url = f"{self.twitch_api_url}streams?user_login={streamer}"
-                async with session.get(stream_url) as stream_resp:
-                    stream_data = await stream_resp.json()
-                    if not stream_data.get("data"):
-                        return None  # Stream offline
-
-                user_url = f"{self.twitch_api_url}users?login={streamer}"
-                async with session.get(user_url) as user_resp:
-                    user_data = await user_resp.json()
-                    return {**stream_data["data"][0], **user_data["data"][0]}
-            except Exception as e:
-                logger.error(f"Erreur lors de la récupération des données Twitch pour {streamer}: {e}")
-                return None
+                logger.error(f"❌ Erreur lors de l'obtention du token Twitch : {e}")
 
     async def check_streams_task(self):
         """Tâche pour vérifier régulièrement si les streamers sont en live."""
@@ -90,13 +92,13 @@ class Twitch(commands.Cog):
         while not self.bot.is_closed():
             channel_id = self.config.get("notification_channel_id")
             if not channel_id:
-                logger.warning("Aucun canal de notification configuré pour Twitch.")
+                logger.warning("⚠️ Aucun canal de notification configuré pour Twitch.")
                 await asyncio.sleep(60)
                 continue
 
             channel = self.bot.get_channel(channel_id)
             if not channel:
-                logger.warning(f"Le canal avec l'ID {channel_id} est introuvable.")
+                logger.warning(f"⚠️ Le canal avec l'ID {channel_id} est introuvable.")
                 await asyncio.sleep(60)
                 continue
 
@@ -118,16 +120,32 @@ class Twitch(commands.Cog):
                     self.streamers_status[streamer] = False
             await asyncio.sleep(120)
 
+    async def fetch_stream_data(self, streamer):
+        """Récupère les informations sur le stream en cours et l'utilisateur."""
+        async with aiohttp.ClientSession(headers=self.headers) as session:
+            try:
+                stream_url = f"{self.twitch_api_url}streams?user_login={streamer}"
+                async with session.get(stream_url) as stream_resp:
+                    stream_data = await stream_resp.json()
+                    if not stream_data.get("data"):
+                        return None
+
+                user_url = f"{self.twitch_api_url}users?login={streamer}"
+                async with session.get(user_url) as user_resp:
+                    user_data = await user_resp.json()
+                    return {**stream_data["data"][0], **user_data["data"][0]}
+            except Exception as e:
+                logger.error(f"❌ Erreur lors de la récupération des données Twitch pour {streamer} : {e}")
+                return None
+
     @commands.hybrid_command(name="set_twitch_channel", help="Définit le salon pour les notifications Twitch.")
     async def set_twitch_channel(self, ctx: commands.Context, channel: discord.TextChannel):
-        """Définit le salon pour les notifications."""
         self.config["notification_channel_id"] = channel.id
         self.save_config(self.config)
         await ctx.send(f"✅ Les notifications Twitch seront envoyées dans {channel.mention}.")
 
     @commands.hybrid_command(name="add_twitch_streamer", help="Ajoute un streamer à la liste.")
     async def add_streamer(self, ctx: commands.Context, streamer: str):
-        """Ajoute un streamer à la liste."""
         if streamer not in self.config["streamers"]:
             self.config["streamers"].append(streamer)
             self.save_config(self.config)
@@ -137,7 +155,6 @@ class Twitch(commands.Cog):
 
     @commands.hybrid_command(name="list_twitch_streamers", help="Affiche la liste des streamers suivis.")
     async def list_streamers(self, ctx: commands.Context):
-        """Affiche les streamers suivis."""
         streamers = self.config["streamers"]
         description = "\n".join(streamers) if streamers else "Aucun streamer suivi."
         await ctx.send(embed=discord.Embed(
@@ -146,7 +163,6 @@ class Twitch(commands.Cog):
             color=discord.Color.dark_purple()
         ))
 
-
 async def setup(bot: commands.Bot):
-    """Ajoute la cog au bot."""
     await bot.add_cog(Twitch(bot))
+    logger.info("✅ Cog Twitch ajouté avec succès.")

@@ -8,18 +8,21 @@ from utils.logger import logger
 class Roles(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-        self.roles_file = "default_roles.json"
+        self.roles_file = "data/default_roles.json"  # Nouveau chemin
         self.default_roles = self.load_roles()
 
     def load_roles(self):
         """Charge les rôles par défaut depuis un fichier JSON."""
+        os.makedirs("data", exist_ok=True)  # Crée le dossier data s'il n'existe pas
+        if not os.path.exists(self.roles_file):
+            logger.info(f"Fichier '{self.roles_file}' introuvable. Création avec une liste vide par défaut.")
+            with open(self.roles_file, "w") as file:
+                json.dump([], file, indent=4)  # Initialisation avec une liste vide
+            return []
+
         try:
-            if os.path.exists(self.roles_file):
-                with open(self.roles_file, "r") as file:
-                    return json.load(file)
-            else:
-                logger.info("Fichier 'default_roles.json' introuvable. Une liste vide sera utilisée.")
-                return []
+            with open(self.roles_file, "r") as file:
+                return json.load(file)
         except Exception as e:
             logger.error(f"Erreur lors du chargement des rôles par défaut : {e}")
             return []
@@ -29,6 +32,7 @@ class Roles(commands.Cog):
         try:
             with open(self.roles_file, "w") as file:
                 json.dump(self.default_roles, file, indent=4)
+            logger.info(f"Rôles par défaut sauvegardés dans '{self.roles_file}'.")
         except Exception as e:
             logger.error(f"Erreur lors de la sauvegarde des rôles par défaut : {e}")
 
@@ -60,7 +64,7 @@ class Roles(commands.Cog):
         try:
             await member.add_roles(*roles_to_add, reason="Attribution automatique à l'arrivée")
             logger.info(
-                f"Rôles ajoutés à {member.name} dans {guild.name} : {', '.join([role.name for role in roles_to_add])}")
+                f"Rôles ajoutés à {member.name} dans {guild.name} : {', '.join([role.name for role in roles_to_add])}.")
 
             # Confirmation en DM au membre
             embed = discord.Embed(

@@ -5,31 +5,36 @@ import discord
 from discord.ext import commands
 from utils.logger import logger
 
-
 class Filters(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.user_messages = {}
+        self.banned_words_file = "data/banned_words.json"  # Nouveau chemin
         self.banned_words = self.load_banned_words()
 
     def load_banned_words(self):
         """Charge la liste des mots interdits depuis un fichier JSON."""
+        os.makedirs("data", exist_ok=True)  # Crée le dossier data s'il n'existe pas
+        if not os.path.exists(self.banned_words_file):
+            logger.warning(f"Fichier '{self.banned_words_file}' introuvable. Création avec des valeurs par défaut.")
+            default_words = ["spam", "insulte", "mot_interdit"]
+            with open(self.banned_words_file, "w") as file:
+                json.dump(default_words, file, indent=4)
+            return default_words
+
         try:
-            if os.path.exists("banned_words.json"):
-                with open("banned_words.json", "r") as file:
-                    return json.load(file)
-            else:
-                logger.warning("Fichier 'banned_words.json' introuvable. Utilisation d'une liste par défaut.")
-                return ["spam", "insulte", "mot_interdit"]
+            with open(self.banned_words_file, "r") as file:
+                return json.load(file)
         except Exception as e:
             logger.error(f"Erreur lors du chargement des mots interdits : {e}")
-            return ["spam", "insulte", "mot_interdit"]
+            return []
 
     def save_banned_words(self):
         """Sauvegarde la liste des mots interdits dans un fichier JSON."""
         try:
-            with open("banned_words.json", "w") as file:
+            with open(self.banned_words_file, "w") as file:
                 json.dump(self.banned_words, file, indent=4)
+            logger.info(f"Liste des mots interdits sauvegardée avec succès dans '{self.banned_words_file}'.")
         except Exception as e:
             logger.error(f"Erreur lors de la sauvegarde des mots interdits : {e}")
 
