@@ -1,73 +1,69 @@
-
-
-
-
 # LlDd DiscordBot
 ![Python](https://img.shields.io/badge/Python-3.8%2B-blue)
 ![License](https://img.shields.io/badge/License-MIT-green)
 ![Pull Requests](https://img.shields.io/badge/Contributions-Welcome-brightgreen)
 
 <p align="left">
-  <img src="assets/avatar_lldd_bot1.jpg" alt="Bannière du bot" width="50%">
+  <img src="img/avatar_lldd_bot1.jpg" alt="Bot banner" width="400px">
 </p>
 
 <p align="left">
-  <img src="assets/hugging_face_discord.png" alt="Aperçu du bot" width="50%">
+  <img src="img/hugging_face_discord.png" alt="Bot preview" width="400px">
 </p>
 
+A complete and customizable Discord bot designed to manage and engage community servers.  
+This bot includes moderation tools, mini-games, advanced logging, activity statistics, and much more.
 
+## Table of Contents
 
-Un bot Discord complet et personnalisable conçu pour gérer et animer des serveurs communautaires.
-Ce bot inclut des fonctionnalités de modération, mini-jeux, logs avancés, statistiques, et bien plus encore.
-
-## Table des matières
-
-1. [Description du projet](#description-du-projet)
-2. [Prérequis](#prérequis)
+1. [Project Description](#project-description)
+2. [Requirements](#requirements)
 3. [Installation](#installation)
-4. [Structure du projet](#structure-du-projet)
-5. [Commandes disponibles](#commandes-disponibles)
-6. [Ajouter des fonctionnalités](#ajouter-des-fonctionnalités)
+4. [Project Structure](#project-structure)
+5. [Available Commands](#available-commands)
+6. [Adding Features](#adding-features)
 7. [Contributions](#contributions)
+8. [License](#license)
 
 ---
 
-## Description du projet
+## Project Description
 
-Ce bot Discord propose plusieurs fonctionnalités clés :
-- **Modération** : commandes pour bannir, expulser, gérer les avertissements.
-- **Mini-jeux** : quiz sur le gaming, lancer de dés.
-- **Logs avancés** : suivi des modifications/suppressions de messages et des changements de rôles.
-- **Statistiques** : données sur l'activité du serveur et statistiques Call of Duty.
-- **Attribution de rôles** : rôles automatiques pour les nouveaux membres.
-- **Notifications Twitch** : alertes en cas de stream en direct.
+This Discord bot offers several key features:
+- **Moderation**: Commands for banning, kicking, and managing warnings.
+- **Mini-games**: Gaming quizzes, dice rolls.
+- **Advanced logging**: Tracks message edits/deletions and role changes.
+- **Statistics**: Provides server activity data and Call of Duty stats.
+- **Role assignment**: Automatically assigns roles to new members.
+- **Twitch notifications**: Alerts for live streams (currently disabled).
 
 ---
 
-## 📚 Prérequis
+## 📚 Requirements
 
-- **Python 3.8+** : [Télécharger Python](https://www.python.org/downloads/)
-- **Clé API Discord** : Créez votre bot sur [Discord Developer Portal](https://discord.com/developers/applications).
-- (Optionnel) Clés API Twitch et Call of Duty pour des fonctionnalités avancées.
+- **Python 3.8+**: [Download Python](https://www.python.org/downloads/)
+- **Discord API Key**: Create your bot on the [Discord Developer Portal](https://discord.com/developers/applications).
+- *(Optional)* Twitch and Call of Duty API keys for advanced features.
 
 ---
 
 ## 🛠️ Installation
 
-1. Clonez ce projet :
+1. Clone this repository:
    ```bash
-   git clone <URL_DU_REPO>
+   git clone <REPO_URL>
    cd project/
+
     ```
    
-2. Installez les dépendances nécessaires :
+2. Install the required dependencies:
     ```bash
     pip install -r requirements.txt
    ```
    
-3. Configurez vos clés API :
-⚠️ **Important** : Ne partagez jamais votre fichier `.env` contenant vos clés API sur des dépôts publics. Assurez-vous d'ajouter le fichier `.env` ou `config` à votre `.gitignore`.
-    * Créez un fichier config à la racine du projet :
+3. Configure your API keys:
+⚠️ **Important** : Never share your `.env` file containing API keys in public repositories. Make sure to add  `.env` or `config` to your `.gitignore`.
+    * Create `config` file in the root directory:
     ```
     DISCORD_TOKEN=ton_token_discord
     TWITCH_CLIENT_ID=ton_client_id_twitch
@@ -77,12 +73,12 @@ Ce bot Discord propose plusieurs fonctionnalités clés :
     LOG_LEVEL=INFO
     ```
    
-4. python main.py
+4. Run the bot:
     ```bash
    python main.py
     ```
 
-## 🧩 Structure du projet
+## 🧩 Project Structure
 ```
     project/
     ├── cogs/
@@ -105,99 +101,101 @@ Ce bot Discord propose plusieurs fonctionnalités clés :
     ├── requirements.txt       # Dépendances nécessaires
 ```
 
-## 📜 Commandes Disponibles
+## 📜 Available Commands
 
-### **Commandes Utilitaires**
+### **Utility Commands**
 * **`/status`**  
-  ➡️ Affiche le statut actuel du bot (uptime, cogs chargés, etc.).  
-* **`/restart`** *(Admin uniquement)*  
-  ➡️ Redémarre le bot.
+  ➡️ Displays the bot's current status (uptime, loaded cogs, etc.).  
+* **`/restart`** *(Admin only)*  
+  ➡️ Restarts the bot.
 
 ---
 
-### **Commandes de Modération**
-* **`/ban`** @Utilisateur [raison] *(Permission : ban_members)*  
-  ➡️ Bannit un utilisateur avec une raison facultative.  
-* **`/kick`** @Utilisateur [raison] *(Permission : kick_members)*  
-  ➡️ Expulse un utilisateur avec une raison facultative.  
+### **Moderation Commands**
+* **`/ban`** @User [reason] *(Requires ban_members permission)*  
+  ➡️ Bans a user with an optional reason.  
+* **`/kick`** @User [reason] *(Requires kick_members permission)*  
+  ➡️ Kicks a user with an optional reason.  
 * **`/banned_list`**  
-  ➡️ Liste les utilisateurs bannis du serveur.
+  ➡️ Lists all banned users in the server.
 
 ---
 
-### **Commandes pour les Avertissements**
-* **`/warn`** @Utilisateur [raison] *(Permission : manage_messages)*  
-  ➡️ Avertit un utilisateur pour une raison donnée.  
-* **`/warnings`** @Utilisateur  
-  ➡️ Affiche tous les avertissements attribués à un utilisateur.  
-* **`/clear_warnings`** @Utilisateur  
-  ➡️ Supprime tous les avertissements d’un utilisateur.  
-* **`/set_max_warnings`** <nombre>  
-  ➡️ Définit le nombre maximum d'avertissements avant une sanction.
+### **Warning Commands**
+* **`/warn`** @User [reason] *(Requires manage_messages permission)*  
+  ➡️ Warns a user for a given reason.  
+* **`/warnings`** @User  
+  ➡️ Displays all warnings for a user.  
+* **`/clear_warnings`** @User  
+  ➡️ Clears all warnings for a user.  
+* **`/set_max_warnings`** <number>  
+  ➡️ Sets the maximum number of warnings before a sanction.
 
 ---
 
-### **Commandes pour les Rôles**
-* **`/set_default_roles`** rôle1, rôle2 *(Admin uniquement)*  
-  ➡️ Définit les rôles attribués automatiquement aux nouveaux membres.  
-* **`/show_default_roles`** *(Admin uniquement)*  
-  ➡️ Affiche les rôles par défaut actuels.
+### **Role Commands**
+* **`/set_default_roles`** role1, role2 *(Admin only)*  
+  ➡️ Sets default roles to be assigned automatically to new members.  
+* **`/show_default_roles`** *(Admin only)*  
+  ➡️ Displays the current default roles configuration.
 
 ---
 
-### **Commandes pour les Mini-Jeux**
+### **Mini-Game Commands**
 * **`/quiz`**  
-  ➡️ Pose une question sur le gaming, l'utilisateur a 3 chances pour répondre.  
+  ➡️ Starts a gaming quiz with 3 chances to answer.  
 * **`/roll`** [faces=6]  
-  ➡️ Simule un lancer de dés avec le nombre de faces spécifié (par défaut : 6).
+  ➡️ Rolls a die with the specified number of faces (default: 6).
 
 ---
 
-### **Commandes de Statistiques**
+### **Statistics Commands**
 * **`/stats`**  
-  ➡️ Affiche les statistiques générales du serveur : membres, rôles, canaux, etc.  
-* **`/codstats`** [pseudo] [plateforme]  
-  ➡️ Récupère et affiche les statistiques Call of Duty pour un joueur.
+  ➡️ Displays general server statistics: members, roles, channels, etc.  
+* **`/codstats`** [username] [platform]  
+  ➡️ Fetches and displays Call of Duty player stats.
 
 ---
 
-### **Commandes pour les Sondages**
-* **`/poll`** "Question" "Choix1, Choix2, Choix3" [durée en minutes]  
-  ➡️ Crée un sondage interactif avec des réactions et une durée optionnelle. Les résultats sont affichés à la fin.
+### **Poll Commands**
+* **`/poll`** "Question" "Option1, Option2, Option3" [duration in minutes]  
+  ➡️ Creates an interactive poll with reactions and an optional timer. Results are displayed at the end.
 
 ---
 
-### **Commandes Hugging Face**
+### **Hugging Face Commands**
 * **`/ask_hf`** [question]  
-  ➡️ Pose une question à un modèle Hugging Face. Les modèles sont testés dynamiquement jusqu’à trouver un disponible.  
+  ➡️ Ask a question to Hugging Face models. Models are tested dynamically until one is available.
 
 ---
 
-### **Commandes Welcome**
+### **Welcome Commands**
 * **`/set_rules_channel`** <#channel>  
-  ➡️ Configure le canal des règles.  
+  ➡️ Configures the rules channel.  
 * **`/set_welcome_channel`** <channel_name>  
-  ➡️ Configure le canal de bienvenue.
+  ➡️ Configures the welcome channel.
 
 ---
 
-### **Commandes ChatGPT**
+### **ChatGPT Commands**
 * **`/ask`** [question]  
-  ➡️ Pose une question à ChatGPT en utilisant l’API OpenAI.
+  ➡️ Ask a question to ChatGPT using the OpenAI API.
 
 ---
 
-### **Commandes Twitch**
-**Note : Fonctionnalité désactivée**  
-*(L'API officielle Twitch n'étant pas disponible pour surveiller les lives, cette section a été désactivée pour le moment.)*
+### **Twitch Commands**
+**Note: Disabled**  
+*(Twitch live stream notifications are currently unavailable due to API limitations.)*
 
 ---
 
-### **Mises à jour récentes**
-- **Intégration Hugging Face** pour poser des questions aux modèles NLP comme **Bloom** ou **Falcon**.
-- **Amélioration des sondages** : minuterie dynamique et résultats automatiques.
-- **Refonte ChatGPT** pour compatibilité OpenAI v1.0.0.
-- **Gestion d'erreurs enrichie**.
+### **Recent Updates**
+- **Hugging Face integration** for NLP models like Bloom and Falcon.
+- **Improved polling system**: Dynamic timers and automatic results display.
+- **ChatGPT refactor**: Compatibility with OpenAI v1.0.0.
+- **Enhanced error management**: Custom Demon Slayer-themed embeds for a better user experience.
+- **Role assignment**: Automatic role assignment for new members.
+- **General optimizations**: Refactored cogs and improved bot scalability.
 
 ---
 
@@ -220,14 +218,14 @@ Ce bot Discord propose plusieurs fonctionnalités clés :
  /quiz /roll 20
  ```
 
-## 🔧 Ajouter vos propres fonctionnalités
+## 🔧 Adding Features
 
-### Créer une nouvelle commande :
-1. **Créez un fichier dans le dossier `cogs/`**  
-   Par exemple : `my_feature.py`.
+### Create a New Command :
+1. **Create a file in the `cogs/` folder**  
+   Example : `my_feature.py`.
 
-2. **Ajoutez une classe avec des commandes hybrides ou Slash :**  
-   Exemple de commande hybride :
+2. **Add a class with hybrid or slash commands :**  
+   Example ofhybride command :
    ```python
    from discord.ext import commands
 
@@ -243,63 +241,34 @@ Ce bot Discord propose plusieurs fonctionnalités clés :
                await ctx.send("Ceci est une nouvelle commande classique !")
    ```
    
-3. **Ajoutez une fonction `setup` pour l'intégration du Cog :**
-   Cela permet d'ajouter automatiquement la nouvelle classe au bot.
+3. **Add a `setup` function to integrate the cog.**
    ```python
    async def setup(bot):
        await bot.add_cog(MyFeature(bot))
    ```
    
-4. **Rechargez ou redémarrez le bot :**
-   Si votre bot est en cours d'exécution, utilisez la commande de redémarrage ou rechargez uniquement le cog concerné :
+4. **Reload or restart the bot to apply the changes.**
    ```
    !reload_cog cogs.my_feature
    ```
 
-### Exemple pour tester :
-1. **Créer un fichier** `cogs/example.py`
-   ```python
-   import discord
-   from discord.ext import commands
-   
-   class ExampleCog(commands.Cog):
-       def __init__(self, bot):
-           self.bot = bot
-   
-       @commands.hybrid_command(name="hello", description="Dit bonjour.")
-       async def hello(self, ctx):
-           if isinstance(ctx, discord.Interaction):
-               await ctx.response.send_message("Bonjour ! 👋")
-           else:
-               await ctx.send("Bonjour ! 👋")
-   async def setup(bot):
-        await bot.add_cog(ExampleCog(bot))
-   ```
-   
-2. **Rechargez ou redémarrez le bot et utilisez** `/hello` ou `!hello`. 🎉
-
-
-*Cette section vous guidera pour ajouter facilement vos propres fonctionnalités tout en maintenant la structure modulaire de votre bot! 😊*
-
 ## 🤝 Contributions
 
-Les contributions sont les bienvenues ! Pour participer, suivez ces étapes :
+Contributions are welcome! To contribute:
 
-1. Forkez ce dépôt.
-2. Créez une branche pour votre fonctionnalité (par exemple, `feat/ajout-sondage`).
-3. Testez vos modifications localement.
-4. Ouvrez une pull request en expliquant vos changements.
+1. Fork this repository.
+2. Create a branch for your feature (e.g., `feat/ajout-sondage`).
+3. Test your changes locally.
+4. Open a pull request with detailed explanations.
 
-### ✅ Checklist pour les Pull Requests :
-- [ ] Ajout d'une fonctionnalité ou d'une correction de bug.
-- [ ] Testé localement pour éviter les régressions.
-- [ ] Documentation mise à jour (le cas échéant).
+### ✅ Pull Request Checklist: :
+- [ ] Added a feature or bug fix.
+- [ ] Tested locally to avoid regressions.
+- [ ] Updated documentation if necessary.
 
 ## ⚖️ Licence
-Ce projet est sous licence **MIT**. Vous êtes libre de l'utiliser, de le modifier et de le distribuer.
-Consultez le fichier [LICENSE](./LICENSE) pour plus d'informations.
+This project is licensed under the **MIT License**. You are free to use, modify, and distribute it.
+See the [LICENSE](./LICENSE) file for more details.
 
 
-# ☑️ ©️REDIT 
-IF you like and clone Give a star to project ⭐
-
+⭐ If you like this project, consider giving it a star! ⭐
