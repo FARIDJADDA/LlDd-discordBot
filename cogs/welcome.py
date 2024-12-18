@@ -35,57 +35,57 @@ class Welcome(commands.Cog):
         guild = member.guild
         welcome_channel_name = self.config.get("welcome_channel_name", "welcome")
 
-        # Essaye de trouver le salon par ID (si c'est un ID)
+        # Récupérer le salon de bienvenue
         welcome_channel = None
         try:
-            # Si le nom est un ID numérique valide, recherche par ID
             if welcome_channel_name.isdigit():
                 welcome_channel = guild.get_channel(int(welcome_channel_name))
-            # Sinon, recherche par nom
             else:
                 welcome_channel = discord.utils.get(guild.text_channels, name=welcome_channel_name)
-        except ValueError:
-            print(f"⚠️ Nom ou ID invalide : {welcome_channel_name}")
+        except Exception as e:
+            print(f"⚠️ Erreur lors de la recherche du salon : {e}")
 
-        # Vérifie si le salon est trouvé
         if not welcome_channel:
-            print(f"⚠️ Salon de bienvenue '{welcome_channel_name}' introuvable dans le serveur '{guild.name}'.")
+            print(f"⚠️ Salon de bienvenue '{welcome_channel_name}' introuvable dans '{guild.name}'.")
             return
 
-        # Vérifie si le bot a la permission d'envoyer des messages dans le salon
-        if not welcome_channel.permissions_for(guild.me).send_messages:
-            print(f"⚠️ Le bot n'a pas la permission d'envoyer des messages dans '{welcome_channel_name}'.")
+        # Récupération du salon des règles
+        rules_channel_id = self.config.get("rules_channel_id")
+        rules_channel_mention = f"<#{rules_channel_id}>" if rules_channel_id else "le salon des règles"
+
+        # Chemin des images locales
+        banner_path = "assets/avatar_lldd_bot3.png"
+        if not os.path.exists(banner_path):
+            print(f"⚠️ L'image '{banner_path}' est introuvable.")
             return
 
-        # Chemin de l'image locale
-        image_path = "assets/lldd_bot_dsgn.jpg"
-        if not os.path.exists(image_path):
-            print(f"⚠️ L'image '{image_path}' est introuvable.")
-            return
+        # Avatar du membre
+        avatar_url = member.avatar.url if member.avatar else member.default_avatar.url
 
         try:
-            # Préparation de l'image locale
-            file = discord.File(image_path, filename="lldd_bot_dsgn.jpg")
+            # Préparation de l'image
+            file = discord.File(banner_path, filename="avatar_lldd_bot3.png")
 
-            # Récupération du salon des règles configuré
-            rules_channel_id = self.config.get("rules_channel_id")
-            rules_channel_mention = f"<#{rules_channel_id}>" if rules_channel_id else "le salon des règles"
-
-            # Création de l'embed de bienvenue
+            # Configuration de l'embed stylisé
             embed = discord.Embed(
-                title="🪖 Bienvenue sur le serveur jeune padawane 🫡!",
+                title=f"**⛩️ ❟❛❟ Salut soldat ❟❛❟ ⛩️**",
                 description=(
-                    f"Salut {member.mention} !\n"
-                    f"Nous sommes ravis de t'accueillir sur **{guild.name}**.\n\n"
-                    f"👉 N'oublie pas de consulter {rules_channel_mention} pour connaître les règles du serveur !\n\n"
-                    "Amuse-toi bien et profite de ton séjour ici ! 🚀"
+                    f"⚔️ {member.mention} Bienvenue  sur **{guild.name}**.\n\n"
+                    f"🪖 *N'oublie pas de consulter {rules_channel_mention} !*\n\n"
+                    f"🫡 Profite bien de ton séjour ici, jeune padawan ."
                 ),
-                color=discord.Color.green(),
+                color=discord.Color.dark_purple(),
             )
-            embed.set_thumbnail(url="attachment://lldd_bot_dsgn.jpg")
-            embed.set_footer(text=f"Bienvenue dans {guild.name} !", icon_url=guild.icon.url if guild.icon else None)
 
-            # Envoie le message de bienvenue dans le salon configuré
+            # Ajout des visuels
+            embed.set_thumbnail(url=avatar_url)
+            embed.set_image(url="attachment://avatar_lldd_bot3.png")
+            embed.set_footer(
+                text=f"Bienvenue dans {guild.name} !",
+                icon_url=guild.icon.url if guild.icon else None
+            )
+
+            # Envoi du message de bienvenue
             await welcome_channel.send(file=file, embed=embed)
             print(f"✅ Message de bienvenue envoyé dans '{welcome_channel.name}' pour {member.name}.")
 
@@ -96,7 +96,7 @@ class Welcome(commands.Cog):
     @commands.has_permissions(administrator=True)
     async def set_rules_channel(self, ctx: commands.Context, channel: discord.TextChannel):
         """Définit le salon des règles."""
-        self.config["rules_channel_id"] = channel.id
+        self.config["rules_channel_id"] = str(channel.id)
         self.save_config(self.config)
         await ctx.send(embed=discord.Embed(
             title="✅ Configuration mise à jour",
@@ -104,15 +104,15 @@ class Welcome(commands.Cog):
             color=discord.Color.green()
         ))
 
-    @commands.hybrid_command(name="set_welcome_channel", help="Définit le nom du salon de bienvenue.")
+    @commands.hybrid_command(name="set_welcome_channel", help="Définit le nom ou l'ID du salon de bienvenue.")
     @commands.has_permissions(administrator=True)
-    async def set_welcome_channel(self, ctx: commands.Context, channel_name: str):
-        """Définit le nom du salon de bienvenue."""
-        self.config["welcome_channel_name"] = channel_name
+    async def set_welcome_channel(self, ctx: commands.Context, channel: discord.TextChannel):
+        """Définit le nom ou l'ID du salon de bienvenue."""
+        self.config["welcome_channel_name"] = str(channel.id)
         self.save_config(self.config)
         await ctx.send(embed=discord.Embed(
             title="✅ Configuration mise à jour",
-            description=f"Le salon de bienvenue a été configuré sur `{channel_name}`.",
+            description=f"Le salon de bienvenue a été configuré sur {channel.mention}.",
             color=discord.Color.green()
         ))
 
@@ -121,11 +121,14 @@ class Welcome(commands.Cog):
         """Affiche la configuration actuelle."""
         rules_channel_id = self.config.get("rules_channel_id")
         welcome_channel_name = self.config.get("welcome_channel_name")
+
         rules_channel_mention = f"<#{rules_channel_id}>" if rules_channel_id else "Non défini"
+        welcome_channel_mention = f"<#{welcome_channel_name}>" if welcome_channel_name else "Non défini"
+
         await ctx.send(embed=discord.Embed(
             title="📜 Configuration actuelle des messages de bienvenue",
             description=(
-                f"- **Salon de bienvenue** : `{welcome_channel_name}`\n"
+                f"- **Salon de bienvenue** : {welcome_channel_mention}\n"
                 f"- **Salon des règles** : {rules_channel_mention}"
             ),
             color=discord.Color.dark_purple()
