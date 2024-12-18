@@ -23,7 +23,6 @@ This bot includes moderation tools, mini-games, advanced logging, activity stati
 5. [Available Commands](#available-commands)
 6. [Adding Features](#adding-features)
 7. [Contributions](#contributions)
-8. [License](#license)
 
 ---
 
@@ -39,16 +38,16 @@ This Discord bot offers several key features:
 
 ---
 
-## 📚 Requirements
-
+## Requirements
+📚
 - **Python 3.8+**: [Download Python](https://www.python.org/downloads/)
 - **Discord API Key**: Create your bot on the [Discord Developer Portal](https://discord.com/developers/applications).
 - *(Optional)* Twitch and Call of Duty API keys for advanced features.
 
 ---
 
-## 🛠️ Installation
-
+## Installation
+🛠️
 1. Clone this repository:
    ```bash
    git clone <REPO_URL>
@@ -78,7 +77,8 @@ This Discord bot offers several key features:
    python main.py
     ```
 
-## 🧩 Project Structure
+## Project Structure
+🧩
 ```
     project/
     ├── cogs/
@@ -101,8 +101,8 @@ This Discord bot offers several key features:
     ├── requirements.txt       # Dépendances nécessaires
 ```
 
-## 📜 Available Commands
-
+## Available Commands
+📜
 ### **Utility Commands**
 * **`/status`**  
   ➡️ Displays the bot's current status (uptime, loaded cogs, etc.).  
@@ -206,8 +206,8 @@ This Discord bot offers several key features:
 
 ---
 
-## 🛠️ Exemple de Commandes Avancées
-
+## Exemple de Commandes Avancées
+🛠️
 ### Modération :
  ```
 /ban @Player1 Comportement inapproprié /kick @Player2 Inactivité prolongée
@@ -218,8 +218,8 @@ This Discord bot offers several key features:
  /quiz /roll 20
  ```
 
-## 🔧 Adding Features
-
+## Adding Features
+🔧
 ### Create a New Command :
 1. **Create a file in the `cogs/` folder**  
    Example : `my_feature.py`.
@@ -252,8 +252,8 @@ This Discord bot offers several key features:
    !reload_cog cogs.my_feature
    ```
 
-## 🤝 Contributions
-
+## Contributions
+🤝
 Contributions are welcome! To contribute:
 
 1. Fork this repository.
@@ -267,6 +267,7 @@ Contributions are welcome! To contribute:
 - [ ] Updated documentation if necessary.
 
 ## ⚖️ Licence
+
 This project is licensed under the **MIT License**. You are free to use, modify, and distribute it.
 See the [LICENSE](./LICENSE) file for more details.
 
