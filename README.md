@@ -7,10 +7,6 @@
   <img src="img/avatar_lldd_bot1.jpg" alt="Bot banner" width="400px">
 </p>
 
-<p align="left">
-  <img src="img/hugging_face_discord.png" alt="Bot preview" width="400px">
-</p>
-
 A complete and customizable Discord bot designed to manage and engage community servers.  
 This bot includes moderation tools, mini-games, advanced logging, activity statistics, and much more.
 
@@ -119,6 +115,7 @@ This Discord bot offers several key features:
 * **`/banned_list`**  
   ➡️ Lists all banned users in the server.
 
+
 ---
 
 ### **Warning Commands**
@@ -130,6 +127,9 @@ This Discord bot offers several key features:
   ➡️ Clears all warnings for a user.  
 * **`/set_max_warnings`** <number>  
   ➡️ Sets the maximum number of warnings before applying a sanction.
+<p align="left">
+  <img src="img/warnings.jpg" alt="warnings preview" width="250px">
+</p>
 
 ---
 
@@ -154,6 +154,12 @@ This Discord bot offers several key features:
   ➡️ Start a Bingo game.
 * **`/bingo stop`** 
   ➡️ End the current Bingo game.
+<p align="left">
+  <img src="img/morpion.jpg" alt="morpion preview" width="250px">
+</p>
+<p align="left">
+  <img src="img/bingo.jpg" alt="bingo preview" width="250px">
+</p>
 
 ---
 
@@ -200,6 +206,25 @@ This Discord bot offers several key features:
   ➡️ Display the list of monitored streamers.  
 * **`/set_twitch_channel`** <#channel>  
   ➡️ Set the channel for Twitch live notifications.
+<p align="left">
+  <img src="img/twitch_example.jpg" alt="twitch preview" width="250px">
+</p>
+
+---
+
+### Others API:
+* **`/weather`** `<city>`
+  ➡️ Affiche la météo actuelle d'une ville.
+
+* **`/news`**
+  ➡️ Affiche les dernières actualités gaming.
+<p align="left">
+  <img src="img/meteo.jpg" alt="weather preview" width="250px">
+</p>
+
+<p align="left">
+  <img src="img/actus_gaming.jpg" alt="news gaming preview" width="250px">
+</p>
 
 ---
 
