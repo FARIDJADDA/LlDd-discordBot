@@ -148,6 +148,12 @@ This Discord bot offers several key features:
   ➡️ Rolls a die with the specified number of faces (default: 6).  
 * **`/rps`** `pierre|papier|ciseaux`  
   ➡️ Play rock-paper-scissors against the bot.
+* **`morpion`** `[opponent: @user|LlddBot] [difficulty: Facile|Normale|Difficile]`  
+  ➡️ Start a Tic-Tac-Toe game against another user or LlddBot. Choose difficulty for bot opponents.
+* **`/bingo start`**  
+  ➡️ Start a Bingo game.
+* **`/bingo stop`** 
+  ➡️ End the current Bingo game.
 
 ---
 

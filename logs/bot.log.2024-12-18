@@ -1,0 +1,174 @@
+2024-12-18 17:22:16,538 - discord_bot - INFO - Logger configuré avec succès. Niveau : DEBUG, Fichier : logs/bot.log
+2024-12-18 17:22:16,539 - discord_bot - INFO - Logger Discord configuré avec succès.
+2024-12-18 17:22:18,900 - discord_bot - INFO - Token Twitch récupéré avec succès.
+2024-12-18 17:30:15,649 - discord_bot - INFO - Logger configuré avec succès. Niveau : DEBUG, Fichier : logs/bot.log
+2024-12-18 17:30:15,651 - discord_bot - INFO - Logger Discord configuré avec succès.
+2024-12-18 17:30:15,652 - discord_bot - DEBUG - Ceci est un message de DEBUG.
+2024-12-18 17:30:15,653 - discord_bot - INFO - Ceci est un message d'INFO.
+2024-12-18 17:30:15,653 - discord_bot - WARNING - Ceci est un message de WARNING.
+2024-12-18 17:30:15,655 - discord_bot - ERROR - Ceci est un message d'ERROR.
+2024-12-18 17:30:15,656 - discord_bot - CRITICAL - Ceci est un message de CRITICAL.
+2024-12-18 17:40:05,085 - discord_bot - INFO - Logger configuré avec succès. Niveau : DEBUG, Fichier : logs/bot.log
+2024-12-18 17:40:05,086 - discord_bot - INFO - Logger Discord configuré avec succès.
+2024-12-18 17:40:06,519 - discord_bot - DEBUG - Ceci est un message de DEBUG.
+2024-12-18 17:40:06,520 - discord_bot - INFO - Ceci est un message d'INFO.
+2024-12-18 17:40:06,521 - discord_bot - WARNING - Ceci est un message de WARNING.
+2024-12-18 17:40:06,521 - discord_bot - ERROR - Ceci est un message d'ERROR.
+2024-12-18 17:40:06,522 - discord_bot - CRITICAL - Ceci est un message de CRITICAL.
+2024-12-18 17:40:07,373 - discord_bot - INFO - Token Twitch récupéré avec succès.
+2024-12-18 17:40:56,343 - discord_bot - INFO - Logger configuré avec succès. Niveau : DEBUG, Fichier : logs/bot.log
+2024-12-18 17:40:56,344 - discord_bot - INFO - Logger Discord configuré avec succès.
+2024-12-18 17:40:58,773 - discord_bot - INFO - Token Twitch récupéré avec succès.
+2024-12-18 17:41:31,154 - discord_bot - INFO - Logger configuré avec succès. Niveau : DEBUG, Fichier : logs/bot.log
+2024-12-18 17:41:31,155 - discord_bot - INFO - Logger Discord configuré avec succès.
+2024-12-18 17:41:33,676 - discord_bot - INFO - Token Twitch récupéré avec succès.
+2024-12-18 17:58:24,205 - discord_bot - INFO - Logger configuré avec succès. Niveau : DEBUG, Fichier : logs/bot.log
+2024-12-18 17:58:24,206 - discord_bot - INFO - Logger Discord configuré avec succès.
+2024-12-18 17:58:26,877 - discord_bot - INFO - Token Twitch récupéré avec succès.
+2024-12-18 17:59:07,118 - discord_bot - INFO - Liste des mots interdits envoyée.
+2024-12-18 18:04:36,231 - discord_bot - INFO - Logger configuré avec succès. Niveau : DEBUG, Fichier : logs/bot.log
+2024-12-18 18:04:36,233 - discord_bot - INFO - Logger Discord configuré avec succès.
+2024-12-18 18:04:38,706 - discord_bot - INFO - Fichier 'data/default_roles.json' introuvable. Création avec une liste vide par défaut.
+2024-12-18 18:04:39,594 - discord_bot - INFO - Token Twitch récupéré avec succès.
+2024-12-18 18:05:25,405 - discord_bot - INFO - Rôles par défaut sauvegardés dans 'data/default_roles.json'.
+2024-12-18 18:05:25,972 - discord_bot - INFO - Rôles par défaut mis à jour par kenpachi.zaraki_: Membre.
+2024-12-18 18:14:43,913 - discord_bot - INFO - Logger configuré avec succès. Niveau : DEBUG, Fichier : logs/bot.log
+2024-12-18 18:14:43,914 - discord_bot - INFO - Logger Discord configuré avec succès.
+2024-12-18 18:14:46,785 - discord_bot - INFO - Token Twitch récupéré avec succès.
+2024-12-18 18:23:59,498 - discord_bot - INFO - Logger configuré avec succès. Niveau : DEBUG, Fichier : logs/bot.log
+2024-12-18 18:23:59,499 - discord_bot - INFO - Logger Discord configuré avec succès.
+2024-12-18 18:24:02,605 - discord_bot - INFO - Token Twitch récupéré avec succès.
+2024-12-18 18:24:25,701 - discord_bot - INFO - Logger configuré avec succès. Niveau : DEBUG, Fichier : logs/bot.log
+2024-12-18 18:24:25,702 - discord_bot - INFO - Logger Discord configuré avec succès.
+2024-12-18 18:24:28,506 - discord_bot - INFO - Token Twitch récupéré avec succès.
+2024-12-18 18:27:42,834 - discord_bot - INFO - Logger configuré avec succès. Niveau : DEBUG, Fichier : logs/bot.log
+2024-12-18 18:27:42,835 - discord_bot - INFO - Logger Discord configuré avec succès.
+2024-12-18 18:27:45,692 - discord_bot - INFO - Token Twitch récupéré avec succès.
+2024-12-18 18:28:45,741 - discord_bot - INFO - Logger configuré avec succès. Niveau : DEBUG, Fichier : logs/bot.log
+2024-12-18 18:28:45,743 - discord_bot - INFO - Logger Discord configuré avec succès.
+2024-12-18 18:28:49,134 - discord_bot - INFO - Token Twitch récupéré avec succès.
+2024-12-18 18:29:12,928 - discord_bot - INFO - Logger configuré avec succès. Niveau : DEBUG, Fichier : logs/bot.log
+2024-12-18 18:29:12,930 - discord_bot - INFO - Logger Discord configuré avec succès.
+2024-12-18 18:29:16,005 - discord_bot - INFO - Token Twitch récupéré avec succès.
+2024-12-18 18:33:05,957 - discord_bot - INFO - Logger configuré avec succès. Niveau : DEBUG, Fichier : logs/bot.log
+2024-12-18 18:33:05,958 - discord_bot - INFO - Logger Discord configuré avec succès.
+2024-12-18 18:33:09,173 - discord_bot - INFO - Token Twitch récupéré avec succès.
+2024-12-18 18:33:15,212 - discord_bot - INFO - ✅ Questions Trivia récupérées avec succès depuis l'API.
+2024-12-18 18:33:15,705 - discord_bot - INFO - 🎮 kenpachi.zaraki_ a lancé une question Trivia : Who created the &quot;Metal Gear&quot; Series?
+2024-12-18 18:33:35,902 - discord_bot - INFO - ❌ kenpachi.zaraki_ a donné une mauvaise réponse : Hiroshi Yamauchi.
+2024-12-18 18:33:53,087 - discord_bot - INFO - 📊 kenpachi.zaraki_ a demandé son score Trivia : 1 point(s).
+2024-12-18 18:36:18,145 - discord_bot - INFO - Logger configuré avec succès. Niveau : DEBUG, Fichier : logs/bot.log
+2024-12-18 18:36:18,146 - discord_bot - INFO - Logger Discord configuré avec succès.
+2024-12-18 18:36:20,094 - discord_bot - INFO - ✅ Cog RockPaperScissors ajouté avec succès.
+2024-12-18 18:36:20,978 - discord_bot - INFO - Token Twitch récupéré avec succès.
+2024-12-18 18:36:47,571 - discord_bot - INFO - 🎮 kenpachi.zaraki_ a joué pierre. Le bot a joué pierre.
+2024-12-18 18:36:47,573 - discord_bot - INFO - 🤝 Égalité entre kenpachi.zaraki_ et le bot.
+2024-12-18 18:37:04,912 - discord_bot - WARNING - ❌ kenpachi.zaraki_ a entré un choix invalide : Ciseau
+2024-12-18 18:37:15,183 - discord_bot - INFO - 🎮 kenpachi.zaraki_ a joué ciseaux. Le bot a joué papier.
+2024-12-18 18:37:15,185 - discord_bot - INFO - ✅ kenpachi.zaraki_ a gagné contre le bot.
+2024-12-18 18:37:31,380 - discord_bot - INFO - 🎮 kenpachi.zaraki_ a joué ciseaux. Le bot a joué ciseaux.
+2024-12-18 18:37:31,381 - discord_bot - INFO - 🤝 Égalité entre kenpachi.zaraki_ et le bot.
+2024-12-18 18:38:22,098 - discord_bot - INFO - ℹ️ kenpachi.zaraki_ a demandé les règles de RPS.
+2024-12-18 18:47:06,667 - discord_bot - INFO - Logger configuré avec succès. Niveau : DEBUG, Fichier : logs/bot.log
+2024-12-18 18:47:06,668 - discord_bot - INFO - Logger Discord configuré avec succès.
+2024-12-18 18:47:08,487 - discord_bot - INFO - ✅ Cog RockPaperScissors ajouté avec succès.
+2024-12-18 18:47:08,507 - discord_bot - WARNING - ⚠️ Fichier de configuration Twitch manquant. Création de 'data\twitch_config.json' avec des valeurs par défaut.
+2024-12-18 18:47:08,509 - discord_bot - INFO - ✅ Cog Twitch ajouté avec succès.
+2024-12-18 18:47:09,371 - discord_bot - INFO - ✅ Token Twitch récupéré avec succès.
+2024-12-18 18:47:11,520 - discord_bot - WARNING - ⚠️ Aucun canal de notification configuré pour Twitch.
+2024-12-18 18:47:31,706 - discord_bot - INFO - ✅ Configuration Twitch sauvegardée dans 'data\twitch_config.json'.
+2024-12-18 18:48:01,693 - discord_bot - INFO - ✅ Configuration Twitch sauvegardée dans 'data\twitch_config.json'.
+2024-12-18 18:49:24,522 - discord_bot - INFO - Logger configuré avec succès. Niveau : DEBUG, Fichier : logs/bot.log
+2024-12-18 18:49:24,523 - discord_bot - INFO - Logger Discord configuré avec succès.
+2024-12-18 18:49:26,007 - discord_bot - INFO - ✅ Cog RockPaperScissors ajouté avec succès.
+2024-12-18 18:49:26,026 - discord_bot - INFO - ✅ Cog Twitch ajouté avec succès.
+2024-12-18 18:49:26,890 - discord_bot - INFO - ✅ Token Twitch récupéré avec succès.
+2024-12-18 18:53:17,678 - discord_bot - INFO - Logger configuré avec succès. Niveau : DEBUG, Fichier : logs/bot.log
+2024-12-18 18:53:17,679 - discord_bot - INFO - Logger Discord configuré avec succès.
+2024-12-18 18:53:19,584 - discord_bot - INFO - ✅ Cog RockPaperScissors ajouté avec succès.
+2024-12-18 18:53:19,603 - discord_bot - INFO - ✅ Cog Twitch ajouté avec succès.
+2024-12-18 18:53:19,618 - discord_bot - WARNING - ⚠️ Fichier 'warnings.json' manquant. Création avec des valeurs par défaut.
+2024-12-18 18:53:19,620 - discord_bot - INFO - ✅ Cog Warnings ajouté avec succès.
+2024-12-18 18:53:20,480 - discord_bot - INFO - ✅ Token Twitch récupéré avec succès.
+2024-12-18 18:54:12,585 - discord_bot - INFO - ✅ Avertissements sauvegardés dans 'data\warnings.json'.
+2024-12-18 18:56:58,230 - discord_bot - INFO - Logger configuré avec succès. Niveau : DEBUG, Fichier : logs/bot.log
+2024-12-18 18:56:58,231 - discord_bot - INFO - Logger Discord configuré avec succès.
+2024-12-18 18:57:00,284 - discord_bot - INFO - ✅ Cog RockPaperScissors ajouté avec succès.
+2024-12-18 18:57:00,308 - discord_bot - INFO - ✅ Cog Twitch ajouté avec succès.
+2024-12-18 18:57:00,319 - discord_bot - INFO - ✅ Cog Warnings ajouté avec succès.
+2024-12-18 18:57:00,336 - discord_bot - WARNING - ⚠️ Fichier 'welcome_config.json' manquant. Création avec des valeurs par défaut.
+2024-12-18 18:57:00,339 - discord_bot - INFO - ✅ Cog Welcome ajouté avec succès.
+2024-12-18 18:57:01,212 - discord_bot - INFO - ✅ Token Twitch récupéré avec succès.
+2024-12-18 18:57:41,351 - discord_bot - INFO - ✅ Configuration sauvegardée dans 'data\welcome_config.json'.
+2024-12-18 18:58:20,095 - discord_bot - INFO - ✅ Configuration sauvegardée dans 'data\welcome_config.json'.
+2024-12-18 18:59:40,765 - discord_bot - INFO - Logger configuré avec succès. Niveau : DEBUG, Fichier : logs/bot.log
+2024-12-18 18:59:40,768 - discord_bot - INFO - Logger Discord configuré avec succès.
+2024-12-18 18:59:43,493 - discord_bot - INFO - ✅ Cog RockPaperScissors ajouté avec succès.
+2024-12-18 18:59:43,529 - discord_bot - INFO - ✅ Cog Twitch ajouté avec succès.
+2024-12-18 18:59:43,541 - discord_bot - INFO - ✅ Cog Warnings ajouté avec succès.
+2024-12-18 18:59:43,551 - discord_bot - INFO - ✅ Cog Welcome ajouté avec succès.
+2024-12-18 18:59:44,443 - discord_bot - INFO - ✅ Token Twitch récupéré avec succès.
+2024-12-18 18:59:53,882 - discord_bot - INFO - Rôles ajoutés à jovial_lemur_23204 dans digital conscientia : Membre.
+2024-12-18 18:59:54,119 - discord_bot - INFO - ✅ Message de bienvenue envoyé dans 'bienvenue' pour jovial_lemur_23204.
+2024-12-18 19:02:49,806 - discord_bot - INFO - Logger configuré avec succès. Niveau : DEBUG, Fichier : logs/bot.log
+2024-12-18 19:02:49,807 - discord_bot - INFO - Logger Discord configuré avec succès.
+2024-12-18 19:02:51,387 - discord_bot - INFO - ✅ Cog RockPaperScissors ajouté avec succès.
+2024-12-18 19:02:51,400 - discord_bot - INFO - ✅ Cog Twitch ajouté avec succès.
+2024-12-18 19:02:51,405 - discord_bot - INFO - ✅ Cog Warnings ajouté avec succès.
+2024-12-18 19:02:51,415 - discord_bot - WARNING - ⚠️ Fichier 'welcome_config.json' manquant. Création avec des valeurs par défaut.
+2024-12-18 19:02:51,417 - discord_bot - INFO - ✅ Cog Welcome ajouté avec succès.
+2024-12-18 19:02:52,268 - discord_bot - INFO - ✅ Token Twitch récupéré avec succès.
+2024-12-18 19:03:07,787 - discord_bot - INFO - ✅ Configuration sauvegardée dans 'data\welcome_config.json'.
+2024-12-18 19:03:16,118 - discord_bot - INFO - ✅ Configuration sauvegardée dans 'data\welcome_config.json'.
+2024-12-18 19:07:27,194 - discord_bot - INFO - Logger configuré avec succès. Niveau : DEBUG, Fichier : logs/bot.log
+2024-12-18 19:07:27,195 - discord_bot - INFO - Logger Discord configuré avec succès.
+2024-12-18 19:07:28,885 - discord_bot - INFO - ✅ Cog RockPaperScissors ajouté avec succès.
+2024-12-18 19:07:28,904 - discord_bot - INFO - ✅ Cog Twitch ajouté avec succès.
+2024-12-18 19:07:28,914 - discord_bot - INFO - ✅ Cog Warnings ajouté avec succès.
+2024-12-18 19:07:28,929 - discord_bot - WARNING - ⚠️ Fichier 'welcome_config.json' manquant. Création avec des valeurs par défaut.
+2024-12-18 19:07:28,932 - discord_bot - INFO - ✅ Cog Welcome ajouté avec succès.
+2024-12-18 19:07:29,802 - discord_bot - INFO - ✅ Token Twitch récupéré avec succès.
+2024-12-18 19:07:41,542 - discord_bot - INFO - ✅ Configuration sauvegardée dans 'data\welcome_config.json'.
+2024-12-18 19:07:52,890 - discord_bot - INFO - ✅ Configuration sauvegardée dans 'data\welcome_config.json'.
+2024-12-18 19:10:07,132 - discord_bot - INFO - Logger configuré avec succès. Niveau : DEBUG, Fichier : logs/bot.log
+2024-12-18 19:10:07,133 - discord_bot - INFO - Logger Discord configuré avec succès.
+2024-12-18 19:10:08,977 - discord_bot - INFO - ✅ Cog RockPaperScissors ajouté avec succès.
+2024-12-18 19:10:08,999 - discord_bot - INFO - ✅ Cog Twitch ajouté avec succès.
+2024-12-18 19:10:09,007 - discord_bot - INFO - ✅ Cog Warnings ajouté avec succès.
+2024-12-18 19:10:09,021 - discord_bot - WARNING - ⚠️ Fichier 'welcome_config.json' manquant. Création avec des valeurs par défaut.
+2024-12-18 19:10:09,024 - discord_bot - INFO - ✅ Cog Welcome ajouté avec succès.
+2024-12-18 19:10:09,937 - discord_bot - INFO - ✅ Token Twitch récupéré avec succès.
+2024-12-18 19:10:18,208 - discord_bot - INFO - ✅ Configuration sauvegardée dans 'data\welcome_config.json'.
+2024-12-18 19:10:24,181 - discord_bot - INFO - ✅ Configuration sauvegardée dans 'data\welcome_config.json'.
+2024-12-18 19:17:50,421 - discord_bot - INFO - Logger configuré avec succès. Niveau : DEBUG, Fichier : logs/bot.log
+2024-12-18 19:17:50,421 - discord_bot - INFO - Logger Discord configuré avec succès.
+2024-12-18 19:17:52,047 - discord_bot - WARNING - ⚠️ Fichier 'log_config.json' manquant. Création avec des valeurs par défaut.
+2024-12-18 19:17:52,048 - discord_bot - INFO - ✅ Cog MessageLogs ajouté avec succès.
+2024-12-18 19:17:52,062 - discord_bot - INFO - ✅ Cog RockPaperScissors ajouté avec succès.
+2024-12-18 19:17:52,074 - discord_bot - INFO - ✅ Cog Twitch ajouté avec succès.
+2024-12-18 19:17:52,079 - discord_bot - INFO - ✅ Cog Warnings ajouté avec succès.
+2024-12-18 19:17:52,083 - discord_bot - INFO - ✅ Cog Welcome ajouté avec succès.
+2024-12-18 19:17:52,935 - discord_bot - INFO - ✅ Token Twitch récupéré avec succès.
+2024-12-18 19:18:06,472 - discord_bot - INFO - ✅ Configuration de log sauvegardée : Canal ID 1317522748616212572
+2024-12-18 19:18:06,905 - discord_bot - INFO - ✅ Canal de log configuré par kenpachi.zaraki_ : logs (ID: 1317522748616212572)
+2024-12-18 19:18:26,285 - discord_bot - INFO - 🗑️ Suppression de message loggée dans 'logs'.
+2024-12-18 19:18:55,028 - discord_bot - INFO - ✏️ Modification de message loggée dans 'logs'.
+2024-12-18 19:20:01,301 - discord_bot - INFO - Logger configuré avec succès. Niveau : DEBUG, Fichier : logs/bot.log
+2024-12-18 19:20:01,302 - discord_bot - INFO - Logger Discord configuré avec succès.
+2024-12-18 19:20:02,893 - discord_bot - INFO - ✅ Cog MessageLogs ajouté avec succès.
+2024-12-18 19:20:02,910 - discord_bot - INFO - ✅ Cog RockPaperScissors ajouté avec succès.
+2024-12-18 19:20:02,926 - discord_bot - INFO - ✅ Cog Twitch ajouté avec succès.
+2024-12-18 19:20:02,933 - discord_bot - INFO - ✅ Cog Warnings ajouté avec succès.
+2024-12-18 19:20:02,939 - discord_bot - INFO - ✅ Cog Welcome ajouté avec succès.
+2024-12-18 19:20:03,790 - discord_bot - INFO - ✅ Token Twitch récupéré avec succès.
+2024-12-18 19:20:33,045 - discord_bot - INFO - ✏️ Modification de message loggée dans 'logs'.
+2024-12-18 19:30:00,019 - discord_bot - INFO - Logger configuré avec succès. Niveau : DEBUG, Fichier : logs/bot.log
+2024-12-18 19:30:00,020 - discord_bot - INFO - Logger Discord configuré avec succès.
+2024-12-18 19:30:01,402 - discord_bot - INFO - ✅ Cog MessageLogs ajouté avec succès.
+2024-12-18 19:30:01,415 - discord_bot - INFO - ✅ Cog RockPaperScissors ajouté avec succès.
+2024-12-18 19:30:01,428 - discord_bot - INFO - ✅ Cog Twitch ajouté avec succès.
+2024-12-18 19:30:01,432 - discord_bot - INFO - ✅ Cog Warnings ajouté avec succès.
+2024-12-18 19:30:01,436 - discord_bot - INFO - ✅ Cog Welcome ajouté avec succès.
+2024-12-18 19:30:02,294 - discord_bot - INFO - ✅ Token Twitch récupéré avec succès.
+2024-12-18 19:30:21,898 - discord_bot - INFO - 🗑️ Suppression de message loggée dans 'logs'.
+2024-12-18 19:30:54,145 - discord_bot - INFO - ✏️ Modification de message loggée dans 'logs'.
