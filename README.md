@@ -1,16 +1,37 @@
 # LlDd DiscordBot
 ![Python](https://img.shields.io/badge/Python-3.8%2B-blue)
-![License](https://img.shields.io/badge/License-MIT-green)
-![Pull Requests](https://img.shields.io/badge/Contributions-Welcome-brightgreen)
+![Discord.py](https://img.shields.io/badge/Framework-Discord.py-blue)
+![Platform](https://img.shields.io/badge/platform-discord-blue)
+![Code Quality](https://img.shields.io/badge/code%20quality-A-blue)
 
-<p align="left">
+
+
+![Pull Requests](https://img.shields.io/badge/Contributions-Welcome-brightgreen)
+![Tests](https://img.shields.io/badge/tests-passing-brightgreen)
+![Dependencies](https://img.shields.io/badge/dependencies-up%20to%20date-brightgreen)
+![Status](https://img.shields.io/badge/status-active-brightgreen)
+![Conventional Commits](https://img.shields.io/badge/commits-conventional-brightgreen)
+
+![License](https://img.shields.io/badge/License-MIT-green)
+
+![Lines of Code](https://img.shields.io/tokei/lines/github/USERNAME/REPO)
+![Café](https://img.shields.io/badge/caffeine-needed-yellow)
+
+
+<div align="left">
   <img src="img/avatar_lldd_bot1.jpg" alt="Bot banner" width="400px">
-</p>
+</div>
 
 A complete and customizable Discord bot designed to manage and engage community servers.  
 This bot includes moderation tools, mini-games, advanced logging, activity statistics, and much more.
 
 *(only available in French version 🇫🇷)*
+
+
+<div align="center">
+<br>
+  <img src="img/divider.png" alt="Bot banner" width="100%">
+</div>
 
 ## Table of Contents
 
@@ -129,9 +150,9 @@ This Discord bot offers several key features:
   ➡️ Clears all warnings for a user.  
 * **`/set_max_warnings`** <number>  
   ➡️ Sets the maximum number of warnings before applying a sanction.
-<p align="left">
+<div align="left">
   <img src="img/warnings.jpg" alt="warnings preview" width="250px">
-</p>
+</div>
 
 ---
 
@@ -152,17 +173,17 @@ This Discord bot offers several key features:
   ➡️ Play rock-paper-scissors against a bot or another player. You can set the bot's difficulty level.
 * **`morpion`** `[opponent: @user|LlddBot] [difficulty: Facile|Normale|Difficile]`
 * ➡️ Start a Tic-Tac-Toe game against another user or LlddBot. Choose difficulty for bot opponents.  
-<p align="left">
+<div align="left">
   <img src="img/morpion.jpg" alt="morpion preview" width="250px">
-</p>
+</div>
 
 * **`/bingo start`**  
   ➡️ Start a Bingo game.
 * **`/bingo stop`** 
   ➡️ End the current Bingo game.
-<p align="left">
+<div align="left">
   <img src="img/bingo.jpg" alt="bingo preview" width="250px">
-</p>
+</div>
 
 * **`/pendu random`**  
   ➡️ Starts a Hangman game with a randomly chosen word from the file `word_list.txt`.
@@ -170,9 +191,9 @@ This Discord bot offers several key features:
 * **`/pendu custom`**  
   ➡️ Starts a Hangman game where a player chooses the word via DM.
 
-<p align="left">
+<div align="left">
   <img src="img/hangman_game.jpg" alt="hangman game preview" width="250px">
-</p>
+</div>
 
 ---
 
@@ -195,10 +216,28 @@ This Discord bot offers several key features:
 
 * **`/sondage_terminer`**  
   ➡️ End the poll in the channel and show the results.
-<p align="left">
+<div align="left">
   <img src="img/polls.jpg" alt="polls preview" width="250px">
-</p>
+</div>
 
+---
+
+### Concours Commands
+
+* **`/concours_creer`** `type:<argent|expérience|item|personnalisé|rôle> name:<name> winners:<number> duration:<seconds> prize:<prize>`  
+  ➡️ Create a new giveaway with a specific reward.
+
+* **`/concours_terminer`**  
+  ➡️ End an ongoing giveaway and announce the winners.
+
+* **`/concours_relancer`**  
+  ➡️ Reroll the giveaway to designate a new winner.
+
+* **`/concours_participants`**  
+  ➡️ Show the list of participants in the ongoing giveaway.
+<div align="left">
+  <img src="img/giveaway.jpg" alt="giveaway preview" width="250px">
+</div>
 ---
 
 ### **Hugging Face Commands**
@@ -228,9 +267,9 @@ This Discord bot offers several key features:
   ➡️ Display the list of monitored streamers.  
 * **`/set_twitch_channel`** <#channel>  
   ➡️ Set the channel for Twitch live notifications.
-<p align="left">
+<div align="left">
   <img src="img/twitch_example.jpg" alt="twitch preview" width="250px">
-</p>
+</div>
 
 ---
 
@@ -240,13 +279,13 @@ This Discord bot offers several key features:
 
 * **`/news`**
   ➡️ Shows the latest gaming news.
-<p align="left">
+<div align="left">
   <img src="img/meteo.jpg" alt="weather preview" width="250px">
-</p>
+</div>
 
-<p align="left">
+<div align="left">
   <img src="img/actus_gaming.jpg" alt="news gaming preview" width="250px">
-</p>
+</div>
 
 ---
 
@@ -318,6 +357,12 @@ This Discord bot offers several key features:
    ```
    !reload_cog cogs.my_feature
    ```
+
+
+<div align="center">
+<br>
+  <img src="img/divider.png" alt="Bot banner" width="100%">
+</div>
 
 ## Contributions
 🤝
