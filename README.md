@@ -187,8 +187,17 @@ This Discord bot offers several key features:
 ---
 
 ### **Poll Commands**
-* **`/poll`** "Question" "Option1, Option2, Option3" [duration in minutes]  
-  ➡️ Creates an interactive poll with reactions and optional timer. Results are displayed automatically.
+* **`/sondage_creer`** `<question> <options>`  
+  ➡️ Create a poll with a question and up to 10 options (separated by commas).
+
+* **`/sondage_resultats`**  
+  ➡️ Display the results of the current poll in the channel.
+
+* **`/sondage_terminer`**  
+  ➡️ End the poll in the channel and show the results.
+<p align="left">
+  <img src="img/polls.jpg" alt="polls preview" width="250px">
+</p>
 
 ---
 

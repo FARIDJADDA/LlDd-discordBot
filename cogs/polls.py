@@ -1,87 +1,103 @@
 import discord
-import asyncio
 from discord.ext import commands
+from utils.logger import logger
 
+class Poll:
+    def __init__(self, question, options):
+        self.question = question
+        self.options = options[:10]
+        self.votes = {option: 0 for option in options}
+        self.message = None
+        self.ended = False
 
-class Polls(commands.Cog):
+    def vote(self, option):
+        if option in self.votes:
+            self.votes[option] += 1
+
+    def results(self):
+        return sorted(self.votes.items(), key=lambda x: x[1], reverse=True)
+
+class Sondage(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-        self.reactions = ['1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣', '6️⃣', '7️⃣', '8️⃣', '9️⃣', '🔟']
+        self.active_polls = {}
 
-    @commands.hybrid_command(name="poll", description="Crée un sondage interactif avec réactions et une minuterie optionnelle.")
-    async def poll(self, ctx: commands.Context, question: str, options: str, duration: int = 0):
-        """
-        Crée un sondage interactif avec une question, des options et une durée optionnelle.
-        Exemple : /poll "Votre film préféré ?" "Inception, Matrix, Interstellar" 5
-        """
-        # Séparer les options fournies
-        option_list = [option.strip() for option in options.split(",")]
-
-        if len(option_list) < 2 or len(option_list) > 10:
-            await ctx.send(embed=discord.Embed(
-                title="❌ Erreur",
-                description="Le sondage doit contenir entre **2 et 10 options**.",
-                color=discord.Color.dark_embed()
-            ))
+    @commands.hybrid_command(name="sondage_creer", description="Crée un nouveau sondage avec une question et des options.")
+    async def create_poll(self, ctx, question: str, options: str):
+        if ctx.channel.id in self.active_polls:
+            await ctx.send("⚠️ Un sondage est déjà en cours dans ce salon !")
             return
 
-        # Création de l'embed pour le sondage
-        description = "\n".join([f"{self.reactions[i]} {option}" for i, option in enumerate(option_list)])
+        options_list = [option.strip() for option in options.split(",")]
+
+        if len(options_list) < 2:
+            await ctx.send("❌ Vous devez fournir au moins deux options pour le sondage.")
+            return
+
+        poll = Poll(question, options_list)
+        self.active_polls[ctx.channel.id] = poll
+
         embed = discord.Embed(
             title="📊 Sondage",
-            description=f"**{question}**\n\n{description}",
-            color=discord.Color.dark_purple()
+            description=f"**{poll.question}**\n\n" + "\n".join([f"{chr(65 + i)} : {option}" for i, option in enumerate(poll.options)]),
+            color=discord.Color.purple()
         )
-        embed.set_footer(text=f"Créé par {ctx.author} • Durée : {duration} minute(s)" if duration > 0 else f"Créé par {ctx.author}", icon_url=ctx.author.avatar.url)
+        embed.set_footer(text="Votez en cliquant sur les réactions ci-dessous.")
 
-        # Envoi du sondage
-        poll_message = await ctx.send(embed=embed)
+        message = await ctx.send(embed=embed)
+        poll.message = message
 
-        # Ajout des réactions correspondantes
-        for i in range(len(option_list)):
-            await poll_message.add_reaction(self.reactions[i])
+        for i in range(len(poll.options)):
+            await message.add_reaction(chr(127462 + i))
 
-        # Gestion de la minuterie
-        if duration > 0:
-            await asyncio.sleep(duration * 60)  # Convertir la durée en secondes
+    @commands.hybrid_command(name="sondage_resultats", description="Affiche les résultats du sondage en cours dans ce salon.")
+    async def show_results(self, ctx):
+        if ctx.channel.id not in self.active_polls:
+            await ctx.send("❌ Aucun sondage actif dans ce salon.")
+            return
 
-            # Récupérer les réactions pour compter les votes
-            poll_message = await ctx.channel.fetch_message(poll_message.id)
-            results = []
-            for i, reaction in enumerate(poll_message.reactions[:len(option_list)]):
-                results.append((reaction.count - 1, option_list[i]))  # -1 pour exclure la réaction du bot
+        poll = self.active_polls[ctx.channel.id]
+        results = poll.results()
 
-            # Trier les résultats par nombre de votes
-            results.sort(reverse=True, key=lambda x: x[0])
+        embed = discord.Embed(
+            title="📊 Résultats du sondage",
+            description=f"**{poll.question}**\n\n" + "\n".join([f"{option} : {votes} vote(s)" for option, votes in results]),
+            color=discord.Color.dark_teal()
+        )
 
-            # Générer un embed pour les résultats
-            result_description = "\n".join([f"**{votes}** votes - {option}" for votes, option in results])
-            result_embed = discord.Embed(
-                title="📊 Résultats du sondage",
-                description=f"**{question}**\n\n{result_description}",
-                color=discord.Color.dark_teal()
-            )
-            result_embed.set_footer(text="Merci pour votre participation !")
-            await ctx.send(embed=result_embed)
+        await ctx.send(embed=embed)
 
-    @poll.error
-    async def poll_error(self, ctx, error):
-        """Gestion des erreurs pour la commande /poll."""
-        if isinstance(error, commands.MissingRequiredArgument):
-            await ctx.send(embed=discord.Embed(
-                title="❌ Erreur",
-                description="Format incorrect. Utilise `/poll \"Question\" \"Option1, Option2, Option3\" [Durée en minutes]`.",
-                color=discord.Color.dark_embed()
-            ))
-        else:
-            await ctx.send(embed=discord.Embed(
-                title="❌ Erreur inattendue",
-                description=str(error),
-                color=discord.Color.dark_embed()
-            ))
-            raise error
+    @commands.hybrid_command(name="sondage_terminer", description="Termine le sondage en cours dans ce salon et affiche les résultats.")
+    async def end_poll(self, ctx):
+        if ctx.channel.id not in self.active_polls:
+            await ctx.send("❌ Aucun sondage actif dans ce salon.")
+            return
 
+        poll = self.active_polls.pop(ctx.channel.id)
+        poll.ended = True
 
-async def setup(bot: commands.Bot):
-    """Ajoute la cog au bot."""
-    await bot.add_cog(Polls(bot))
+        results = poll.results()
+        embed = discord.Embed(
+            title="📊 Sondage terminé",
+            description=f"**{poll.question}**\n\n" + "\n".join([f"{option} : {votes} vote(s)" for option, votes in results]),
+            color=discord.Color.dark_teal()
+        )
+
+        await ctx.send(embed=embed)
+
+    @commands.Cog.listener()
+    async def on_reaction_add(self, reaction, user):
+        if user.bot:
+            return
+
+        poll = next((poll for poll in self.active_polls.values() if poll.message.id == reaction.message.id), None)
+        if not poll or poll.ended:
+            return
+
+        emoji_index = ord(reaction.emoji) - 127462
+        if 0 <= emoji_index < len(poll.options):
+            poll.vote(poll.options[emoji_index])
+
+async def setup(bot):
+    await bot.add_cog(Sondage(bot))
+    logger.info("✅ Cog Sondage ajouté avec succès.")

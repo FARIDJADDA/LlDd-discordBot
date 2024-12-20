@@ -107,7 +107,7 @@ class Twitch(commands.Cog):
                 if stream_data and not self.streamers_status.get(streamer, False):
                     self.streamers_status[streamer] = True
                     embed = discord.Embed(
-                        title=f"🔴 {streamer} est en live !",
+                        title=f"🟣 {streamer} est en live !",
                         description=f"**{stream_data['title']}**\n🎮 **Jeu** : {stream_data['game_name']}",
                         url=f"https://www.twitch.tv/{streamer}",
                         color=discord.Color.dark_purple(),
