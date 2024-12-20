@@ -1,76 +1,115 @@
 import discord
-import random
 from discord.ext import commands
-from utils.logger import logger  # Import du logger configuré
+import random
+from utils.logger import logger
 
-class RockPaperScissors(commands.Cog):
-    """Cog pour le jeu Pierre-Papier-Ciseaux."""
-
+class RPS(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-        self.options = ["pierre", "papier", "ciseaux"]
 
-    @commands.hybrid_command(name="rps", help="Joue à pierre, papier, ciseaux contre le bot.")
-    async def rps(self, ctx, choice: str):
-        """Joue au jeu Pierre-Papier-Ciseaux contre le bot."""
-        user_choice = choice.lower()
-
-        if user_choice not in self.options:
-            logger.warning(f"❌ {ctx.author} a entré un choix invalide : {choice}")
-            await ctx.send("⚠️ Choix invalide. Utilise `pierre`, `papier` ou `ciseaux`.")
+    @commands.hybrid_command(name="rps", description="Jouez à Pierre-Feuille-Ciseaux.")
+    async def rps(self, ctx: commands.Context, adversaire: discord.Member = None, difficulte: str = "Normal"):
+        """
+        Jouez à Pierre-Feuille-Ciseaux.
+        :param adversaire: L'adversaire contre qui jouer. Si None, vous jouez contre le bot.
+        :param difficulte: Le niveau de difficulté (Facile, Normal, Difficile) contre le bot.
+        """
+        difficulte = difficulte.capitalize()
+        if difficulte not in ["Facile", "Normal", "Difficile"]:
+            await ctx.send("❌ Difficulté invalide. Choisissez entre Facile, Normal ou Difficile.")
             return
 
-        bot_choice = random.choice(self.options)
-        logger.info(f"🎮 {ctx.author} a joué {user_choice}. Le bot a joué {bot_choice}.")
-
-        # Détermination du résultat
-        if user_choice == bot_choice:
-            result = "Égalité ! 🤝"
-            color = discord.Color.dark_embed()
-            logger.info(f"🤝 Égalité entre {ctx.author} et le bot.")
-        elif (user_choice == "pierre" and bot_choice == "ciseaux") or \
-             (user_choice == "papier" and bot_choice == "pierre") or \
-             (user_choice == "ciseaux" and bot_choice == "papier"):
-            result = "🎉 Tu as gagné !"
-            color = discord.Color.dark_teal()
-            logger.info(f"✅ {ctx.author} a gagné contre le bot.")
+        if adversaire:
+            if adversaire.bot:
+                await ctx.send("🤖 Vous ne pouvez pas jouer contre un autre bot.")
+                return
+            await self.start_multiplayer_game(ctx, adversaire)
         else:
-            result = "💀 Tu as perdu !"
-            color = discord.Color.dark_embed()
-            logger.info(f"❌ {ctx.author} a perdu contre le bot.")
+            await self.start_bot_game(ctx, difficulte)
 
-        # Création de l'embed pour afficher le résultat
-        embed = discord.Embed(
-            title="🪨 Pierre, Papier, Ciseaux ✂️",
-            description=(
-                f"**Ton choix** : {user_choice.capitalize()}\n"
-                f"**Choix du bot** : {bot_choice.capitalize()}\n\n"
-                f"{result}"
-            ),
-            color=color
-        )
-        embed.set_footer(text="Merci d'avoir joué ! 🎮")
+    async def start_bot_game(self, ctx: commands.Context, difficulte: str):
+        """Gère la logique pour un jeu en solo contre le bot."""
+        choix = {"Pierre": "🪨", "Feuille": "🍁", "Ciseaux": "✂️"}
 
-        await ctx.send(embed=embed)
+        while True:
+            choix_bot = self.get_bot_choice(difficulte, list(choix.keys()))
 
-    @commands.hybrid_command(name="rps_help", help="Affiche les règles de Pierre-Papier-Ciseaux.")
-    async def rps_help(self, ctx):
-        """Affiche les règles du jeu Pierre-Papier-Ciseaux."""
-        embed = discord.Embed(
-            title="📜 Règles de Pierre-Papier-Ciseaux",
-            description=(
-                "**Pierre** bat **Ciseaux**.\n"
-                "**Ciseaux** bat **Papier**.\n"
-                "**Papier** bat **Pierre**.\n\n"
-                "Utilise `/rps <pierre|papier|ciseaux>` pour jouer contre le bot !"
-            ),
-            color=discord.Color.dark_purple()
-        )
-        embed.set_footer(text="Amuse-toi bien ! 🎉")
-        await ctx.send(embed=embed)
-        logger.info(f"ℹ️ {ctx.author} a demandé les règles de RPS.")
+            def check(m):
+                return m.author == ctx.author and m.content.capitalize() in choix
+
+            await ctx.send("🎮 Pierre-Feuille-Ciseaux ! Tapez votre choix (Pierre 🪨, Feuille 🍁, Ciseaux ✂️) :")
+
+            try:
+                user_msg = await self.bot.wait_for("message", check=check, timeout=30.0)
+                choix_joueur = user_msg.content.capitalize()
+                resultat = self.determine_winner(choix_joueur, choix_bot)
+
+                embed = discord.Embed(
+                    title="🤖 Chifoumi - Résultat du Jeu",
+                    description=f"**Votre choix :** {choix[choix_joueur]} {choix_joueur}\n**Choix du bot :** {choix[choix_bot]} {choix_bot}\n\n{resultat}",
+                    color=discord.Color.purple()
+                )
+                await ctx.send(embed=embed)
+
+                if "Match nul" not in resultat:
+                    break
+            except TimeoutError:
+                await ctx.send("⏰ Vous avez pris trop de temps pour répondre. Partie terminée !")
+                break
+
+    async def start_multiplayer_game(self, ctx: commands.Context, adversaire: discord.Member):
+        """Gère la logique pour un jeu multijoueur."""
+        choix = {"Pierre": "🪨", "Feuille": "🍁", "Ciseaux": "✂️"}
+
+        while True:
+            def check(auteur):
+                return lambda m: m.author == auteur and m.content.capitalize() in choix
+
+            await ctx.send(f"🎮 Pierre-Feuille-Ciseaux ! {ctx.author.mention} vs {adversaire.mention}.\n\nLes deux joueurs, envoyez-moi vos choix en DM !")
+
+            try:
+                await ctx.author.send("Tapez votre choix (Pierre, Feuille, Ciseaux) :")
+                choix_joueur_task = self.bot.wait_for("message", check=check(ctx.author), timeout=30.0)
+
+                await adversaire.send("Tapez votre choix (Pierre, Feuille, Ciseaux) :")
+                choix_adversaire_task = self.bot.wait_for("message", check=check(adversaire), timeout=30.0)
+
+                choix_joueur, choix_adversaire = await discord.utils.gather(choix_joueur_task, choix_adversaire_task)
+                choix_joueur, choix_adversaire = choix_joueur.content.capitalize(), choix_adversaire.content.capitalize()
+
+                resultat = self.determine_winner(choix_joueur, choix_adversaire)
+
+                embed = discord.Embed(
+                    title="👥 Chifoumi - Résultat du Jeu",
+                    description=f"**Choix de {ctx.author.display_name} :** {choix[choix_joueur]} {choix_joueur}\n**Choix de {adversaire.display_name} :** {choix[choix_adversaire]} {choix_adversaire}\n\n{resultat}",
+                    color=discord.Color.dark_teal()
+                )
+                await ctx.send(embed=embed)
+
+                if "Match nul" not in resultat:
+                    break
+            except TimeoutError:
+                await ctx.send("⏰ Un des joueurs a pris trop de temps pour répondre. Partie terminée !")
+                break
+
+    def get_bot_choice(self, difficulte, choix):
+        """Détermine le choix du bot en fonction de la difficulté."""
+        if difficulte == "Facile":
+            return random.choices(choix, weights=[0.7, 0.2, 0.1], k=1)[0]
+        elif difficulte == "Difficile":
+            return random.choices(choix, weights=[0.1, 0.2, 0.7], k=1)[0]
+        return random.choice(choix)
+
+    def determine_winner(self, choix1, choix2):
+        """Détermine le gagnant en fonction des choix."""
+        if choix1 == choix2:
+            return "🤝 Match nul !"
+
+        gagne = {"Pierre": "Ciseaux", "Ciseaux": "Feuille", "Feuille": "Pierre"}
+        if gagne[choix1] == choix2:
+            return "🏆 Vous avez gagné !"
+        return "💀 Vous avez perdu !"
 
 async def setup(bot: commands.Bot):
-    """Ajoute la cog RPS au bot."""
-    await bot.add_cog(RockPaperScissors(bot))
-    logger.info("✅ Cog RockPaperScissors ajouté avec succès.")
+    await bot.add_cog(RPS(bot))
+    logger.info("✅ Cog RPS ajouté avec succès.")

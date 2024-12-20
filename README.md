@@ -10,6 +10,8 @@
 A complete and customizable Discord bot designed to manage and engage community servers.  
 This bot includes moderation tools, mini-games, advanced logging, activity statistics, and much more.
 
+*(only available in French version 🇫🇷)*
+
 ## Table of Contents
 
 1. [Project Description](#project-description)
@@ -146,8 +148,8 @@ This Discord bot offers several key features:
   ➡️ Starts a gaming trivia quiz using the OpenTDB API.  
 * **`/roll`** [faces=6]  
   ➡️ Rolls a die with the specified number of faces (default: 6).  
-* **`/rps`** `pierre|papier|ciseaux`  
-  ➡️ Play rock-paper-scissors against the bot.
+* **`/rps`** `@opponent [difficulty: Easy|Normal|Hard]`  
+  ➡️ Play rock-paper-scissors against a bot or another player. You can set the bot's difficulty level.
 * **`morpion`** `[opponent: @user|LlddBot] [difficulty: Facile|Normale|Difficile]`  
   ➡️ Start a Tic-Tac-Toe game against another user or LlddBot. Choose difficulty for bot opponents.
 * **`/bingo start`**  
@@ -214,10 +216,10 @@ This Discord bot offers several key features:
 
 ### Others API:
 * **`/weather`** `<city>`
-  ➡️ Affiche la météo actuelle d'une ville.
+  ➡️ Displays the current weather for a specified city.
 
 * **`/news`**
-  ➡️ Affiche les dernières actualités gaming.
+  ➡️ Shows the latest gaming news.
 <p align="left">
   <img src="img/meteo.jpg" alt="weather preview" width="250px">
 </p>
