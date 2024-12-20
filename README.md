@@ -150,17 +150,28 @@ This Discord bot offers several key features:
   ➡️ Rolls a die with the specified number of faces (default: 6).  
 * **`/rps`** `@opponent [difficulty: Easy|Normal|Hard]`  
   ➡️ Play rock-paper-scissors against a bot or another player. You can set the bot's difficulty level.
-* **`morpion`** `[opponent: @user|LlddBot] [difficulty: Facile|Normale|Difficile]`  
-  ➡️ Start a Tic-Tac-Toe game against another user or LlddBot. Choose difficulty for bot opponents.
+* **`morpion`** `[opponent: @user|LlddBot] [difficulty: Facile|Normale|Difficile]`
+* ➡️ Start a Tic-Tac-Toe game against another user or LlddBot. Choose difficulty for bot opponents.  
+<p align="left">
+  <img src="img/morpion.jpg" alt="morpion preview" width="250px">
+</p>
+
 * **`/bingo start`**  
   ➡️ Start a Bingo game.
 * **`/bingo stop`** 
   ➡️ End the current Bingo game.
 <p align="left">
-  <img src="img/morpion.jpg" alt="morpion preview" width="250px">
-</p>
-<p align="left">
   <img src="img/bingo.jpg" alt="bingo preview" width="250px">
+</p>
+
+* **`/pendu random`**  
+  ➡️ Starts a Hangman game with a randomly chosen word from the file `word_list.txt`.
+
+* **`/pendu custom`**  
+  ➡️ Starts a Hangman game where a player chooses the word via DM.
+
+<p align="left">
+  <img src="img/hangman_game.jpg" alt="hangman game preview" width="250px">
 </p>
 
 ---
