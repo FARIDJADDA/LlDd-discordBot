@@ -63,7 +63,7 @@ class HuggingFaceChat(commands.Cog):
                 embed_response = discord.Embed(
                     title="🤖 Réponse de Hugging Face",
                     description=answer,
-                    color=discord.Color.green()
+                    color=discord.Color.dark_teal()
                 )
                 embed_response.set_footer(text=f"Question posée par {ctx.author} • Modèle : {model}",
                                           icon_url=ctx.author.avatar.url)
@@ -81,7 +81,7 @@ class HuggingFaceChat(commands.Cog):
         embed_error = discord.Embed(
             title="❌ Tous les modèles sont indisponibles",
             description="Impossible de générer une réponse pour le moment. Veuillez réessayer plus tard.",
-            color=discord.Color.red()
+            color=discord.Color.dark_embed()
         )
         await loading_message.edit(embed=embed_error)
 

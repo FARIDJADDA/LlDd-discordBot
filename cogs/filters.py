@@ -60,7 +60,7 @@ class Filters(commands.Cog):
             embed = discord.Embed(
                 title="🚫 Message supprimé",
                 description=f"**{message.author.mention}**, ton message contenait un mot interdit !",
-                color=discord.Color.dark_red(),
+                color=discord.Color.dark_embed(),
             )
             if file:
                 embed.set_thumbnail(url="attachment://lldd_bot_dsgn.jpg")
@@ -97,14 +97,14 @@ class Filters(commands.Cog):
             await ctx.send(embed=discord.Embed(
                 title="✅ Mot ajouté",
                 description=f"Le mot **{word}** a été ajouté à la liste des mots interdits.",
-                color=discord.Color.green(),
+                color=discord.Color.dark_teal(),
             ))
             logger.info(f"Mot ajouté : {word}")
         else:
             await ctx.send(embed=discord.Embed(
                 title="⚠️ Mot existant",
                 description=f"Le mot **{word}** est déjà dans la liste des mots interdits.",
-                color=discord.Color.orange(),
+                color=discord.Color.dark_embed(),
             ))
 
     @commands.hybrid_command(name="remove_banned_word", description="Retire un mot de la liste des mots interdits.")
@@ -116,14 +116,14 @@ class Filters(commands.Cog):
             await ctx.send(embed=discord.Embed(
                 title="✅ Mot retiré",
                 description=f"Le mot **{word}** a été retiré de la liste des mots interdits.",
-                color=discord.Color.green(),
+                color=discord.Color.dark_teal(),
             ))
             logger.info(f"Mot retiré : {word}")
         else:
             await ctx.send(embed=discord.Embed(
                 title="❌ Mot introuvable",
                 description=f"Le mot **{word}** n'est pas dans la liste des mots interdits.",
-                color=discord.Color.red(),
+                color=discord.Color.dark_embed(),
             ))
 
     @commands.hybrid_command(name="list_banned_words", description="Affiche la liste des mots interdits.")

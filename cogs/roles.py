@@ -70,7 +70,7 @@ class Roles(commands.Cog):
             embed = discord.Embed(
                 title="🎉 Bienvenue sur le serveur !",
                 description=f"Salut {member.mention} !\nTu as reçu les rôles suivants :\n**{', '.join([role.name for role in roles_to_add])}**",
-                color=discord.Color.green()
+                color=discord.Color.dark_teal()
             )
             embed.set_thumbnail(url="attachment://roles_icon.png")
             await member.send(embed=embed, file=discord.File("assets/roles_icon.png", filename="roles_icon.png"))
@@ -91,7 +91,7 @@ class Roles(commands.Cog):
         embed = discord.Embed(
             title="✅ Rôles par défaut mis à jour",
             description=f"Les rôles suivants seront attribués automatiquement :\n**{', '.join(role_names)}**",
-            color=discord.Color.green()
+            color=discord.Color.dark_teal()
         )
         await ctx.send(embed=embed)
         logger.info(f"Rôles par défaut mis à jour par {ctx.author}: {', '.join(role_names)}.")
@@ -103,13 +103,13 @@ class Roles(commands.Cog):
             embed = discord.Embed(
                 title="📋 Rôles par défaut",
                 description=f"Les rôles suivants seront attribués automatiquement :\n**{', '.join(self.default_roles)}**",
-                color=discord.Color.dark_green()
+                color=discord.Color.dark_teal()
             )
         else:
             embed = discord.Embed(
                 title="❌ Aucun rôle par défaut défini",
                 description="Aucun rôle n'est configuré pour être attribué automatiquement.",
-                color=discord.Color.red()
+                color=discord.Color.dark_embed()
             )
         await ctx.send(embed=embed)
         logger.info(f"Rôles par défaut affichés pour {ctx.author}.")

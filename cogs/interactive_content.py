@@ -42,7 +42,7 @@ class InteractiveContent(commands.Cog):
         embed = discord.Embed(
             title=f"🌤️ Météo à {city_name}, {country}",
             description=f"**{weather_desc}**",
-            color=discord.Color.blue()
+            color=discord.Color.dark_purple()
         )
         embed.add_field(name="🌡 Température", value=f"{temp}°C", inline=True)
         embed.add_field(name="🌡 Ressenti", value=f"{feels_like}°C", inline=True)

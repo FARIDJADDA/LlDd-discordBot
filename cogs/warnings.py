@@ -63,7 +63,7 @@ class Warnings(commands.Cog):
                 f"📝 **Raison** : {reason}\n"
                 f"⚠️ **Total d'avertissements** : {total_warnings}/{self.max_warnings}"
             ),
-            color=discord.Color.dark_red(),
+            color=discord.Color.dark_embed(),
         )
         await ctx.send(embed=embed)
 
@@ -87,7 +87,7 @@ class Warnings(commands.Cog):
             await ctx.send(embed=discord.Embed(
                 title="✅ Aucun avertissement",
                 description=f"**{member.mention}** n'a actuellement aucun avertissement.",
-                color=discord.Color.green()
+                color=discord.Color.dark_teal()
             ))
 
     @commands.hybrid_command(name="clear_warnings", help="Efface les avertissements d'un utilisateur.")
@@ -100,13 +100,13 @@ class Warnings(commands.Cog):
             await ctx.send(embed=discord.Embed(
                 title="🧹 Avertissements effacés",
                 description=f"✅ Tous les avertissements pour **{member.mention}** ont été supprimés.",
-                color=discord.Color.green(),
+                color=discord.Color.dark_teal(),
             ))
         else:
             await ctx.send(embed=discord.Embed(
                 title="✅ Aucun avertissement",
                 description=f"**{member.mention}** n'a aucun avertissement à supprimer.",
-                color=discord.Color.green()
+                color=discord.Color.dark_teal()
             ))
 
     @commands.hybrid_command(name="set_max_warnings", help="Définit le nombre maximum d'avertissements avant sanction.")
@@ -124,7 +124,7 @@ class Warnings(commands.Cog):
             await ctx.send(embed=discord.Embed(
                 title="❌ Erreur",
                 description="Le nombre maximum d'avertissements doit être supérieur à 0.",
-                color=discord.Color.red()
+                color=discord.Color.dark_embed()
             ))
 
     async def apply_sanction(self, ctx: commands.Context, member: discord.Member):
@@ -139,7 +139,7 @@ class Warnings(commands.Cog):
         await ctx.send(embed=discord.Embed(
             title="🔇 Sanction appliquée",
             description=f"**{member.mention}** a été mute automatiquement après {self.max_warnings} avertissements.",
-            color=discord.Color.red(),
+            color=discord.Color.dark_embed(),
         ))
 
 

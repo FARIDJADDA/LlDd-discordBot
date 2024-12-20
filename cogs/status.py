@@ -57,7 +57,7 @@ class Status(commands.Cog):
             await ctx.send(embed=discord.Embed(
                 title="❌ Erreur",
                 description="Une erreur est survenue lors de l'exécution de la commande.",
-                color=discord.Color.red(),
+                color=discord.Color.dark_embed(),
             ))
             print(f"Erreur dans la commande 'status': {error}")
 

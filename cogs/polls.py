@@ -21,7 +21,7 @@ class Polls(commands.Cog):
             await ctx.send(embed=discord.Embed(
                 title="❌ Erreur",
                 description="Le sondage doit contenir entre **2 et 10 options**.",
-                color=discord.Color.red()
+                color=discord.Color.dark_embed()
             ))
             return
 
@@ -59,7 +59,7 @@ class Polls(commands.Cog):
             result_embed = discord.Embed(
                 title="📊 Résultats du sondage",
                 description=f"**{question}**\n\n{result_description}",
-                color=discord.Color.green()
+                color=discord.Color.dark_teal()
             )
             result_embed.set_footer(text="Merci pour votre participation !")
             await ctx.send(embed=result_embed)
@@ -71,13 +71,13 @@ class Polls(commands.Cog):
             await ctx.send(embed=discord.Embed(
                 title="❌ Erreur",
                 description="Format incorrect. Utilise `/poll \"Question\" \"Option1, Option2, Option3\" [Durée en minutes]`.",
-                color=discord.Color.red()
+                color=discord.Color.dark_embed()
             ))
         else:
             await ctx.send(embed=discord.Embed(
                 title="❌ Erreur inattendue",
                 description=str(error),
-                color=discord.Color.red()
+                color=discord.Color.dark_embed()
             ))
             raise error
 

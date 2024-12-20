@@ -63,7 +63,7 @@ class FunAPI(commands.Cog):
                     embed = discord.Embed(
                         title="😂 Blague aléatoire",
                         description=joke,
-                        color=discord.Color.green(),
+                        color=discord.Color.dark_teal(),
                     )
                     embed.set_footer(text="Blague générée depuis JokeAPI")
                     await ctx.send(embed=embed)

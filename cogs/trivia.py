@@ -103,7 +103,7 @@ class Trivia(commands.Cog):
             embed = discord.Embed(
                 title="❌ Mauvaise réponse ! ❌",
                 description=f"La bonne réponse était **{correct_answer}**.",
-                color=discord.Color.red()
+                color=discord.Color.dark_embed()
             )
             await ctx.send(embed=embed)
             logger.info(f"❌ {ctx.author} a donné une mauvaise réponse : {options[response-1] if 1 <= response <= len(options) else 'invalide'}.")
@@ -115,7 +115,7 @@ class Trivia(commands.Cog):
         embed = discord.Embed(
             title="🎮 Mon Score Trivia 🎮",
             description=f"**{ctx.author.mention}**, tu as actuellement **{user_score} point(s)** dans le Trivia Gaming !",
-            color=discord.Color.blue()
+            color=discord.Color.dark_teal()
         )
         await ctx.send(embed=embed)
         logger.info(f"📊 {ctx.author} a demandé son score Trivia : {user_score} point(s).")

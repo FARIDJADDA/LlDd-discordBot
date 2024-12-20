@@ -59,7 +59,7 @@ class ChatGPT(commands.Cog):
             embed_response = discord.Embed(
                 title="🤖 Réponse de ChatGPT",
                 description=answer,
-                color=discord.Color.green()
+                color=discord.Color.dark_teal()
             )
             embed_response.set_footer(text=f"Question posée par {ctx.author}", icon_url=ctx.author.avatar.url)
 
@@ -70,7 +70,7 @@ class ChatGPT(commands.Cog):
             embed_error = discord.Embed(
                 title="❌ Erreur",
                 description="Une erreur est survenue lors de la génération de la réponse. Veuillez réessayer plus tard.",
-                color=discord.Color.red()
+                color=discord.Color.dark_embed()
             )
             await loading_message.edit(embed=embed_error)
             print(f"Erreur OpenAI : {e}")

@@ -118,7 +118,7 @@ class Welcome(commands.Cog):
         await ctx.send(embed=discord.Embed(
             title="✅ Configuration mise à jour",
             description=f"Le salon des règles a été configuré sur {channel.mention}.",
-            color=discord.Color.green()
+            color=discord.Color.dark_teal()
         ))
 
     @commands.hybrid_command(name="set_welcome_channel", help="Définit le nom ou l'ID du salon de bienvenue.")
@@ -130,7 +130,7 @@ class Welcome(commands.Cog):
         await ctx.send(embed=discord.Embed(
             title="✅ Configuration mise à jour",
             description=f"Le salon de bienvenue a été configuré sur {channel.mention}.",
-            color=discord.Color.green()
+            color=discord.Color.dark_teal()
         ))
 
     @commands.hybrid_command(name="show_welcome_config", help="Affiche la configuration actuelle des messages de bienvenue.")

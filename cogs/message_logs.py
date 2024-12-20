@@ -113,7 +113,7 @@ class MessageLogs(commands.Cog):
             try:
                 embed = discord.Embed(
                     title="🗑️ Message supprimé",
-                    color=discord.Color.dark_red(),
+                    color=discord.Color.dark_embed(),
                     timestamp=discord.utils.utcnow()
                 )
                 embed.add_field(name="Auteur", value=message.author.mention, inline=False)
@@ -139,7 +139,7 @@ class MessageLogs(commands.Cog):
         await ctx.send(embed=discord.Embed(
             title="✅ Canal de log configuré",
             description=f"Les logs seront envoyés dans {channel.mention}.",
-            color=discord.Color.green()
+            color=discord.Color.dark_teal()
         ))
         logger.info(f"✅ Canal de log configuré par {ctx.author.name} : {channel.name} (ID: {channel.id})")
 
@@ -152,7 +152,7 @@ class MessageLogs(commands.Cog):
         await ctx.send(embed=discord.Embed(
             title="🔄 Configuration réinitialisée",
             description="Le fichier de configuration des logs a été réinitialisé avec succès.",
-            color=discord.Color.orange()
+            color=discord.Color.dark_teal()
         ))
         logger.info(f"🔄 Configuration de log réinitialisée par {ctx.author.name}.")
 

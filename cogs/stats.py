@@ -17,7 +17,7 @@ class Stats(commands.Cog):
             await ctx.send(embed=discord.Embed(
                 title="❌ Erreur",
                 description="Impossible de récupérer les statistiques du serveur.",
-                color=discord.Color.red()
+                color=discord.Color.dark_embed()
             ))
             logger.error(f"Échec de récupération des statistiques pour {ctx.author}.")
             return
@@ -65,7 +65,7 @@ class Stats(commands.Cog):
             await ctx.send(embed=discord.Embed(
                 title="❌ Erreur",
                 description="Une erreur est survenue lors de l'exécution de la commande.",
-                color=discord.Color.red()
+                color=discord.Color.dark_embed()
             ))
             logger.error(f"Erreur dans la commande 'server_stats' : {error}")
 

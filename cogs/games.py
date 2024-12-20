@@ -21,7 +21,7 @@ class Games(commands.Cog):
         embed = discord.Embed(
             title="🎮 **Quiz Gaming**",
             description=f"❓ {question['question']}\n\nTu as **{attempts} chances** de répondre correctement !",
-            color=discord.Color.red()  # Couleur rouge intense pour les défis
+            color=discord.Color.dark_embed()
         )
         embed.set_thumbnail(url="https://cdn.pixabay.com/photo/2024/05/24/16/40/ai-generated-8785422_640.jpg")  # Placeholder
         embed.set_footer(text=f"Bonne chance, {ctx.author.name} !", icon_url=ctx.author.avatar.url)
@@ -38,7 +38,7 @@ class Games(commands.Cog):
                     await ctx.send(embed=discord.Embed(
                         title="✅ Bonne réponse !",
                         description=f"🎉 Félicitations {ctx.author.mention} ! La réponse était **{question['answer']}**.",
-                        color=discord.Color.green()
+                        color=discord.Color.dark_teal()
                     ))
                     return
                 else:
@@ -59,7 +59,7 @@ class Games(commands.Cog):
         await ctx.send(embed=discord.Embed(
             title="❌ Plus de tentatives !",
             description=f"La bonne réponse était : **{question['answer']}**.",
-            color=discord.Color.red()
+            color=discord.Color.dark_embed()
         ))
 
     @commands.hybrid_command(name="dice_roll", description="Lance un ou plusieurs dés avec un nombre de faces personnalisé.")
@@ -69,7 +69,7 @@ class Games(commands.Cog):
             await ctx.send(embed=discord.Embed(
                 title="⚠️ Erreur",
                 description="Le nombre de dés et le nombre de faces doivent être supérieurs à 0.",
-                color=discord.Color.red()
+                color=discord.Color.dark_embed()
             ))
             return
 
@@ -98,7 +98,7 @@ class Games(commands.Cog):
                 await ctx.send(embed=discord.Embed(
                     title="⚠️ Erreur",
                     description="Aucun membre valide trouvé. Vérifiez vos mentions.",
-                    color=discord.Color.red()
+                    color=discord.Color.dark_embed()
                 ))
                 return
 
@@ -106,7 +106,7 @@ class Games(commands.Cog):
             embed = discord.Embed(
                 title="🎯 **Choix aléatoire**",
                 description=f"🎉 Le membre choisi est : **{chosen_one.mention}** !",
-                color=discord.Color.red()
+                color=discord.Color.dark_embed()
             )
             embed.set_thumbnail(url="https://cdn.pixabay.com/photo/2024/05/24/16/40/ai-generated-8785422_640.jpg")  # Placeholder
             embed.set_footer(text=f"Demandé par {ctx.author.name}", icon_url=ctx.author.avatar.url)
@@ -116,7 +116,7 @@ class Games(commands.Cog):
             await ctx.send(embed=discord.Embed(
                 title="❌ Erreur inattendue",
                 description="Une erreur est survenue lors de l'exécution de la commande.",
-                color=discord.Color.dark_gray()
+                color=discord.Color.dark_embed()
             ))
             print(f"Erreur random_pick : {e}")
 

@@ -16,7 +16,7 @@ class Moderation(commands.Cog):
             embed = discord.Embed(
                 title="🔨 Utilisateur banni",
                 description=f"✅ **{member}** a été banni.\n📝 Raison : {reason}",
-                color=discord.Color.dark_red()
+                color=discord.Color.dark_embed()
             )
             embed.set_footer(text=f"Action effectuée par {ctx.author.name}", icon_url=ctx.author.avatar.url)
             await ctx.send(embed=embed)
@@ -25,7 +25,7 @@ class Moderation(commands.Cog):
             await ctx.send(embed=discord.Embed(
                 title="❌ Erreur",
                 description=f"Impossible de bannir {member}.",
-                color=discord.Color.red()
+                color=discord.Color.dark_embed()
             ))
             logger.error(f"Erreur lors du bannissement de {member} : {e}")
 
@@ -38,7 +38,7 @@ class Moderation(commands.Cog):
             embed = discord.Embed(
                 title="🚪 Utilisateur expulsé",
                 description=f"✅ **{member}** a été expulsé.\n📝 Raison : {reason}",
-                color=discord.Color.dark_orange()
+                color=discord.Color.dark_embed()
             )
             embed.set_footer(text=f"Action effectuée par {ctx.author.name}", icon_url=ctx.author.avatar.url)
             await ctx.send(embed=embed)
@@ -47,7 +47,7 @@ class Moderation(commands.Cog):
             await ctx.send(embed=discord.Embed(
                 title="❌ Erreur",
                 description=f"Impossible d'expulser {member}.",
-                color=discord.Color.red()
+                color=discord.Color.dark_embed()
             ))
             logger.error(f"Erreur lors de l'expulsion de {member} : {e}")
 
@@ -61,7 +61,7 @@ class Moderation(commands.Cog):
                 await ctx.send(embed=discord.Embed(
                     title="❌ Permission insuffisante",
                     description="Je n'ai pas la permission `ban_members` pour récupérer la liste des bannis.",
-                    color=discord.Color.red()
+                    color=discord.Color.dark_embed()
                 ))
                 return
 
@@ -72,7 +72,7 @@ class Moderation(commands.Cog):
                 await ctx.send(embed=discord.Embed(
                     title="🔍 Liste des bannis",
                     description="✅ Aucun utilisateur n'est actuellement banni sur ce serveur.",
-                    color=discord.Color.green()
+                    color=discord.Color.dark_teal()
                 ))
                 return
 
@@ -86,7 +86,7 @@ class Moderation(commands.Cog):
             embed = discord.Embed(
                 title="🔍 Liste des utilisateurs bannis",
                 description=banned_list,
-                color=discord.Color.dark_red()
+                color=discord.Color.dark_purple()
             )
             embed.set_footer(text=f"Demandé par {ctx.author.name}", icon_url=ctx.author.avatar.url)
             await ctx.send(embed=embed)
@@ -95,13 +95,13 @@ class Moderation(commands.Cog):
             await ctx.send(embed=discord.Embed(
                 title="❌ Permission insuffisante",
                 description="Je n'ai pas les permissions nécessaires pour récupérer la liste des bannis.",
-                color=discord.Color.red()
+                color=discord.Color.dark_embed()
             ))
         except Exception as e:
             await ctx.send(embed=discord.Embed(
                 title="❌ Erreur",
                 description=f"Une erreur inattendue est survenue : `{str(e)}`",
-                color=discord.Color.red()
+                color=discord.Color.dark_embed()
             ))
             logger.error(f"Erreur lors de la récupération de la liste des bannis : {e}")
 

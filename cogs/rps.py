@@ -26,17 +26,17 @@ class RockPaperScissors(commands.Cog):
         # Détermination du résultat
         if user_choice == bot_choice:
             result = "Égalité ! 🤝"
-            color = discord.Color.orange()
+            color = discord.Color.dark_embed()
             logger.info(f"🤝 Égalité entre {ctx.author} et le bot.")
         elif (user_choice == "pierre" and bot_choice == "ciseaux") or \
              (user_choice == "papier" and bot_choice == "pierre") or \
              (user_choice == "ciseaux" and bot_choice == "papier"):
             result = "🎉 Tu as gagné !"
-            color = discord.Color.green()
+            color = discord.Color.dark_teal()
             logger.info(f"✅ {ctx.author} a gagné contre le bot.")
         else:
             result = "💀 Tu as perdu !"
-            color = discord.Color.red()
+            color = discord.Color.dark_embed()
             logger.info(f"❌ {ctx.author} a perdu contre le bot.")
 
         # Création de l'embed pour afficher le résultat
@@ -64,7 +64,7 @@ class RockPaperScissors(commands.Cog):
                 "**Papier** bat **Pierre**.\n\n"
                 "Utilise `/rps <pierre|papier|ciseaux>` pour jouer contre le bot !"
             ),
-            color=discord.Color.blue()
+            color=discord.Color.dark_purple()
         )
         embed.set_footer(text="Amuse-toi bien ! 🎉")
         await ctx.send(embed=embed)
