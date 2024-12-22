@@ -25,7 +25,7 @@
 A complete and customizable Discord bot designed to manage and engage community servers.  
 This bot includes moderation tools, mini-games, advanced logging, activity statistics, and much more.
 
-*(only available in French version 🇫🇷)*
+*(project under construction and only available in French version 🇫🇷)*
 
 
 <div align="center">
@@ -207,18 +207,29 @@ This Discord bot offers several key features:
 
 ---
 
-### **Poll Commands**
-* **`/sondage_creer`** `<question> <options>`  
-  ➡️ Create a poll with a question and up to 10 options (separated by commas).
+## **Poll Commands**
+The poll module allows you to create, manage, and display interactive polls directly in your Discord channels.
 
-* **`/sondage_resultats`**  
-  ➡️ Display the results of the current poll in the channel.
+### **Commands**
+#### **`/create_poll`**
+➡️ Creates a new poll with a question and up to 15 options.
 
-* **`/sondage_terminer`**  
-  ➡️ End the poll in the channel and show the results.
+➡️ **Usage**:
+  ```bash
+  /create_poll question:"Your question?" options:"Option 1;Option 2;Option 3"
+  ```
+
 <div align="left">
   <img src="img/polls.jpg" alt="polls preview" width="250px">
 </div>
+
+thx to [JohnnyJayJay](https://github.com/JohnnyJayJay) for the inspiration.
+
+#### **`/poll_results`**
+ ➡️ Displays the current results of an active poll in the channel.
+
+#### **`/end_poll`**
+ ➡️ Ends an active poll in the channel and displays the final results.
 
 ---
 
