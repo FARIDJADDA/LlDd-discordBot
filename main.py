@@ -26,8 +26,8 @@ bot = commands.Bot(command_prefix="!", intents=intents)
 async def on_ready():
     """Synchronise les commandes hybrides au démarrage et affiche le statut du bot."""
     await bot.tree.sync()
-    print(f"✅ Commandes Slash synchronisées.")
-    print(f"✅ Bot connecté en tant que {bot.user.name} ({bot.user.id})")
+    print(f"☑️ Commandes Slash synchronisées.")
+    print(f"☑️ Bot connecté en tant que {bot.user.name} ({bot.user.id})")
 
 
 async def load_cogs():
@@ -39,11 +39,11 @@ async def load_cogs():
             try:
                 module_name = f"cogs.{filename[:-3]}"
                 await bot.load_extension(module_name)
-                print(f"✅ Cog chargé : {filename}")
+                print(f"☑️ Cog chargé : {filename}")
                 loaded_cogs += 1
             except Exception as e:
                 print(f"⚠️ Erreur lors du chargement du cog {filename} : {e}")
-    print(f"✅ Total des cogs chargés : {loaded_cogs}")
+    print(f"☑️ Total des cogs chargés : {loaded_cogs}")
 
 
 
@@ -55,7 +55,7 @@ async def reload_cog(cog_name):
             await bot.unload_extension(cog_name)
         print(f"🔄 Chargement du cog : {cog_name}")
         await bot.load_extension(cog_name)
-        print(f"✅ Cog rechargé : {cog_name}")
+        print(f"☑️ Cog rechargé : {cog_name}")
     except Exception as e:
         print(f"⚠️ Erreur lors du rechargement du Cog {cog_name} : {e}")
 

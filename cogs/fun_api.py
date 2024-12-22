@@ -42,35 +42,38 @@ class FunAPI(commands.Cog):
                 await ctx.send("❌ Une erreur est survenue en récupérant un meme.")
                 print(f"Erreur API Meme : {e}")
 
-    @commands.hybrid_command(name="joke", description="Raconte une blague aléatoire.")
+    @commands.hybrid_command(name="joke", description="Get a random joke.")
     async def joke(self, ctx: commands.Context):
-        """Récupère une blague aléatoire depuis JokeAPI."""
+        """Fetch a random joke from JokeAPI while excluding inappropriate categories."""
+        self.jokeapi_url = "https://v2.jokeapi.dev/joke/Any?blacklistFlags=nsfw,racist,sexist,explicit"
+        # The blacklistFlags parameter excludes jokes with inappropriate content
+
         async with aiohttp.ClientSession() as session:
             try:
                 async with session.get(self.jokeapi_url) as resp:
                     if resp.status != 200:
-                        await ctx.send("❌ Impossible de récupérer une blague pour le moment.")
+                        await ctx.send("❌ Unable to fetch a joke at the moment.")
                         return
 
                     joke_data = await resp.json()
                     if joke_data["type"] == "single":
-                        # Blague simple
+                        # Single-line joke
                         joke = joke_data["joke"]
                     else:
-                        # Blague avec question/réponse
+                        # Joke with setup and delivery
                         joke = f"{joke_data['setup']}\n\n*{joke_data['delivery']}*"
 
                     embed = discord.Embed(
-                        title="😂 Blague aléatoire",
+                        title="😂 Random Joke",
                         description=joke,
-                        color=discord.Color.dark_teal(),
+                        color=discord.Color.dark_purple(),
                     )
-                    embed.set_footer(text="Blague générée depuis JokeAPI")
+                    embed.set_footer(text="Joke generated from JokeAPI")
                     await ctx.send(embed=embed)
 
             except Exception as e:
-                await ctx.send("❌ Une erreur est survenue en récupérant une blague.")
-                print(f"Erreur API Blague : {e}")
+                await ctx.send("❌ An error occurred while fetching a joke.")
+                print(f"Joke API Error: {e}")
 
 
 async def setup(bot: commands.Bot):

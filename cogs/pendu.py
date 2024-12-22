@@ -140,4 +140,4 @@ class PenduCog(commands.Cog):
 
 async def setup(bot):
     await bot.add_cog(PenduCog(bot))
-    logger.info("✅ Cog Pendu ajouté avec succès.")
+    logger.info("☑️ Cog Pendu ajouté avec succès.")

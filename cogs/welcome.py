@@ -42,7 +42,7 @@ class Welcome(commands.Cog):
         try:
             with open(WELCOME_CONFIG_FILE, "w") as file:
                 json.dump(self.config, file, indent=4)
-            logger.info(f"✅ Configuration sauvegardée dans '{WELCOME_CONFIG_FILE}'.")
+            logger.info(f"☑️ Configuration sauvegardée dans '{WELCOME_CONFIG_FILE}'.")
         except Exception as e:
             logger.error(f"❌ Erreur lors de la sauvegarde de '{WELCOME_CONFIG_FILE}' : {e}")
 
@@ -104,7 +104,7 @@ class Welcome(commands.Cog):
 
             # Envoi du message de bienvenue
             await welcome_channel.send(file=file, embed=embed)
-            logger.info(f"✅ Message de bienvenue envoyé dans '{welcome_channel.name}' pour {member.name}.")
+            logger.info(f"☑️ Message de bienvenue envoyé dans '{welcome_channel.name}' pour {member.name}.")
 
         except Exception as e:
             logger.error(f"❌ Erreur lors de l'envoi du message de bienvenue : {e}")
@@ -116,7 +116,7 @@ class Welcome(commands.Cog):
         self.config["rules_channel_id"] = str(channel.id)
         self.save_config()
         await ctx.send(embed=discord.Embed(
-            title="✅ Configuration mise à jour",
+            title="☑️ Configuration mise à jour",
             description=f"Le salon des règles a été configuré sur {channel.mention}.",
             color=discord.Color.dark_teal()
         ))
@@ -128,7 +128,7 @@ class Welcome(commands.Cog):
         self.config["welcome_channel_id"] = str(channel.id)
         self.save_config()
         await ctx.send(embed=discord.Embed(
-            title="✅ Configuration mise à jour",
+            title="☑️ Configuration mise à jour",
             description=f"Le salon de bienvenue a été configuré sur {channel.mention}.",
             color=discord.Color.dark_teal()
         ))
@@ -155,4 +155,4 @@ class Welcome(commands.Cog):
 async def setup(bot: commands.Bot):
     """Ajoute la cog au bot."""
     await bot.add_cog(Welcome(bot))
-    logger.info("✅ Cog Welcome ajouté avec succès.")
+    logger.info("☑️ Cog Welcome ajouté avec succès.")

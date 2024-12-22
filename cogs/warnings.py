@@ -42,7 +42,7 @@ class Warnings(commands.Cog):
         try:
             with open(WARNINGS_FILE, "w") as file:
                 json.dump(self.warnings, file, indent=4)
-            logger.info(f"✅ Avertissements sauvegardés dans '{WARNINGS_FILE}'.")
+            logger.info(f"☑️ Avertissements sauvegardés dans '{WARNINGS_FILE}'.")
         except Exception as e:
             logger.error(f"❌ Erreur lors de la sauvegarde dans '{WARNINGS_FILE}' : {e}")
 
@@ -85,7 +85,7 @@ class Warnings(commands.Cog):
             await ctx.send(embed=embed)
         else:
             await ctx.send(embed=discord.Embed(
-                title="✅ Aucun avertissement",
+                title="☑️ Aucun avertissement",
                 description=f"**{member.mention}** n'a actuellement aucun avertissement.",
                 color=discord.Color.dark_teal()
             ))
@@ -99,12 +99,12 @@ class Warnings(commands.Cog):
             self.save_warnings()
             await ctx.send(embed=discord.Embed(
                 title="🧹 Avertissements effacés",
-                description=f"✅ Tous les avertissements pour **{member.mention}** ont été supprimés.",
+                description=f"☑️ Tous les avertissements pour **{member.mention}** ont été supprimés.",
                 color=discord.Color.dark_teal(),
             ))
         else:
             await ctx.send(embed=discord.Embed(
-                title="✅ Aucun avertissement",
+                title="☑️ Aucun avertissement",
                 description=f"**{member.mention}** n'a aucun avertissement à supprimer.",
                 color=discord.Color.dark_teal()
             ))
@@ -116,7 +116,7 @@ class Warnings(commands.Cog):
         if number > 0:
             self.max_warnings = number
             await ctx.send(embed=discord.Embed(
-                title="✅ Configuration mise à jour",
+                title="☑️ Configuration mise à jour",
                 description=f"⚠️ Le nombre maximum d'avertissements a été fixé à **{number}**.",
                 color=discord.Color.dark_purple()
             ))
@@ -146,4 +146,4 @@ class Warnings(commands.Cog):
 async def setup(bot: commands.Bot):
     """Ajoute la cog au bot."""
     await bot.add_cog(Warnings(bot))
-    logger.info("✅ Cog Warnings ajouté avec succès.")
+    logger.info("☑️ Cog Warnings ajouté avec succès.")

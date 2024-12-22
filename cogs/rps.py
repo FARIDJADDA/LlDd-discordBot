@@ -112,4 +112,4 @@ class RPS(commands.Cog):
 
 async def setup(bot: commands.Bot):
     await bot.add_cog(RPS(bot))
-    logger.info("✅ Cog RPS ajouté avec succès.")
+    logger.info("☑️ Cog RPS ajouté avec succès.")

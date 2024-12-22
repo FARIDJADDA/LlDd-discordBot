@@ -41,7 +41,7 @@ class MessageLogs(commands.Cog):
         default_config = {"log_channel_id": None}
         with open(LOG_CONFIG_FILE, "w") as file:
             json.dump(default_config, file, indent=4)
-        logger.info(f"✅ Fichier '{LOG_CONFIG_FILE}' réinitialisé.")
+        logger.info(f"☑️ Fichier '{LOG_CONFIG_FILE}' réinitialisé.")
         return default_config["log_channel_id"]
 
     def save_config(self, channel_id):
@@ -49,7 +49,7 @@ class MessageLogs(commands.Cog):
         try:
             with open(LOG_CONFIG_FILE, "w") as file:
                 json.dump({"log_channel_id": channel_id}, file, indent=4)
-            logger.info(f"✅ Configuration de log sauvegardée : Canal ID {channel_id}")
+            logger.info(f"☑️ Configuration de log sauvegardée : Canal ID {channel_id}")
         except Exception as e:
             logger.error(f"❌ Erreur lors de la sauvegarde de '{LOG_CONFIG_FILE}' : {e}")
 
@@ -137,11 +137,11 @@ class MessageLogs(commands.Cog):
         self.log_channel_id = channel.id
         self.save_config(channel.id)
         await ctx.send(embed=discord.Embed(
-            title="✅ Canal de log configuré",
+            title="☑️ Canal de log configuré",
             description=f"Les logs seront envoyés dans {channel.mention}.",
             color=discord.Color.dark_teal()
         ))
-        logger.info(f"✅ Canal de log configuré par {ctx.author.name} : {channel.name} (ID: {channel.id})")
+        logger.info(f"☑️ Canal de log configuré par {ctx.author.name} : {channel.name} (ID: {channel.id})")
 
 
     @commands.hybrid_command(name="reset_log_config", help="Réinitialise la configuration de log.")
@@ -160,4 +160,4 @@ class MessageLogs(commands.Cog):
 async def setup(bot: commands.Bot):
     """Ajoute la cog au bot."""
     await bot.add_cog(MessageLogs(bot))
-    logger.info("✅ Cog MessageLogs ajouté avec succès.")
+    logger.info("☑️ Cog MessageLogs ajouté avec succès.")

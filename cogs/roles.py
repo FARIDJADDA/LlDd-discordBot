@@ -89,7 +89,7 @@ class Roles(commands.Cog):
         self.save_roles()
 
         embed = discord.Embed(
-            title="✅ Rôles par défaut mis à jour",
+            title="☑️ Rôles par défaut mis à jour",
             description=f"Les rôles suivants seront attribués automatiquement :\n**{', '.join(role_names)}**",
             color=discord.Color.dark_teal()
         )

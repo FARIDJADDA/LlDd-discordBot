@@ -54,7 +54,7 @@ class Twitch(commands.Cog):
         try:
             with open(CONFIG_FILE, "w") as file:
                 json.dump(data, file, indent=4)
-            logger.info(f"✅ Configuration Twitch sauvegardée dans '{CONFIG_FILE}'.")
+            logger.info(f"☑️ Configuration Twitch sauvegardée dans '{CONFIG_FILE}'.")
         except Exception as e:
             logger.error(f"❌ Erreur lors de la sauvegarde dans '{CONFIG_FILE}' : {e}")
 
@@ -80,7 +80,7 @@ class Twitch(commands.Cog):
                             "Client-ID": TWITCH_CLIENT_ID,
                             "Authorization": f"Bearer {data['access_token']}",
                         }
-                        logger.info("✅ Token Twitch récupéré avec succès.")
+                        logger.info("☑️ Token Twitch récupéré avec succès.")
                     else:
                         logger.error(f"❌ Erreur API Twitch (Token): {resp.status}")
             except Exception as e:
@@ -142,14 +142,14 @@ class Twitch(commands.Cog):
     async def set_twitch_channel(self, ctx: commands.Context, channel: discord.TextChannel):
         self.config["notification_channel_id"] = channel.id
         self.save_config(self.config)
-        await ctx.send(f"✅ Les notifications Twitch seront envoyées dans {channel.mention}.")
+        await ctx.send(f"☑️ Les notifications Twitch seront envoyées dans {channel.mention}.")
 
     @commands.hybrid_command(name="add_twitch_streamer", help="Ajoute un streamer à la liste.")
     async def add_streamer(self, ctx: commands.Context, streamer: str):
         if streamer not in self.config["streamers"]:
             self.config["streamers"].append(streamer)
             self.save_config(self.config)
-            await ctx.send(f"✅ **{streamer}** a été ajouté à la liste des streamers.")
+            await ctx.send(f"☑️ **{streamer}** a été ajouté à la liste des streamers.")
         else:
             await ctx.send(f"⚠️ **{streamer}** est déjà dans la liste.")
 
@@ -165,4 +165,4 @@ class Twitch(commands.Cog):
 
 async def setup(bot: commands.Bot):
     await bot.add_cog(Twitch(bot))
-    logger.info("✅ Cog Twitch ajouté avec succès.")
+    logger.info("☑️ Cog Twitch ajouté avec succès.")

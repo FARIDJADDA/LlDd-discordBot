@@ -284,6 +284,37 @@ thx to [JohnnyJayJay](https://github.com/JohnnyJayJay) for the inspiration.
 
 ---
 
+## Joke Commands
+* **`/joke`**  
+  ➡️ Get a random joke using the Joke API. Jokes are interactive, allowing users to reveal the punchline by clicking a button.
+<div align="left">
+  <img src="img/joke.jpg" alt="jokes preview" width="250px">
+</div>
+
+* **`/blague`**  
+  ➡️ Get a random joke using the Blagues API. Jokes are interactive, allowing users to reveal the punchline by clicking a button.
+
+* **`/autoriser_blague <category>`**  
+  ➡️ Configure which joke categories are allowed on your server. Toggle categories such as `Tout public`, `Humour noir`, `Développeur`, `18+`, `Beauf`, or `Blondes`.  
+  Example: `/autoriser_blague Tout public`
+
+### Blague Categories
+- **Tout public**
+- **Humour noir**
+- **Développeur**
+- **18+**
+- **Beauf**
+- **Blondes**
+
+<div align="left">
+  <img src="img/blague.jpg" alt="jokes preview" width="250px">
+</div>
+<div align="left">
+  <img src="img/blague_reponse.jpg" alt="jokes preview" width="250px">
+</div>
+
+---
+
 ### Others API:
 * **`/weather`** `<city>`
   ➡️ Displays the current weather for a specified city.
@@ -384,7 +415,7 @@ Contributions are welcome! To contribute:
 3. Test your changes locally.
 4. Open a pull request with detailed explanations.
 
-### ✅ Pull Request Checklist: :
+### ☑️ Pull Request Checklist: :
 - [ ] Added a feature or bug fix.
 - [ ] Tested locally to avoid regressions.
 - [ ] Updated documentation if necessary.

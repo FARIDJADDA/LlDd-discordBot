@@ -88,7 +88,7 @@ class Bingo(commands.Cog):
 
         self.players.append(ctx.author)
         await ctx.send(embed=discord.Embed(
-            title="✅ Inscription réussie",
+            title="☑️ Inscription réussie",
             description=f"{ctx.author.mention} a rejoint la partie de Bingo !",
             color=discord.Color.dark_teal()
         ))
@@ -158,4 +158,4 @@ class Bingo(commands.Cog):
 async def setup(bot: commands.Bot):
     """Ajoute le cog au bot."""
     await bot.add_cog(Bingo(bot))
-    logger.info("✅ Cog Bingo ajouté avec succès.")
+    logger.info("☑️ Cog Bingo ajouté avec succès.")

@@ -15,7 +15,7 @@ class Moderation(commands.Cog):
             await member.ban(reason=reason)
             embed = discord.Embed(
                 title="🔨 Utilisateur banni",
-                description=f"✅ **{member}** a été banni.\n📝 Raison : {reason}",
+                description=f"☑️ **{member}** a été banni.\n📝 Raison : {reason}",
                 color=discord.Color.dark_embed()
             )
             embed.set_footer(text=f"Action effectuée par {ctx.author.name}", icon_url=ctx.author.avatar.url)
@@ -37,7 +37,7 @@ class Moderation(commands.Cog):
             await member.kick(reason=reason)
             embed = discord.Embed(
                 title="🚪 Utilisateur expulsé",
-                description=f"✅ **{member}** a été expulsé.\n📝 Raison : {reason}",
+                description=f"☑️ **{member}** a été expulsé.\n📝 Raison : {reason}",
                 color=discord.Color.dark_embed()
             )
             embed.set_footer(text=f"Action effectuée par {ctx.author.name}", icon_url=ctx.author.avatar.url)
@@ -71,7 +71,7 @@ class Moderation(commands.Cog):
             if not banned_users:
                 await ctx.send(embed=discord.Embed(
                     title="🔍 Liste des bannis",
-                    description="✅ Aucun utilisateur n'est actuellement banni sur ce serveur.",
+                    description="☑️ Aucun utilisateur n'est actuellement banni sur ce serveur.",
                     color=discord.Color.dark_teal()
                 ))
                 return

@@ -95,7 +95,7 @@ class Filters(commands.Cog):
             self.banned_words.append(word)
             self.save_banned_words()
             await ctx.send(embed=discord.Embed(
-                title="✅ Mot ajouté",
+                title="☑️ Mot ajouté",
                 description=f"Le mot **{word}** a été ajouté à la liste des mots interdits.",
                 color=discord.Color.dark_teal(),
             ))
@@ -114,7 +114,7 @@ class Filters(commands.Cog):
             self.banned_words.remove(word)
             self.save_banned_words()
             await ctx.send(embed=discord.Embed(
-                title="✅ Mot retiré",
+                title="☑️ Mot retiré",
                 description=f"Le mot **{word}** a été retiré de la liste des mots interdits.",
                 color=discord.Color.dark_teal(),
             ))

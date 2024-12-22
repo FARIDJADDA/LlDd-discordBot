@@ -56,7 +56,7 @@ class Admin(commands.Cog):
         try:
             await self.bot.unload_extension(f"cogs.{cog}")
             await self.bot.load_extension(f"cogs.{cog}")
-            await ctx.send(f"✅ Cog **{cog}** rechargé avec succès.")
+            await ctx.send(f"☑️ Cog **{cog}** rechargé avec succès.")
         except Exception as e:
             await ctx.send(f"❌ Erreur lors du rechargement du cog **{cog}** : {e}")
 

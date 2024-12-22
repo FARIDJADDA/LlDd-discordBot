@@ -31,7 +31,7 @@ class Trivia(commands.Cog):
         async with aiohttp.ClientSession() as session:
             async with session.get(TRIVIA_API_URL) as resp:
                 if resp.status == 200:
-                    logger.info("✅ Questions Trivia récupérées avec succès depuis l'API.")
+                    logger.info("☑️ Questions Trivia récupérées avec succès depuis l'API.")
                     data = await resp.json()
                     if data["response_code"] == 0:
                         return data["results"]
@@ -94,11 +94,11 @@ class Trivia(commands.Cog):
 
             embed = discord.Embed(
                 title="🎉 Bonne réponse ! 🎉",
-                description=f"✅ La réponse était bien **{correct_answer}**.\nTu gagnes **1 point** !",
+                description=f"☑️ La réponse était bien **{correct_answer}**.\nTu gagnes **1 point** !",
                 color=discord.Color.green()
             )
             await ctx.send(embed=embed)
-            logger.info(f"✅ {ctx.author} a répondu correctement. Nouveau score : {leaderboard[str(ctx.author.id)]}")
+            logger.info(f"☑️ {ctx.author} a répondu correctement. Nouveau score : {leaderboard[str(ctx.author.id)]}")
         else:
             embed = discord.Embed(
                 title="❌ Mauvaise réponse ! ❌",

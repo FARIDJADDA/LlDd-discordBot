@@ -197,4 +197,4 @@ class Concours(commands.Cog):
 
 async def setup(bot):
     await bot.add_cog(Concours(bot))
-    logger.info("✅ Cog Concours ajouté avec succès.")
+    logger.info("☑️ Cog Concours ajouté avec succès.")

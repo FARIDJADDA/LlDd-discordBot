@@ -36,7 +36,7 @@ class Games(commands.Cog):
                 msg = await self.bot.wait_for("message", check=check, timeout=30.0)
                 if msg.content.lower() == question["answer"].lower():
                     await ctx.send(embed=discord.Embed(
-                        title="✅ Bonne réponse !",
+                        title="☑️ Bonne réponse !",
                         description=f"🎉 Félicitations {ctx.author.mention} ! La réponse était **{question['answer']}**.",
                         color=discord.Color.dark_teal()
                     ))
