@@ -285,20 +285,34 @@ thx to [JohnnyJayJay](https://github.com/JohnnyJayJay) for the inspiration.
 ---
 
 ## Joke Commands
+## Joke Commands
 * **`/joke`**  
   ➡️ Get a random joke using the Joke API. Jokes are interactive, allowing users to reveal the punchline by clicking a button.
+
+### JokeAPI Categories
+The jokes from JokeAPI are filtered to exclude inappropriate content. Categories include:
+- **Programming**
+- **Miscellaneous**
+- **Pun**
+- **Spooky**
+- **Christmas**
+
+*No explicit, racist, or sexist jokes are allowed.*
+
 <div align="left">
-  <img src="img/joke.jpg" alt="jokes preview" width="250px">
+  <img src="img/joke_punchline.jpg" alt="jokes preview" width="250px">
 </div>
 
+
+## Commandes Blagues
 * **`/blague`**  
-  ➡️ Get a random joke using the Blagues API. Jokes are interactive, allowing users to reveal the punchline by clicking a button.
+  ➡️ Obtenez une blague aléatoire en utilisant l'API Blagues. Les blagues sont interactives et permettent aux utilisateurs de révéler la réponse en cliquant sur un bouton.
 
-* **`/autoriser_blague <category>`**  
-  ➡️ Configure which joke categories are allowed on your server. Toggle categories such as `Tout public`, `Humour noir`, `Développeur`, `18+`, `Beauf`, or `Blondes`.  
-  Example: `/autoriser_blague Tout public`
+* **`/autoriser_blague <categorie>`**  
+  ➡️ Configurez les catégories de blagues autorisées sur votre serveur. Activez ou désactivez des catégories telles que `Tout public`, `Humour noir`, `Développeur`, `18+`, `Beauf` ou `Blondes`.  
+  Exemple : `/autoriser_blague Tout public`
 
-### Blague Categories
+### Catégories de Blagues
 - **Tout public**
 - **Humour noir**
 - **Développeur**
@@ -307,11 +321,12 @@ thx to [JohnnyJayJay](https://github.com/JohnnyJayJay) for the inspiration.
 - **Blondes**
 
 <div align="left">
-  <img src="img/blague.jpg" alt="jokes preview" width="250px">
+  <img src="img/blague.jpg" alt="blague preview" width="250px">
 </div>
 <div align="left">
-  <img src="img/blague_reponse.jpg" alt="jokes preview" width="250px">
+  <img src="img/blague_reponse.jpg" alt="blague réponse preview" width="250px">
 </div>
+
 
 ---
 
