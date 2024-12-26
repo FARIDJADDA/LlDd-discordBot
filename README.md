@@ -19,7 +19,7 @@
 
 
 <div align="left">
-  <img src="img/avatar_lldd_bot1.jpg" alt="Bot banner" width="400px">
+  <img src="img/llddbot_is_here.png" alt="Bot banner" width="400px">
 </div>
 
 A complete and customizable Discord bot designed to manage and engage community servers.  
@@ -53,7 +53,7 @@ This Discord bot offers several key features:
 - **Advanced logging**: Tracks message edits/deletions and role changes.
 - **Statistics**: Provides server activity data and Call of Duty stats.
 - **Role assignment**: Automatically assigns roles to new members.
-- **Twitch notifications**: Alerts for live streams (currently disabled).
+- **Twitch notifications**: Alerts for live streams.
 
 ---
 
@@ -79,17 +79,33 @@ This Discord bot offers several key features:
     pip install -r requirements.txt
    ```
    
-3. Configure your API keys:
-⚠️ **Important** : Never share your `.env` file containing API keys in public repositories. Make sure to add  `.env` or `config` to your `.gitignore`.
-    * Create `config` file in the root directory:
-    ```
-    DISCORD_TOKEN=ton_token_discord
-    TWITCH_CLIENT_ID=ton_client_id_twitch
-    TWITCH_CLIENT_SECRET=ton_secret_twitch
-    COD_API_KEY=ta_clé_api_cod
+3. Configure your API keys
+
+⚠️ **Important**: Never share your `.env` file containing API keys in public repositories. Make sure to add `.env` or `config` to your `.gitignore`.
+
+Create a `config` file in the root directory:
+
+    DISCORD_TOKEN=your_token
+
     LOG_FILE=bot_logs.log
     LOG_LEVEL=INFO
-    ```
+    LOG_BACKUP_COUNT=5
+    DISCORD_LOG_LEVEL=WARNING
+
+    TWITCH_CLIENT_ID=your_client_id
+    TWITCH_CLIENT_SECRET=your_clent_secret
+
+    COD_API_KEY=your_cod_api_key
+    OPENAI_API_KEY=your-openai_api_key
+    HUGGINGFACE_API_KEY=your_hugginface_api_key
+
+    OPENWEATHER_API_KEY=your_openweather_api_key
+    NEWS_API_KEY=your_news_api_key
+
+    BLAGUES_API_TOKEN=ta_clef_blaguesapi
+
+*Ensure all necessary API keys are added and keep this file secure.*
+
    
 4. Run the bot:
     ```bash
@@ -165,12 +181,23 @@ This Discord bot offers several key features:
 ---
 
 ### **Mini-Game Commands**
-* **`/quiz`**  
+* **`/trivia`**  
   ➡️ Starts a gaming trivia quiz using the OpenTDB API.  
+* **`/my_trivia_score`**  
+  ➡️ Shows the trivia leaderboard.
+<div align="left">
+  <img src="img/trivia.jpg" alt="trivia question and response preview" width="250px">
+</div>
+
+
 * **`/roll`** [faces=6]  
   ➡️ Rolls a die with the specified number of faces (default: 6).  
 * **`/rps`** `@opponent [difficulty: Easy|Normal|Hard]`  
   ➡️ Play rock-paper-scissors against a bot or another player. You can set the bot's difficulty level.
+<div align="left">
+  <img src="img/chifoumi.jpg" alt="chifoumi preview" width="250px">
+</div>
+
 * **`morpion`** `[opponent: @user|LlddBot] [difficulty: Facile|Normale|Difficile]`
 * ➡️ Start a Tic-Tac-Toe game against another user or LlddBot. Choose difficulty for bot opponents.  
 <div align="left">
@@ -198,12 +225,16 @@ This Discord bot offers several key features:
 ---
 
 ### **Statistics Commands**
-* **`/stats`**  
+* **`/server_stats`**  
   ➡️ Displays server statistics such as member count, roles, and channels.  
+<div align="left">
+  <img src="img/stats_server.jpg" alt="stats server preview" width="250px">
+</div>
+
+*(server test on picture)*
+
 * **`/codstats`** [username] [platform]  
-  ➡️ Fetches Call of Duty player stats.  
-* **`/leaderboard`**  
-  ➡️ Shows the trivia leaderboard.
+  ➡️ Fetches Call of Duty player stats.
 
 ---
 
@@ -223,7 +254,7 @@ The poll module allows you to create, manage, and display interactive polls dire
   <img src="img/polls.jpg" alt="polls preview" width="250px">
 </div>
 
-thx to [JohnnyJayJay](https://github.com/JohnnyJayJay) for the inspiration.
+thx to [JohnnyJayJay](https://github.com/JohnnyJayJay) for inspiration.
 
 #### **`/poll_results`**
  ➡️ Displays the current results of an active poll in the channel.
@@ -254,6 +285,9 @@ thx to [JohnnyJayJay](https://github.com/JohnnyJayJay) for the inspiration.
 ### **Hugging Face Commands**
 * **`/ask_hf`** [question]  
   ➡️ Ask a question to Hugging Face models like Bloom or Falcon.
+<div align="left">
+  <img src="img/hf.jpg" alt="response pf hf preview" width="250px">
+</div>
 
 ---
 
@@ -438,7 +472,7 @@ Contributions are welcome! To contribute:
 ## ⚖️ Licence
 
 This project is licensed under the **MIT License**. You are free to use, modify, and distribute it.
-See the [LICENSE](./LICENSE) file for more details.
+See the [LICENSE](bot/LICENSE) file for more details.
 
 
 ⭐ If you like this project, consider giving it a star! ⭐
